@@ -1,0 +1,40 @@
+{
+	"name": "pastel",
+	"version": "0.0.0",
+	"description": "Framework for effortlessly building Ink apps",
+	"license": "MIT",
+	"repository": "vadimdemedes/pastel",
+	"author": {
+		"name": "Vadim Demedes",
+		"email": "vdemedes@gmail.com",
+		"url": "github.com/vadimdemedes/pastel"
+	},
+	"bin": "cli.js",
+	"engines": {
+		"node": ">=6"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js",
+		"cli.js"
+	],
+	"keywords": [
+		"cli-app",
+		"cli",
+		""
+	],
+	"dependencies": {
+		"@babel/parser": "^7.3.4",
+		"@babel/traverse": "^7.3.4",
+		"@babel/types": "^7.3.4",
+		"meow": "^5.0.0",
+		"parcel-bundler": "^1.12.0",
+		"prop-types": "^15.7.2"
+	},
+	"devDependencies": {
+		"ava": "^0.25.0",
+		"xo": "^0.21.0"
+	}
+}
