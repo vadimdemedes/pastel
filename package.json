@@ -11,30 +11,57 @@
 	},
 	"bin": "cli.js",
 	"engines": {
-		"node": ">=6"
+		"node": ">=8"
 	},
 	"scripts": {
 		"test": "xo && ava"
 	},
 	"files": [
 		"index.js",
-		"cli.js"
+		"cli.js",
+		"boot.js",
+		"entry.js",
+		"commands",
+		"lib"
 	],
 	"keywords": [
-		"cli-app",
+		"ink",
 		"cli",
-		""
+		"cli-app",
+		"cli-framework"
 	],
 	"dependencies": {
 		"@babel/parser": "^7.3.4",
 		"@babel/traverse": "^7.3.4",
 		"@babel/types": "^7.3.4",
-		"meow": "^5.0.0",
-		"parcel-bundler": "^1.12.0",
-		"prop-types": "^15.7.2"
+		"camelcase-keys": "^5.2.0",
+		"cardinal": "^2.1.1",
+		"chalk": "^2.4.2",
+		"decamelize": "^3.2.0",
+		"del": "^4.1.1",
+		"execa": "^1.0.0",
+		"figures": "^3.0.0",
+		"has-yarn": "^2.1.0",
+		"import-from": "^2.1.0",
+		"make-dir": "^3.0.0",
+		"ora": "^3.4.0",
+		"parcel-bundler": "^1.12.3",
+		"pkg-up": "^3.1.0",
+		"read-pkg-up": "^5.0.0",
+		"strip-indent": "^3.0.0",
+		"watch": "^1.0.2",
+		"wrap-ansi": "^5.1.0",
+		"yargs": "^13.2.2"
 	},
 	"devDependencies": {
 		"ava": "^0.25.0",
+		"ink": "^2.1.1",
+		"prop-types": "^15.7.2",
+		"react": "^16.8.6",
 		"xo": "^0.21.0"
+	},
+	"peerDependencies": {
+		"ink": "^2.1.1",
+		"react": "^16.8.6"
 	}
 }

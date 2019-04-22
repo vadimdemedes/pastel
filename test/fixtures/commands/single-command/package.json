@@ -1,0 +1,4 @@
+{
+	"name": "test-bin",
+	"bin": "./build/cli"
+}
