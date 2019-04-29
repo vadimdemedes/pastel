@@ -4,9 +4,15 @@ import execa from 'execa';
 import test from 'ava';
 import del from 'del';
 
-const build = fixture => {
-	return execa('node', [path.join(__dirname, '..', 'cli'), 'build', '--test-mode'], {
-		cwd: path.join(__dirname, 'fixtures', 'commands', fixture)
+const build = async fixture => {
+	const fixturePath = path.join(__dirname, 'fixtures', 'commands', fixture);
+	await execa('node', [path.join(__dirname, '..', 'cli'), 'build', '--test-mode'], {
+		cwd: fixturePath
+	});
+
+	// Install Pastel into a fixture folder
+	await execa('npm', ['install', '../../../../', '--no-save', '--no-bin-links', '--no-package-lock'], {
+		cwd: fixturePath
 	});
 };
 
