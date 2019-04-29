@@ -15,7 +15,7 @@
 ## Install
 
 ```bash
-$ npm install pastel ink react
+$ npm install pasteljs ink react
 ```
 
 
@@ -42,7 +42,7 @@ First, create a `package.json` with the following contents:
 After that, install Pastel and its dependencies:
 
 ```bash
-$ npm install pastel ink react
+$ npm install pasteljs ink react
 ```
 
 Then create a `commands` folder:

@@ -1,5 +1,5 @@
 {
-	"name": "pastel",
+	"name": "pasteljs",
 	"version": "0.0.0",
 	"description": "Framework for effortlessly building Ink apps",
 	"license": "MIT",
@@ -9,7 +9,9 @@
 		"email": "vdemedes@gmail.com",
 		"url": "github.com/vadimdemedes/pastel"
 	},
-	"bin": "cli.js",
+	"bin": {
+		"pastel": "cli.js"
+	},
 	"engines": {
 		"node": ">=8"
 	},
