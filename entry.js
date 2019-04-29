@@ -2,7 +2,7 @@
 'use strict';
 const React = require('react'); // eslint-disable-line import/no-unresolved
 const Ink = require('ink'); // eslint-disable-line import/no-unresolved
-const boot = require('pastel/boot'); // eslint-disable-line import/no-extraneous-dependencies
+const boot = require('pastel/boot'); // eslint-disable-line import/no-extraneous-dependencies, import/no-unresolved
 const {commands} = require('./commands.json'); // eslint-disable-line import/no-unresolved
 
 // This file is an entrypoint of CLI applications based on Pastel
