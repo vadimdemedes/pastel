@@ -66,7 +66,7 @@ HelloPerson.propTypes = {
 	name: PropTypes.string.isRequired
 };
 
-export default HelloWorld;
+export default HelloPerson;
 ```
 
 Note that React's `propTypes` are translated into options that are accepted by your CLI.
