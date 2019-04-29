@@ -32,9 +32,9 @@ First, create a `package.json` with the following contents:
 	"name": "hello-person",
 	"bin": "./build/cli.js",
 	"scripts": {
-		"build": "parcel build",
-		"dev": "parcel dev",
-		"prepare": "parcel build"
+		"build": "pastel build",
+		"dev": "pastel dev",
+		"prepare": "pastel build"
 	}
 }
 ```
