@@ -25,6 +25,8 @@ Pastel's API is a filesystem and React's `propTypes`.
 Each file in `commands` folder is a separate command.
 If you need to set up nested commands, you can create sub-folders and put these commands inside.
 
+**Tip**: Want to skip the boring stuff and get straight to building a cool CLI? Use [create-pastel-app](https://github.com/vadimdemedes/create-pastel-app) to quickly scaffold out a Pastel app.
+
 First, create a `package.json` with the following contents:
 
 ```json
