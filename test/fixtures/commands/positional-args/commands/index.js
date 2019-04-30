@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Box, Text} from 'ink';
 
-// Positional args command
+/// Positional args command
 const PositionalArgs = ({message, otherMessage, inputArgs}) => (
 	<Box flexDirection="column">
 		<Text>message: {message}</Text>
@@ -12,11 +12,11 @@ const PositionalArgs = ({message, otherMessage, inputArgs}) => (
 );
 
 PositionalArgs.propTypes = {
-	// Message
+	/// Message
 	message: PropTypes.string,
-	// Other message
+	/// Other message
 	otherMessage: PropTypes.string,
-	// Input args
+	/// Input args
 	inputArgs: PropTypes.array
 };
 

@@ -1,2 +1,2 @@
-// Description
+/// Description
 export default () => null;

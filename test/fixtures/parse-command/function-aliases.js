@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-// Description
+/// Description
 const Demo = () => null;
 
 Demo.propTypes = {

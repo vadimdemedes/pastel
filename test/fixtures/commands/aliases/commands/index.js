@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Box, Text} from 'ink';
 
-// Aliases command
+/// Aliases command
 const Aliases = ({stream, newArg}) => (
 	<Box flexDirection="column">
 		<Text>stream: {stream}</Text>
@@ -11,9 +11,9 @@ const Aliases = ({stream, newArg}) => (
 );
 
 Aliases.propTypes = {
-	// Stream arg
+	/// Stream arg
 	stream: PropTypes.string,
-	// New arg
+	/// New arg
 	newArg: PropTypes.string
 };
 

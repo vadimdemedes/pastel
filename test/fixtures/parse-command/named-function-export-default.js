@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-// Description
+/// Description
 export default function Demo() {
 	return null;
 }

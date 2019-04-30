@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Description
+/// Description
 export default class Demo extends React.Component {
 	static propTypes = {
 		arg: PropTypes.string

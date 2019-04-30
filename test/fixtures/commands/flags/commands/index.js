@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Box, Text} from 'ink';
 
-// Flags command
+/// Flags command
 const Flags = ({stringArg, booleanArg, numberArg, arrayArg}) => (
 	<Box flexDirection="column">
 		<Text>stringArg: {stringArg}</Text>
@@ -13,13 +13,13 @@ const Flags = ({stringArg, booleanArg, numberArg, arrayArg}) => (
 );
 
 Flags.propTypes = {
-	// String arg
+	/// String arg
 	stringArg: PropTypes.string.isRequired,
-	// Boolean arg
+	/// Boolean arg
 	booleanArg: PropTypes.bool,
-	// Number arg
+	/// Number arg
 	numberArg: PropTypes.number,
-	// Array arg
+	/// Array arg
 	arrayArg: PropTypes.array
 };
 

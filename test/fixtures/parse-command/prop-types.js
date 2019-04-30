@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 
-// Description
+/// Description
 const Demo = () => null;
 
 Demo.propTypes = {
-	// String arg
+	/// String arg
 	stringArg: PropTypes.string.isRequired,
-	// Boolean arg
+	/// Boolean arg
 	booleanArg: PropTypes.bool,
-	// Number arg
+	/// Number arg
 	numberArg: PropTypes.number,
-	// Array arg
+	/// Array arg
 	arrayArg: PropTypes.array
 };
 

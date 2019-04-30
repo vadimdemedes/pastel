@@ -60,11 +60,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Text} from 'ink';
 
-// This is my command description
+/// This is my command description
 const HelloPerson = ({name}) => <Text>Hello, {name}</Text>;
 
 HelloPerson.propTypes = {
-	// This is "name" option description
+	/// This is "name" option description
 	name: PropTypes.string.isRequired
 };
 
@@ -225,11 +225,11 @@ $ list-members --project-id=abc
 #### Descriptions
 
 Pastel also offers a zero-API way of adding description to your commands and options.
-Simply add a comment above the command or option you want to describe and Pastel will automatically parse it.
+Simply add a comment that starts with 3 slashes (`///`) above the command or option you want to describe and Pastel will automatically parse it.
 For example, here's how to add a description to your command:
 
 ```jsx
-// List all members in the project
+/// List all members in the project
 const ListMembers = ({projectId}) => <JSX/>;
 ```
 
@@ -237,7 +237,7 @@ And here's how to document your options:
 
 ```jsx
 ListMembers.propTypes = {
-	// ID of the project
+	/// ID of the project
 	projectId: PropTypes.string
 };
 ```
