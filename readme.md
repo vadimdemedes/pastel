@@ -15,7 +15,7 @@
 ## Install
 
 ```bash
-$ npm install pasteljs ink react
+$ npm install pasteljs ink react prop-types
 ```
 
 
