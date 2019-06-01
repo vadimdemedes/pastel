@@ -15,7 +15,7 @@
 ## Install
 
 ```bash
-$ npm install pasteljs ink react prop-types
+$ npm install pastel ink react prop-types
 ```
 
 
@@ -44,7 +44,7 @@ First, create a `package.json` with the following contents:
 After that, install Pastel and its dependencies:
 
 ```bash
-$ npm install pasteljs ink react prop-types
+$ npm install pastel ink react prop-types
 ```
 
 Then create a `commands` folder:
