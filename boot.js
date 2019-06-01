@@ -1,9 +1,10 @@
 'use strict';
+const path = require('path');
 const camelcaseKeys = require('camelcase-keys');
 const decamelize = require('decamelize');
 const yargs = require('yargs');
 
-module.exports = (React, Ink, commands) => {
+module.exports = (dirname, React, Ink, commands) => {
 	const addCommand = (command, yargs) => {
 		// Yargs expects a special format for positional args when defining a command
 		// in order to correctly parse them, e.g. "<first-arg> <second-arg>"
@@ -55,7 +56,7 @@ module.exports = (React, Ink, commands) => {
 			inputArgs: argv._
 		};
 
-		const UI = require(command.buildPath).default;
+		const UI = require(path.join(dirname, 'commands', command.path)).default;
 		const {waitUntilExit} = Ink.render(React.createElement(UI, props));
 
 		waitUntilExit().catch(error => {

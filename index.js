@@ -37,7 +37,7 @@ class Pastel extends EventEmitter {
 	}
 
 	async scanCommands() {
-		const commands = await readCommands(this.commandsPath, path.join(this.buildPath, 'commands'));
+		const commands = await readCommands(this.commandsPath, this.commandsPath);
 		await writeFile(path.join(this.buildPath, 'commands.json'), JSON.stringify({commands}, null, '\t'));
 
 		return commands;
@@ -65,7 +65,7 @@ class Pastel extends EventEmitter {
 		await this.createBuildDir();
 		await this.saveEntrypoint();
 		const commands = await this.scanCommands();
-		const bundler = this.createBundler(getEntrypointPaths(commands), {watch: false});
+		const bundler = this.createBundler(getEntrypointPaths(this.commandsPath, commands), {watch: false});
 
 		return bundler.bundle();
 	}
@@ -107,7 +107,7 @@ class Pastel extends EventEmitter {
 
 			const commands = await this.scanCommands();
 
-			bundler = this.createBundler(getEntrypointPaths(commands), {watch: true});
+			bundler = this.createBundler(getEntrypointPaths(this.commandsPath, commands), {watch: true});
 			bundler.on('buildStart', onStart);
 
 			bundler.on('bundled', handleAsyncErrors(async () => {
