@@ -248,3 +248,11 @@ test('parse class positional args', async t => {
 		]
 	});
 });
+
+test('do not error on let reassignment', async t => {
+	const command = await parseCommand(fixture('let'));
+	t.deepEqual(command, {
+		description: 'Description',
+		args: []
+	});
+});
