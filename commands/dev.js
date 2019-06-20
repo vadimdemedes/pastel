@@ -23,9 +23,9 @@ module.exports = async () => {
 		process.on(event, () => unlinkBin(projectPath))
 	);
 
-	const binNamesOutput = Object.keys(pkg.bin).map(name =>
-		`${chalk.yellow('$')} ${chalk.green(name)} --help`
-	).join('\n');
+	const binNamesOutput = Object.keys(pkg.bin)
+		.map(name => `${chalk.yellow('$')} ${chalk.green(name)} --help`)
+		.join('\n');
 
 	console.log(wrapAnsi(stripIndent(`
 		${chalk.bold('Development mode')}
