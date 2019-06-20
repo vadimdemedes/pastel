@@ -23,12 +23,16 @@ module.exports = async () => {
 		process.on(event, () => unlinkBin(projectPath))
 	);
 
+	const binNamesOutput = Object.keys(pkg.bin).map(name =>
+		`${chalk.yellow('$')} ${chalk.green(name)} --help`
+	).join('\n');
+
 	console.log(wrapAnsi(stripIndent(`
 		${chalk.bold('Development mode')}
 
 		Pastel watches your "commands" directory for changes and rebuilds application when needed. After first successful build Pastel will also link your CLI for you, so feel free to run your command right away:
 
-		${chalk.yellow('$')} ${chalk.green(pkg.name)} --help
+		${binNamesOutput}
 
 		Now go create some beautiful CLI!
 	`), 80).trim() + '\n');
