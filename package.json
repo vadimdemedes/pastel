@@ -1,6 +1,6 @@
 {
 	"name": "pastel",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Framework for effortlessly building Ink apps",
 	"license": "MIT",
 	"repository": "vadimdemedes/pastel",
