@@ -8,6 +8,7 @@ const ora = require('ora');
 const chalk = require('chalk');
 const lint = require('../lib/lint');
 const linkBin = require('../lib/link-bin');
+const unlinkBin = require('../lib/unlink-bin');
 const formatError = require('../lib/format-error');
 const states = require('../lib/states');
 const Pastel = require('..');
@@ -17,6 +18,10 @@ module.exports = async () => {
 	const projectPath = path.dirname(pkgPath);
 
 	lint(projectPath, pkg);
+
+	['exit', 'SIGINT', 'SIGTERM'].forEach(event =>
+		process.on(event, () => unlinkBin(projectPath))
+	);
 
 	console.log(wrapAnsi(stripIndent(`
 		${chalk.bold('Development mode')}
