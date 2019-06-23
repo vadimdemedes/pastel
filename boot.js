@@ -56,7 +56,7 @@ module.exports = (dirname, React, Ink, commands) => {
 			inputArgs: argv._
 		};
 
-		const UI = require(path.join(dirname, 'commands', command.path)).default;
+		const UI = require(path.join(dirname, 'commands', command.path.replace('.tsx', '.js'))).default;
 		const {waitUntilExit} = Ink.render(React.createElement(UI, props));
 
 		waitUntilExit().catch(error => {
