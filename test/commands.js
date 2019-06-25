@@ -163,3 +163,10 @@ test('positional args', async t => {
 		inputArgs: ["something","else"]
 	`).trim());
 });
+
+test('typescript', async t => {
+	await build('typescript');
+	const output = await cli('typescript');
+
+	t.is(output, 'Hello world');
+});
