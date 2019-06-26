@@ -19,9 +19,15 @@ module.exports = async () => {
 
 	lint(projectPath, pkg);
 
-	['exit', 'SIGINT', 'SIGTERM'].forEach(event =>
-		process.on(event, () => unlinkBin(projectPath))
-	);
+	['exit', 'SIGINT', 'SIGTERM'].forEach(event => {
+		process.on(event, () => {
+			const {code} = unlinkBin(projectPath);
+
+			if (event === 'SIGINT' || event === 'SIGTERM') {
+				process.exit(code ? 1 : 0);
+			}
+		});
+	});
 
 	console.log(wrapAnsi(stripIndent(`
 		${chalk.bold('Development mode')}
