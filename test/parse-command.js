@@ -9,6 +9,7 @@ test('parse arrow function', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -28,7 +29,8 @@ test('parse arrow function with default export', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
-		args: []
+		args: [],
+		positionalArgs: []
 	});
 });
 
@@ -37,6 +39,7 @@ test('parse named function', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -56,6 +59,7 @@ test('parse named function with default export', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -75,6 +79,7 @@ test('parse class', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -94,6 +99,7 @@ test('parse class with static prop types', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -113,6 +119,7 @@ test('parse class with default export', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -132,6 +139,7 @@ test('parse prop types', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'stringArg',
@@ -178,6 +186,7 @@ test('parse function aliases and short flags', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -197,6 +206,7 @@ test('parse class aliases and short flags', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: [
 			{
 				key: 'arg',
@@ -216,12 +226,22 @@ test('parse function positional args', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: ['arg', 'optionalArg'],
 		args: [
+			{
+				key: 'optionalArg',
+				type: 'string',
+				description: '',
+				isRequired: false,
+				defaultValue: undefined,
+				aliases: [],
+				positional: true
+			},
 			{
 				key: 'arg',
 				type: 'string',
 				description: '',
-				isRequired: false,
+				isRequired: true,
 				defaultValue: undefined,
 				aliases: [],
 				positional: true
@@ -235,7 +255,17 @@ test('parse class positional args', async t => {
 
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: ['arg', 'variadicArg'],
 		args: [
+			{
+				key: 'variadicArg',
+				type: 'array',
+				description: '',
+				isRequired: false,
+				defaultValue: undefined,
+				aliases: [],
+				positional: true
+			},
 			{
 				key: 'arg',
 				type: 'string',
@@ -249,10 +279,19 @@ test('parse class positional args', async t => {
 	});
 });
 
+test('throw error when positional args are in wrong order', async t => {
+	await t.throws(parseCommand(fixture('wrong-order-positional-args')));
+});
+
+test('throw error when variadic arg is not last', async t => {
+	await t.throws(parseCommand(fixture('wrong-variadic-arg')));
+});
+
 test('do not error on let reassignment', async t => {
 	const command = await parseCommand(fixture('let'));
 	t.deepEqual(command, {
 		description: 'Description',
+		positionalArgs: [],
 		args: []
 	});
 });
