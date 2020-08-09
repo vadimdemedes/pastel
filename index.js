@@ -22,8 +22,26 @@ class Pastel extends EventEmitter {
 		this.commandsPath = path.join(appPath, 'commands');
 		this.buildPath = path.join(appPath, 'build');
 		this.cachePath = path.join(appPath, 'node_modules', '.cache', 'parcel');
+		this.tsConfigPath = path.join(appPath, 'tsconfig.json');
 
 		this.testMode = testMode;
+	}
+
+	checkOrCreateTsConfig() {
+		if (!fs.existsSync(this.tsConfigPath)) {
+			fs.writeFileSync(this.tsConfigPath, JSON.stringify({compilerOptions: {jsx: 'react'}}, null, 2));
+			console.log('We detected TypeScript in your project and created a `tsconfig.json` file for you.');
+		}
+	}
+
+	getEntryPointPaths(commands) {
+		const paths = getEntrypointPaths(this.commandsPath, commands);
+
+		if (paths.some(filePath => path.extname(filePath) === '.tsx')) {
+			this.checkOrCreateTsConfig();
+		}
+
+		return paths;
 	}
 
 	async createBuildDir() {
@@ -65,7 +83,7 @@ class Pastel extends EventEmitter {
 		await this.createBuildDir();
 		await this.saveEntrypoint();
 		const commands = await this.scanCommands();
-		const bundler = this.createBundler(getEntrypointPaths(this.commandsPath, commands), {watch: false});
+		const bundler = this.createBundler(this.getEntryPointPaths(commands), {watch: false});
 
 		return bundler.bundle();
 	}
@@ -107,7 +125,7 @@ class Pastel extends EventEmitter {
 
 			const commands = await this.scanCommands();
 
-			bundler = this.createBundler(getEntrypointPaths(this.commandsPath, commands), {watch: true});
+			bundler = this.createBundler(this.getEntryPointPaths(commands), {watch: true});
 			bundler.on('buildStart', onStart);
 
 			bundler.on('bundled', handleAsyncErrors(async () => {

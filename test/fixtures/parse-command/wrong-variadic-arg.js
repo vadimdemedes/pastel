@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 const Demo = () => null;
 
 Demo.propTypes = {
-	optionalArg: PropTypes.string,
-	arg: PropTypes.string.isRequired
+	arg: PropTypes.string,
+	variadicArg: PropTypes.array
 };
 
-Demo.positionalArgs = ['arg', 'optionalArg'];
+Demo.positionalArgs = ['variadicArg', 'arg'];
 
 export default Demo;

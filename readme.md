@@ -422,6 +422,51 @@ $ my-cli Jane Hopper
 First argument is "Jane" and second is "Hopper"
 ```
 
+The order of the fields in `positionalArgs` will be respected. Optional arguments need to appear after required ones.
+If you want to collect an arbitrary amount of arguments you can define a variadic argument by giving it the array type.
+Variadic arguments need to always be last and will capture all the remaining arguments.
+
+```jsx
+import React from 'react';
+import PropTypes from 'prop-types';
+import {Text} from 'ink';
+
+const DownloadCommand = ({urls}) => (
+	<Text>
+		Downloading {urls.length} urls
+	</Text>
+);
+
+DownloadCommand.propTypes = {
+	urls: PropTypes.array
+};
+
+DownloadCommand.positionalArgs = ['urls'];
+
+export default DownloadCommand;
+```
+
+```bash
+$ my-cli download https://some/url https://some/other/url
+Downloading 2 urls
+```
+
+Positional arguments also support aliases, but only one per argument. The rest will be ignored.
+
+### TypeScript
+
+Pastel supports TypeScript by simply renaming a command file and giving it the `.tsx` extension. A `tsconfig.json` will be generated for you.
+
+If you want to define your own, make sure it contains the following:
+
+```json
+{
+	"compilerOptions": {
+		"jsx": "react"
+	}
+}
+```
+
 ### Distribution
 
 Since Pastel compiles your application, the final source code of your CLI is generated in the `build` folder.

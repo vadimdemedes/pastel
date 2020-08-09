@@ -16,12 +16,12 @@ const build = async fixture => {
 	});
 };
 
-const cli = async (fixture, args = []) => {
-	const {stdout} = await execa('node', [path.join(__dirname, 'fixtures', 'commands', fixture, 'build', 'cli'), ...args], {
+const cli = async (fixture, args = [], {returnStderr} = {}) => {
+	const {stdout, stderr} = await execa('node', [path.join(__dirname, 'fixtures', 'commands', fixture, 'build', 'cli'), ...args], {
 		cwd: path.join(__dirname, 'fixtures', 'commands', fixture)
 	});
 
-	return stdout;
+	return returnStderr ? stderr : stdout;
 };
 
 const cleanup = () => {
@@ -44,9 +44,26 @@ test('multiple commands', async t => {
 	await build('multi-command');
 	const outputA = await cli('multi-command', ['a']);
 	const outputB = await cli('multi-command', ['b']);
+	const outputC = await cli('multi-command', ['with-index', 'c']);
+	const outputWithIndex = await cli('multi-command', ['with-index']);
+	const outputD = await cli('multi-command', ['without-index', 'd']);
+	const outputWithoutIndex = await cli('multi-command', ['without-index'], {returnStderr: true});
 
 	t.is(outputA, 'Command A');
 	t.is(outputB, 'Command B');
+	t.is(outputC, 'Command C');
+	t.is(outputWithIndex, 'Command With Index');
+	t.is(outputD, 'Command D');
+	t.is(outputWithoutIndex, stripIndent(`
+		cli without-index
+
+		Commands:
+		  cli without-index d
+
+		Options:
+		  --help     Show help                                                 [boolean]
+		  --version  Show version number                                       [boolean]
+	`).trim());
 });
 
 test('flags', async t => {
@@ -101,9 +118,12 @@ test('aliases', async t => {
 	const helpOutput = await cli('aliases', ['--help']);
 
 	t.is(helpOutput, stripIndent(`
-		cli
+		cli [positional|other-name]
 
 		Aliases command
+
+		Positionals:
+		  positional, other-name  Positional arg                                [string]
 
 		Options:
 		  --help                Show help                                      [boolean]
@@ -142,11 +162,12 @@ test('positional args', async t => {
 	const helpOutput = await cli('positional-args', ['--help']);
 
 	t.is(helpOutput, stripIndent(`
-		cli <message> <other-message>
+		cli <message> [other-message] [rest-messages..]
 
 		Positional args command
 
 		Positionals:
+		  rest-messages  Rest of the messages
 		  message        Message                                                [string]
 		  other-message  Other message                                          [string]
 
@@ -160,7 +181,8 @@ test('positional args', async t => {
 	t.is(cmdOutput, stripIndent(`
 		message: hello
 		otherMessage: world
-		inputArgs: ["something","else"]
+		restMessages: ["something","else"]
+		inputArgs: []
 	`).trim());
 });
 

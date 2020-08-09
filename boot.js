@@ -4,50 +4,16 @@ const camelcaseKeys = require('camelcase-keys');
 const decamelize = require('decamelize');
 const yargs = require('yargs');
 
+const getCommandsMessage = command => {
+	const usageString = [...command.usage, command.name].join(' ');
+	return `Commands:\n${command.subCommands.map(subCommand => `  ${usageString} ${subCommand.name}`).join('\n')}\n`;
+};
+
 module.exports = (dirname, React, Ink, commands) => {
 	const addCommand = (command, yargs) => {
-		// Yargs expects a special format for positional args when defining a command
-		// in order to correctly parse them, e.g. "<first-arg> <second-arg>"
-		const positionalArgs = command.args
-			.filter(arg => arg.positional)
-			.map(arg => `<${decamelize(arg.key, '-')}>`)
-			.join(' ');
-
-		const name = command.name === 'index' ? '*' : command.name;
-		const yargsName = positionalArgs.length > 0 ? `${name} ${positionalArgs}` : name;
-		const description = command.description || `${name} command`;
-
+		// Don't need to add a description as it'll be handled by the * selector in the builder
 		// eslint-disable-next-line no-use-before-define
-		yargs.command(yargsName, description, builder.bind(null, command), handler.bind(null, command));
-	};
-
-	const builder = (command, yargs) => {
-		for (const arg of command.args) {
-			// `inputArgs` is a reserved prop by Pastel and doesn't require a definition in yargs
-			if (arg.key === 'inputArgs') {
-				continue;
-			}
-
-			if (arg.positional) {
-				yargs.positional(decamelize(arg.key, '-'), {
-					type: arg.type,
-					description: arg.description,
-					default: arg.defaultValue
-				});
-			} else {
-				yargs.option(decamelize(arg.key, '-'), {
-					type: arg.type,
-					description: arg.description,
-					default: arg.defaultValue,
-					demandOption: arg.isRequired,
-					alias: arg.aliases.map(alias => decamelize(alias, '-'))
-				});
-			}
-		}
-
-		for (const subCommand of command.subCommands) {
-			addCommand(subCommand, yargs);
-		}
+		yargs.command(command.name, '', builder.bind(null, command), () => yargs.showHelp());
 	};
 
 	const handler = (command, argv) => {
@@ -64,9 +30,87 @@ module.exports = (dirname, React, Ink, commands) => {
 		});
 	};
 
-	for (const command of commands) {
-		addCommand(command, yargs);
-	}
+	const builder = (command, yargs) => {
+		const {
+			positionalArgs = [],
+			args,
+			description,
+			name,
+			subCommands,
+			isDefaultIndex,
+			usage
+		} = command;
+
+		for (const subCommand of subCommands) {
+			addCommand({
+				...subCommand,
+				usage: [...usage, name]
+			}, yargs);
+		}
+
+		// If there is no index defined, yargs will just list the sub-commands
+		if (isDefaultIndex) {
+			return;
+		}
+
+		const hasPositionalArgs = positionalArgs.length > 0;
+		const positionalArgsString = positionalArgs.map(key => {
+			const {isRequired, type, aliases} = args.find(arg => arg.key === key);
+			const [startTag, endTag] = isRequired ? ['<', '>'] : ['[', type === 'array' ? '..]' : ']'];
+			const argsNames = [key, ...aliases.slice(0, 1)].map(name => decamelize(name, '-')).join('|');
+
+			return `${startTag}${argsNames}${endTag}`;
+		}).join(' ');
+
+		const yargsName = hasPositionalArgs ? `* ${positionalArgsString}` : '*';
+		const commandDescription = description || `${name} command`;
+
+		yargs.command(yargsName, commandDescription, scopedYargs => {
+			for (const arg of command.args) {
+				// `inputArgs` is a reserved prop by Pastel and doesn't require a definition in yargs
+				if (arg.key === 'inputArgs') {
+					continue;
+				}
+
+				if (arg.positional) {
+					scopedYargs.positional(decamelize(arg.key, '-'), {
+						type: arg.type,
+						description: arg.description,
+						default: arg.defaultValue,
+						// This only keeps one for some reason for positional arguments
+						// The slice ensures we keep the same as the one we add in the command
+						alias: arg.aliases.slice(0, 1).map(alias => decamelize(alias, '-'))
+					});
+				} else {
+					scopedYargs.option(decamelize(arg.key, '-'), {
+						type: arg.type,
+						description: arg.description,
+						default: arg.defaultValue,
+						demandOption: arg.isRequired,
+						alias: arg.aliases.map(alias => decamelize(alias, '-'))
+					});
+				}
+			}
+
+			// If the index command takes no arguments and there are available sub-commands,
+			// list the sub-commands in the help message.
+			if (!hasPositionalArgs && subCommands.length > 0) {
+				const usageMessage = getCommandsMessage(command);
+				scopedYargs.demandCommand(0, 0, usageMessage, usageMessage);
+			}
+		}, handler.bind(null, command));
+	};
+
+	yargs.command(
+		'*', '',
+		yargs => {
+			const usage = [path.basename(yargs.$0)];
+			for (const command of commands) {
+				addCommand({...command, usage}, yargs);
+			}
+		},
+		() => yargs.showHelp()
+	);
 
 	yargs.parse();
 };
