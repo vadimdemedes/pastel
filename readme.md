@@ -455,7 +455,7 @@ Positional arguments also support aliases, but only one per argument. The rest w
 
 ### TypeScript
 
-Pastel supports typescript by simply renaming a command file and giving it the `.tsx` extension. A `tsconfig.json` will be generated for you.
+Pastel supports TypeScript by simply renaming a command file and giving it the `.tsx` extension. A `tsconfig.json` will be generated for you.
 
 If you want to define your own, make sure it contains the following:
 
