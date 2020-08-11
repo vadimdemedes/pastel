@@ -9,7 +9,17 @@ const getCommandsMessage = command => {
 	return `Commands:\n${command.subCommands.map(subCommand => `  ${usageString} ${subCommand.name}`).join('\n')}\n`;
 };
 
-module.exports = (dirname, React, Ink, commands) => {
+module.exports = (dirname, React, Ink, originalCommands) => {
+	let commands = originalCommands;
+
+	// For backwards compatibility for builds made with versions prior to 1.1.0 that don't include positionalArgs
+	if (originalCommands.some(command => !command.positionalArgs && command.args.some(arg => arg.positional))) {
+		commands = originalCommands.map(command => ({
+			...command,
+			positionalArgs: (command.args || []).filter(arg => arg.positional).map(arg => arg.key)
+		}));
+	}
+
 	const addCommand = (command, yargs) => {
 		// Don't need to add a description as it'll be handled by the * selector in the builder
 		// eslint-disable-next-line no-use-before-define
