@@ -13,7 +13,7 @@ module.exports = (dirname, React, Ink, originalCommands) => {
 	let commands = originalCommands;
 
 	// For backwards compatibility for builds made with versions prior to 1.1.0 that don't include positionalArgs
-	if (originalCommands.some(command => !command.positionalArgs && command.args.some(arg => arg.positional))) {
+	if (originalCommands.some(command => !command.positionalArgs && (command.args || []).some(arg => arg.positional))) {
 		commands = originalCommands.map(command => ({
 			...command,
 			positionalArgs: (command.args || []).filter(arg => arg.positional).map(arg => arg.key)
