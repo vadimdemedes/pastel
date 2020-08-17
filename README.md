@@ -28,7 +28,6 @@
 			- [Aliases](#aliases)
 		- [Arguments](#arguments)
 			- [Positional arguments](#positional-arguments)
-		- [TypeScript](#typescript)
 		- [Conventions](#conventions)
 			- [Naming](#naming)
 			- [Descriptions](#descriptions)
@@ -39,7 +38,7 @@
 
 ### Quick Setup
 
-In order to get up and running with pastel, you simply run the following commands:
+To get up and running with pastel, you simply run the following commands:
 
 ```bash
 mkdir pasteltest
@@ -127,7 +126,7 @@ Hello.propTypes = {
 export default Hello;
 ```
 
-Here we are importing `React` as this is a React app, `React` is required to be in the scope, the same as typical web apps, then we're importing `PropTypes` which is used to define the arguments and their types, and lastly we're importing the `Text` component from `ink`. This will allow us to render text.
+Here we are importing `React` as this is a React app, `React` is required to be in the scope, the same as typical web apps, then we're importing `PropTypes` which is used to define the arguments and their types, and lastly, we're importing the `Text` component from `ink`. This will allow us to render text.
 
 Another point of interest here is the triple-slash (`/// Hello world command` and `/// Name of the person to greet`.) Let's run `pasteltest --help`
 
@@ -142,7 +141,7 @@ Options:
   --name     Name of the person to greet                     [string] [required] <-------- Triple-slash on line 9
 ```
 
-We can use the `///` notation to add documentation to you commands and their arguments without needing to add additional properties or code to your command.
+We can use the `///` notation to add documentation to your commands and their arguments without needing to add additional properties or code to your command.
 
 Lastly, your command must always export a React command for rendering that command.
 
@@ -154,7 +153,7 @@ export default Hello;
 
 ### Applying Changes
 
-After checking out the initial code for your new `pasteltest` CLI, you'll probably want to start making some changes to your code. In order to do this, you'll need to run -
+After checking out the initial code for your new `pasteltest` CLI app, you'll probably want to start making some changes to your code. To do this, you'll need to run -
 
 ```bash
 npm run dev
@@ -164,7 +163,7 @@ pastel dev
 
 This command will watch your `commands` directory for any changes and when you update your code, `pastel dev` will compile the code to the `build` directory.
 
-In order for this to work properly you'll need to run the `dev` command in the background to watch for your changes, and then you'll be able to test any changes by running your command on the command line.
+For this to work properly you'll need to run the `dev` command in the background to watch for your changes, and then you'll be able to test any changes by running your command on the command line.
 
 ### Adding Commands
 
@@ -206,7 +205,7 @@ const HelloWorld = () => <Text>Hello World</Text>;
 export default HelloWorld;
 ```
 
-**Note:** In order for these changes to applying you'll need to have `npm run dev` running in the background.
+**Note:** For these changes to applying you'll need to have `npm run dev` running in the background.
 
 ### Typescript Support
 Pastel has a certain amount of Typescript support. Simply change the extension of your command file and with the `.tsx` extension. A `tsconfig.json` will be generated for you.
@@ -236,7 +235,7 @@ const Hello = (props: Props) => <Text>Hello, {props.name}</Text>;
 export default Hello;
 ```
 
-And this will work, however, if a name value is not provided, the application will simple return `Hello, ` so you will lose the intenal error handling when values aren't provided. 
+And this will work, however, if a name value is not provided, the application will return `Hello, ` so you will lose the internal error handling when values aren't provided. 
 
 Also, running `pasteltest --help` will result in the following:
 ```bash
@@ -248,7 +247,7 @@ Options:
   --help     Show help                                                 [boolean]
   --version  Show version number                                       [boolean]
 ```
-As you can see there's no longer documentation provided for the `name` option. For this reason we recommend sticking with `Prop Types` for handling user input.
+As you can see there's no longer documentation provided for the `name` option. For this reason, we recommend sticking with `Prop Types` for handling user input.
 
 ## User Input
 
@@ -318,8 +317,8 @@ Hello, Katy
 
 #### Short flags
 
-Options can often be set with a shorter version of their name, using short flags.
-Most popular example is `--force` option. Most CLIs also accept `-f` as a shorter version of the same option.
+Options can often beset with a shorter version of their name, using short flags.
+The most popular example is the `--force` option. Most CLIs also accept `-f` as a shorter version of the same option.
 To achieve the same functionality in Pastel, you can set `shortFlags` property and define short equivalents of option names:
 
 ```jsx
@@ -422,10 +421,10 @@ First argument is "Jane" and second is "Hopper"
 #### Positional arguments
 
 If you check out the example from the section above, you'll see that accessing arguments via index in `inputArgs` may not be convenient.
-`inputArgs` works great for cases where you can't predict the amount of arguments.
-But if you do know that user can pass 2 arguments, for example, then you can take advantage of positional arguments.
+`inputArgs` works great for cases where you can't predict the number of arguments.
+But if you do know that the user can pass 2 arguments, for example, then you can take advantage of positional arguments.
 Positional arguments are specified the same way as regular arguments, only each of them can be assigned to a different prop.
-So if you take a look at the example above, we know that first argument is the first name and second argument is last name.
+So if you take a look at the example above, we know that the first argument is the first name and the second argument is last name.
 Here's how to define that in Pastel:
 
 ```jsx
@@ -456,7 +455,7 @@ $ my-cli Jane Hopper
 First argument is "Jane" and second is "Hopper"
 ```
 
-The order of the fields in `positionalArgs` will be respected. Optional arguments need to appear after required ones.
+The order of the fields in `positionalArgs` will be respected. Optional arguments need to appear after the required ones.
 If you want to collect an arbitrary amount of arguments you can define a variadic argument by giving it the array type.
 Variadic arguments need to always be last and will capture all the remaining arguments.
 
@@ -485,20 +484,6 @@ Downloading 2 urls
 
 Positional arguments also support aliases, but only one per argument. The rest will be ignored.
 
-### TypeScript
-
-Pastel supports TypeScript by simply renaming a command file and giving it the `.tsx` extension. A `tsconfig.json` will be generated for you.
-
-If you want to define your own, make sure it contains the following:
-
-```json
-{
-	"compilerOptions": {
-		"jsx": "react"
-	}
-}
-```
-
 ### Conventions
 
 #### Naming
@@ -526,7 +511,7 @@ $ list-members --project-id=abc
 
 #### Descriptions
 
-Pastel also offers a zero-API way of adding description to your commands and options.
+Pastel also offers a zero-API way of adding descriptions to your commands and options.
 Simply add a comment that starts with 3 slashes (`///`) above the command or option you want to describe and Pastel will automatically parse it.
 For example, here's how to add a description to your command:
 
@@ -612,7 +597,7 @@ Another important part is including `build` folder in the npm package by adding 
 }
 ```
 
-And last but not least, `bin` field.
+And last but not least, the `bin` field.
 This is the field which tells npm that your package contains a CLI and to ensure Pastel is working correctly, you must set it to `./build/cli.js`:
 
 ```json
