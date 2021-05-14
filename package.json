@@ -63,6 +63,6 @@
 	"peerDependencies": {
 		"ink": "^2.1.1",
 		"prop-types": "^15.7.2",
-		"react": "^16.8.6"
+		"react": "^16.8.6 || ^17"
 	}
 }
