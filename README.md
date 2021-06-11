@@ -317,7 +317,7 @@ Hello, Katy
 
 #### Short flags
 
-Options can often beset with a shorter version of their name, using short flags.
+Options can often be set with a shorter version of their name, using short flags.
 The most popular example is the `--force` option. Most CLIs also accept `-f` as a shorter version of the same option.
 To achieve the same functionality in Pastel, you can set `shortFlags` property and define short equivalents of option names:
 
@@ -472,7 +472,7 @@ DownloadCommand.propTypes = {
 	urls: PropTypes.array,
 };
 
-DownloadCommand.positionalArgs = ["urls"];
+DownloadCommand. = ["urls"];
 
 export default DownloadCommand;
 ```
