@@ -29,10 +29,10 @@ class Pastel extends EventEmitter {
 
 	detectCommandsPath() {
 		const paths = [
-			path.join(this.appPath, "src" ,'commands'),
-			path.join(this.appPath ,'commands')
-		]
-		
+			path.join(this.appPath, 'src', 'commands'),
+			path.join(this.appPath, 'commands')
+		];
+
 		return paths.find(path => fs.existsSync(path));
 	}
 

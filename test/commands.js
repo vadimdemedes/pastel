@@ -18,7 +18,7 @@ const build = async fixture => {
 
 const cli = async (fixture, args = [], {returnStderr} = {}) => {
 	const {stdout, stderr} = await execa('node', [path.join(__dirname, 'fixtures', 'commands', fixture, 'build', 'cli'), ...args], {
-		cwd: path.join(__dirname, 'fixtures', 'commands', fixture),
+		cwd: path.join(__dirname, 'fixtures', 'commands', fixture)
 	});
 
 	return returnStderr ? stderr : stdout;

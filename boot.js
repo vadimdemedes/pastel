@@ -123,7 +123,7 @@ module.exports = (dirname, React, Ink, originalCommands) => {
 	);
 
 	// NOTE: force English language
-	yargs.locale("en");
-		
+	yargs.locale('en');
+
 	yargs.parse();
 };
