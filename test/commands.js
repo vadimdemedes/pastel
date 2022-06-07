@@ -18,7 +18,7 @@ const build = async fixture => {
 
 const cli = async (fixture, args = [], {returnStderr} = {}) => {
 	const {stdout, stderr} = await execa('node', [path.join(__dirname, 'fixtures', 'commands', fixture, 'build', 'cli'), ...args], {
-		cwd: path.join(__dirname, 'fixtures', 'commands', fixture)
+		cwd: path.join(__dirname, 'fixtures', 'commands', fixture),
 	});
 
 	return returnStderr ? stderr : stdout;
@@ -189,6 +189,13 @@ test('positional args', async t => {
 test('typescript', async t => {
 	await build('typescript');
 	const output = await cli('typescript');
+
+	t.is(output, 'Hello world');
+});
+
+test('command in src dir', async t => {
+	await build('command-in-src-dir');
+	const output = await cli('command-in-src-dir');
 
 	t.is(output, 'Hello world');
 });

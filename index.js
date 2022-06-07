@@ -19,12 +19,21 @@ class Pastel extends EventEmitter {
 		super();
 
 		this.appPath = appPath;
-		this.commandsPath = path.join(appPath, 'commands');
+		this.commandsPath = this.detectCommandsPath();
 		this.buildPath = path.join(appPath, 'build');
 		this.cachePath = path.join(appPath, 'node_modules', '.cache', 'parcel');
 		this.tsConfigPath = path.join(appPath, 'tsconfig.json');
 
 		this.testMode = testMode;
+	}
+
+	detectCommandsPath() {
+		const paths = [
+			path.join(this.appPath, "src" ,'commands'),
+			path.join(this.appPath ,'commands')
+		]
+		
+		return paths.find(path => fs.existsSync(path));
 	}
 
 	checkOrCreateTsConfig() {

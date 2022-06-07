@@ -50,7 +50,11 @@ $ npm install pastel ink react prop-types
 Then create a `commands` folder:
 
 ```bash
+# if we need commands in root directory
 $ mkdir commands
+
+# or if we want commands in src directoyr
+$ mkdir -p src/commands
 ```
 
 Then you can start creating commands in that folder. Let's create a main command, which has to be named `index.js` at `commands/index.js`:

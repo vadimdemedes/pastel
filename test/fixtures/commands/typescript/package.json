@@ -2,6 +2,6 @@
 	"name": "test-bin",
 	"bin": "./build/cli",
 	"devDependencies": {
-		"typescript": "^3.9.7"
+		"typescript": "^4.7.3"
 	}
 }

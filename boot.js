@@ -122,5 +122,8 @@ module.exports = (dirname, React, Ink, originalCommands) => {
 		() => yargs.showHelp()
 	);
 
+	// NOTE: force English language
+	yargs.locale("en");
+		
 	yargs.parse();
 };
