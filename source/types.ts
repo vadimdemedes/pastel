@@ -14,7 +14,8 @@ import type {
 
 export type Command = {
 	name: string;
-	description: string;
+	description?: string;
+	isDefault: boolean;
 	options?: ZodObject<
 		Record<
 			string,

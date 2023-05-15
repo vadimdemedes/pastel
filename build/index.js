@@ -1,8 +1,10 @@
 import { fileURLToPath } from 'node:url';
 import process from 'node:process';
-import yargs from 'yargs';
-import generateCommands from './generate-commands.js';
+import { Command } from 'commander';
+import { readPackageUp } from 'read-pkg-up';
+import generateCommand from './generate-command.js';
 import readCommands from './read-commands.js';
+import generateCommands from './generate-commands.js';
 export default class Pastel {
     constructor(options) {
         Object.defineProperty(this, "options", {
@@ -13,15 +15,31 @@ export default class Pastel {
         });
         this.options = options;
     }
-    async run(argv = process.argv.slice(2)) {
+    async run(argv = process.argv) {
         const commandsDirectory = fileURLToPath(new URL('commands', this.options.importMeta.url));
         const commands = await readCommands(commandsDirectory);
-        const y = yargs(argv);
-        await generateCommands(y, commands);
-        if (this.options.name) {
-            y.scriptName(this.options.name);
+        const program = new Command();
+        const indexCommand = commands.get('index');
+        if (indexCommand) {
+            generateCommand(program, indexCommand);
+            commands.delete('index');
         }
-        await y.help().parseAsync();
+        generateCommands(program, commands);
+        if (this.options.name) {
+            program.name(this.options.name);
+        }
+        const pkg = await readPackageUp();
+        const version = this.options.version ?? pkg?.packageJson.version;
+        if (version) {
+            program.version(version, '-v, --version', 'Show version number');
+        }
+        const description = indexCommand?.description ??
+            this.options.description ??
+            pkg?.packageJson.description ??
+            '';
+        program.description(description);
+        program.helpOption('-h, --help', 'Show help');
+        program.parse(argv);
     }
 }
 //# sourceMappingURL=index.js.map

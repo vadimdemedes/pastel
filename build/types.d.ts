@@ -2,7 +2,8 @@ import type { ComponentType } from 'react';
 import type { ZodObject, ZodOptional, ZodDefault, ZodTuple, ZodArray, ZodSet, ZodString, ZodNumber, ZodEnum, ZodBoolean } from 'zod';
 export type Command = {
     name: string;
-    description: string;
+    description?: string;
+    isDefault: boolean;
     options?: ZodObject<Record<string, CommandOption | ZodOptional<CommandOption> | ZodDefault<CommandOption>>>;
     positionalArguments?: ZodTuple<[
         CommandPositionalArgument | ZodOptional<CommandPositionalArgument>

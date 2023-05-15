@@ -8,14 +8,19 @@ const readCommands = async (directory) => {
         const stat = await fs.stat(filePath);
         if (stat.isDirectory()) {
             const subCommands = await readCommands(filePath);
-            const command = {
+            const indexCommand = subCommands.get('index');
+            if (indexCommand) {
+                indexCommand.name = file;
+                indexCommand.commands = subCommands;
+                subCommands.delete('index');
+                commands.set(file, indexCommand);
+                continue;
+            }
+            const command = indexCommand ?? {
                 name: file,
-                description: subCommands.get('index')?.description ?? '',
+                isDefault: false,
                 commands: subCommands,
             };
-            for (const [_name, subCommand] of subCommands) {
-                subCommand.parentCommand = command;
-            }
             commands.set(file, command);
             continue;
         }
@@ -26,7 +31,8 @@ const readCommands = async (directory) => {
         const name = file.replace(/\.(js|ts)x?$/, '');
         commands.set(name, {
             name,
-            description: m.description ?? '',
+            description: m.description,
+            isDefault: m.isDefault ?? false,
             options: m.options,
             positionalArguments: m.positionalArguments,
             component: m.default,

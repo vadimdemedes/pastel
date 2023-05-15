@@ -1,4 +1,4 @@
-import type { Argv } from 'yargs';
+import { Command as CommanderCommand } from 'commander';
 import type { Command } from './types.js';
-declare const generateCommands: (y: Argv, commands: Map<string, Command>) => Argv;
+declare const generateCommands: (parentCommanderCommand: CommanderCommand, pastelCommands: Map<string, Command>) => void;
 export default generateCommands;

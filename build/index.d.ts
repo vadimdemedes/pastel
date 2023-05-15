@@ -4,6 +4,14 @@ export interface Options {
      */
     name?: string;
     /**
+     * Version. Defaults to version found in the nearest package.json.
+     */
+    version?: string;
+    /**
+     * Description. Defaults to description found in the nearest package.json.
+     */
+    description?: string;
+    /**
      * Pass in [`import.meta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta). This is used to find the `commands` directory.
      */
     importMeta: ImportMeta;
