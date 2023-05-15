@@ -46,7 +46,7 @@ const readCommands = async (
 			description: m.description,
 			isDefault: m.isDefault ?? false,
 			options: m.options,
-			positionalArguments: m.positionalArguments,
+			args: m.args,
 			component: m.default,
 		});
 	}

@@ -86,12 +86,8 @@ const generateCommand = (
 		}
 	}
 
-	if (
-		pastelCommand.positionalArguments &&
-		pastelCommand.positionalArguments._def.typeName === 'ZodTuple'
-	) {
-		for (const wrappedPositionalArgument of pastelCommand.positionalArguments
-			._def.items) {
+	if (pastelCommand.args && pastelCommand.args._def.typeName === 'ZodTuple') {
+		for (const wrappedPositionalArgument of pastelCommand.args._def.items) {
 			const {schema: positionalArgument} = unwrapZodSchema(
 				wrappedPositionalArgument,
 			);
@@ -139,13 +135,13 @@ const generateCommand = (
 				}
 			}
 
-			let positionalArguments: Array<string | number | undefined> = [];
+			let args: Array<string | number | undefined> = [];
 
-			if (pastelCommand.positionalArguments) {
-				const result = pastelCommand.positionalArguments.safeParse(input);
+			if (pastelCommand.args) {
+				const result = pastelCommand.args.safeParse(input);
 
 				if (result.success) {
-					positionalArguments = result.data;
+					args = result.data;
 				} else {
 					render(
 						<StatusMessage variant="error">
@@ -166,7 +162,7 @@ const generateCommand = (
 			render(
 				React.createElement<any>(component, {
 					options: parsedOptions,
-					positionalArguments,
+					args,
 				}),
 			);
 		});

@@ -22,7 +22,7 @@ export type Command = {
 			CommandOption | ZodOptional<CommandOption> | ZodDefault<CommandOption>
 		>
 	>;
-	positionalArguments?: ZodTuple<
+	args?: ZodTuple<
 		[CommandPositionalArgument | ZodOptional<CommandPositionalArgument>]
 	>;
 	component?: ComponentType;
