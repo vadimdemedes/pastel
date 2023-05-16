@@ -3,8 +3,8 @@ import {Text} from 'ink';
 import {z} from 'zod';
 
 export const args = z.tuple([
-	z.string().describe('name').optional(),
-	z.string().describe('size').default('xl'),
+	z.string().describe('name'),
+	z.string().describe('surname'),
 ]);
 
 type Props = {

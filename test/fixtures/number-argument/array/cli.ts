@@ -1,4 +1,4 @@
-import Pastel from '../../../source/index.js';
+import Pastel from '../../../../source/index.js';
 
 const app = new Pastel({
 	name: 'test',

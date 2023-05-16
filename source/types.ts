@@ -22,9 +22,7 @@ export type Command = {
 			CommandOption | ZodOptional<CommandOption> | ZodDefault<CommandOption>
 		>
 	>;
-	args?: ZodTuple<
-		[CommandPositionalArgument | ZodOptional<CommandPositionalArgument>]
-	>;
+	args?: CommandArguments;
 	component?: ComponentType;
 	commands?: Map<string, Command>;
 	parentCommand?: Command;
@@ -40,6 +38,16 @@ export type NestedCommandOption =
 	| ZodNumber
 	| ZodEnum<[string]>
 	| ZodBoolean;
+
+export type CommandArguments = CommandArgumentsTuple | CommandArgumentsArray;
+
+export type CommandArgumentsTuple = ZodTuple<
+	[CommandPositionalArgument | ZodOptional<CommandPositionalArgument>]
+>;
+
+export type CommandArgumentsArray = ZodArray<
+	CommandPositionalArgument | ZodOptional<CommandPositionalArgument>
+>;
 
 export type CommandPositionalArgument =
 	| ZodString

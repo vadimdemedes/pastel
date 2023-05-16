@@ -1,11 +1,19 @@
 import {isDeepStrictEqual} from 'node:util';
 import {Argument, Command as CommanderCommand, Option} from 'commander';
-import type {Command} from './types.js';
+import {Command} from './types.js';
 import {render} from 'ink';
 import React from 'react';
 import unwrapZodSchema from './unwrap-zod-schema.js';
 import {StatusMessage} from '@inkjs/ui';
 import {fromZodError} from 'zod-validation-error';
+import {ZodEnum, ZodFirstPartyTypeKind, ZodNumber, ZodString} from 'zod';
+import flatten from 'just-flatten-it';
+import {
+	getDefaultValue,
+	isArrayArguments,
+	isTupleArguments,
+	unwrap,
+} from './zod-utils.js';
 
 const generateCommand = (
 	commanderCommand: CommanderCommand,
@@ -86,20 +94,95 @@ const generateCommand = (
 		}
 	}
 
-	if (pastelCommand.args && pastelCommand.args._def.typeName === 'ZodTuple') {
-		for (const wrappedPositionalArgument of pastelCommand.args._def.items) {
-			const {schema: positionalArgument} = unwrapZodSchema(
-				wrappedPositionalArgument,
-			);
+	let hasVariadicArgument = false;
 
-			if (positionalArgument._def.typeName === 'ZodString') {
-				const name = positionalArgument.description ?? 'arg';
-				const argument = new Argument(
-					wrappedPositionalArgument.isOptional() ? `[${name}]` : `<${name}>`,
-				);
+	if (pastelCommand.args) {
+		const argSchema = unwrap(pastelCommand.args);
+
+		if (isTupleArguments(argSchema)) {
+			for (const wrappedArgument of argSchema._def.items) {
+				const {schema: positionalArgument} = unwrapZodSchema(wrappedArgument);
+
+				if (positionalArgument._def.typeName === 'ZodString') {
+					const name = wrappedArgument.description ?? 'arg';
+
+					const argument = new Argument(
+						wrappedArgument.isOptional() ? `[${name}]` : `<${name}>`,
+					);
+
+					commanderCommand.addArgument(argument);
+				}
+
+				if (positionalArgument._def.typeName === 'ZodNumber') {
+					const name = wrappedArgument.description ?? 'arg';
+
+					const argument = new Argument(
+						wrappedArgument.isOptional() ? `[${name}]` : `<${name}>`,
+					);
+
+					argument.argParser(value => Number.parseFloat(value));
+
+					commanderCommand.addArgument(argument);
+				}
+			}
+
+			const rest = argSchema._def.rest as unknown as
+				| ZodString
+				| ZodNumber
+				| ZodEnum<[string]>;
+
+			if (rest) {
+				hasVariadicArgument = true;
+			}
+
+			if (rest?._def.typeName === 'ZodString') {
+				const name = rest.description ?? 'arg';
+				const argument = new Argument(`[${name}...]`);
 
 				commanderCommand.addArgument(argument);
 			}
+
+			if (rest?._def.typeName === 'ZodNumber') {
+				const name = rest.description ?? 'arg';
+				const argument = new Argument(`[${name}...]`);
+
+				argument.argParser<number[]>((value, previousValue) => {
+					return [...(previousValue ?? []), Number.parseFloat(value)];
+				});
+
+				commanderCommand.addArgument(argument);
+			}
+		}
+
+		if (isArrayArguments(argSchema)) {
+			hasVariadicArgument = true;
+
+			const name = pastelCommand.args.description ?? 'arg';
+
+			const argument = new Argument(
+				pastelCommand.args.isOptional() ? `[${name}...]` : `<${name}...>`,
+			);
+
+			const defaultValue = getDefaultValue(pastelCommand.args);
+
+			if (defaultValue) {
+				argument.default(defaultValue);
+			}
+
+			if (argSchema.element._def.typeName === ZodFirstPartyTypeKind.ZodNumber) {
+				argument.argParser<number[]>((value, previousValue) => {
+					const joinPreviousValue = !isDeepStrictEqual(
+						previousValue,
+						defaultValue,
+					);
+
+					return joinPreviousValue
+						? [...(previousValue ?? []), Number.parseFloat(value)]
+						: [Number.parseFloat(value)];
+				});
+			}
+
+			commanderCommand.addArgument(argument);
 		}
 	}
 
@@ -138,7 +221,9 @@ const generateCommand = (
 			let args: Array<string | number | undefined> = [];
 
 			if (pastelCommand.args) {
-				const result = pastelCommand.args.safeParse(input);
+				const result = pastelCommand.args.safeParse(
+					hasVariadicArgument ? flatten(input) : input,
+				);
 
 				if (result.success) {
 					args = result.data;
