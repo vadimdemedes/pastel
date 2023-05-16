@@ -400,3 +400,204 @@ test('number array argument with default value', async t => {
 		].join('\n'),
 	);
 });
+
+test('enum argument', async t => {
+	const fixture = 'enum-argument/required';
+
+	const valid = await run(fixture, ['Ubuntu', 'Debian']);
+	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /error: missing required argument 'first'/,
+	});
+
+	await t.throwsAsync(() => run(fixture, ['Ubuntu']), {
+		message: /error: missing required argument 'second'/,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] <first> <second>',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
+test('optional enum argument', async t => {
+	const fixture = 'enum-argument/optional';
+
+	const empty = await run(fixture);
+	t.is(empty.stdout, 'Arguments = ,');
+
+	const onlyOne = await run(fixture, ['Ubuntu']);
+	t.is(onlyOne.stdout, 'Arguments = Ubuntu,');
+
+	const both = await run(fixture, ['Ubuntu', 'Debian']);
+	t.is(both.stdout, 'Arguments = Ubuntu, Debian');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] [first] [second]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
+test('enum argument with default value', async t => {
+	const fixture = 'enum-argument/default-value';
+
+	const empty = await run(fixture);
+	t.is(empty.stdout, 'Arguments = , Debian');
+
+	const onlyOne = await run(fixture, ['Ubuntu']);
+	t.is(onlyOne.stdout, 'Arguments = Ubuntu, Debian');
+
+	const both = await run(fixture, ['Ubuntu', 'Debian']);
+	t.is(both.stdout, 'Arguments = Ubuntu, Debian');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] [first] [second]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
+test('variadic enum argument', async t => {
+	const fixture = 'enum-argument/variadic';
+
+	const withoutVariadic = await run(fixture, ['Ubuntu', 'Debian']);
+	t.is(withoutVariadic.stdout, 'Arguments = Ubuntu, Debian');
+
+	const withVariadic = await run(fixture, [
+		'Ubuntu',
+		'Debian',
+		'macOS',
+		'Windows',
+	]);
+
+	t.is(withVariadic.stdout, 'Arguments = Ubuntu, Debian, macOS, Windows');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /error: missing required argument 'first'/,
+	});
+
+	await t.throwsAsync(() => run(fixture, ['Ubuntu']), {
+		message: /error: missing required argument 'second'/,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] <first> <second> [rest...]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
+test('enum array argument', async t => {
+	const fixture = 'enum-argument/array';
+
+	const valid = await run(fixture, ['Ubuntu', 'Debian']);
+	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /error: missing required argument 'os'/,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] <os...>',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
+test('optional enum array argument', async t => {
+	const fixture = 'enum-argument/optional-array';
+
+	const empty = await run(fixture);
+	t.is(empty.stdout, 'Arguments =');
+
+	const valid = await run(fixture, ['Ubuntu', 'Debian']);
+	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] [os...]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
+test('enum array argument with default value', async t => {
+	const fixture = 'enum-argument/array-default-value';
+
+	const empty = await run(fixture);
+	t.is(empty.stdout, 'Arguments = macOS, Windows');
+
+	const valid = await run(fixture, ['Ubuntu', 'Debian']);
+	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] [os...]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});

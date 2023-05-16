@@ -124,6 +124,18 @@ const generateCommand = (
 
 					commanderCommand.addArgument(argument);
 				}
+
+				if (positionalArgument._def.typeName === 'ZodEnum') {
+					const name = wrappedArgument.description ?? 'arg';
+
+					const argument = new Argument(
+						wrappedArgument.isOptional() ? `[${name}]` : `<${name}>`,
+					);
+
+					argument.choices(positionalArgument._def.values);
+
+					commanderCommand.addArgument(argument);
+				}
 			}
 
 			const rest = argSchema._def.rest as unknown as
@@ -149,6 +161,15 @@ const generateCommand = (
 				argument.argParser<number[]>((value, previousValue) => {
 					return [...(previousValue ?? []), Number.parseFloat(value)];
 				});
+
+				commanderCommand.addArgument(argument);
+			}
+
+			if (rest?._def.typeName === 'ZodEnum') {
+				const name = rest.description ?? 'arg';
+				const argument = new Argument(`[${name}...]`);
+
+				argument.choices(rest._def.values);
 
 				commanderCommand.addArgument(argument);
 			}

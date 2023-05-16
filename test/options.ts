@@ -2,7 +2,7 @@ import test from 'ava';
 import run from './helpers/run';
 
 test('string option', async t => {
-	const fixture = 'string-option';
+	const fixture = 'string-option/required';
 
 	const valid = await run(fixture, ['--name', 'Jane']);
 	t.is(valid.stdout, 'Name = Jane');
@@ -33,7 +33,7 @@ test('string option', async t => {
 });
 
 test('optional string option', async t => {
-	const fixture = 'optional-string-option';
+	const fixture = 'string-option/optional';
 
 	const valid = await run(fixture, ['--name', 'Jane']);
 	t.is(valid.stdout, 'Name = Jane');
@@ -63,7 +63,7 @@ test('optional string option', async t => {
 });
 
 test('string option with default value', async t => {
-	const fixture = 'string-option-with-default-value';
+	const fixture = 'string-option/default-value';
 
 	const valid = await run(fixture, ['--name', 'Jane']);
 	t.is(valid.stdout, 'Name = Jane');
@@ -93,7 +93,7 @@ test('string option with default value', async t => {
 });
 
 test('number option', async t => {
-	const fixture = 'number-option';
+	const fixture = 'number-option/required';
 
 	const valid = await run(fixture, ['--size', '512']);
 	t.is(valid.stdout, 'Size = 512');
@@ -124,7 +124,7 @@ test('number option', async t => {
 });
 
 test('optional number option', async t => {
-	const fixture = 'optional-number-option';
+	const fixture = 'number-option/optional';
 
 	const valid = await run(fixture, ['--size', '512']);
 	t.is(valid.stdout, 'Size = 512');
@@ -154,7 +154,7 @@ test('optional number option', async t => {
 });
 
 test('number option with default value', async t => {
-	const fixture = 'number-option-with-default-value';
+	const fixture = 'number-option/default-value';
 
 	const valid = await run(fixture, ['--size', '512']);
 	t.is(valid.stdout, 'Size = 512');
@@ -184,7 +184,7 @@ test('number option with default value', async t => {
 });
 
 test('boolean option', async t => {
-	const fixture = 'boolean-option';
+	const fixture = 'boolean-option/required';
 
 	const enabled = await run(fixture, ['--force']);
 	t.is(enabled.stdout, 'Force = true');
@@ -210,7 +210,7 @@ test('boolean option', async t => {
 });
 
 test('boolean option with default value', async t => {
-	const fixture = 'boolean-option-with-default-value';
+	const fixture = 'boolean-option/default-value';
 
 	const initial = await run(fixture);
 	t.is(initial.stdout, 'Force = true');
@@ -239,7 +239,7 @@ test('boolean option with default value', async t => {
 });
 
 test('enum option', async t => {
-	const fixture = 'enum-option';
+	const fixture = 'enum-option/required';
 
 	const ubuntu = await run(fixture, ['--os', 'Ubuntu']);
 	t.is(ubuntu.stdout, 'OS = Ubuntu');
@@ -274,7 +274,7 @@ test('enum option', async t => {
 });
 
 test('optional enum option', async t => {
-	const fixture = 'optional-enum-option';
+	const fixture = 'enum-option/optional';
 
 	const initial = await run(fixture);
 	t.is(initial.stdout, 'OS = empty');
@@ -308,7 +308,7 @@ test('optional enum option', async t => {
 });
 
 test('enum option with default value', async t => {
-	const fixture = 'enum-option-with-default-value';
+	const fixture = 'enum-option/default-value';
 
 	const initial = await run(fixture);
 	t.is(initial.stdout, 'OS = Ubuntu');
@@ -343,7 +343,7 @@ test('enum option with default value', async t => {
 });
 
 test('array option', async t => {
-	const fixture = 'array-option';
+	const fixture = 'array-option/required';
 
 	const one = await run(fixture, ['--tag', 'X']);
 	t.is(one.stdout, 'Tags = X');
@@ -376,7 +376,7 @@ test('array option', async t => {
 });
 
 test('optional array option', async t => {
-	const fixture = 'optional-array-option';
+	const fixture = 'array-option/optional';
 
 	const initial = await run(fixture);
 	t.is(initial.stdout, 'Tags =');
@@ -408,7 +408,7 @@ test('optional array option', async t => {
 });
 
 test('array option with default value', async t => {
-	const fixture = 'array-option-with-default-value';
+	const fixture = 'array-option/default-value';
 
 	const initial = await run(fixture);
 	t.is(initial.stdout, 'Tags = A, B');
@@ -440,7 +440,7 @@ test('array option with default value', async t => {
 });
 
 test('set option', async t => {
-	const fixture = 'set-option';
+	const fixture = 'set-option/required';
 
 	const one = await run(fixture, ['--tag', 'X']);
 	t.is(one.stdout, 'Tags = X');
@@ -473,7 +473,7 @@ test('set option', async t => {
 });
 
 test('optional set option', async t => {
-	const fixture = 'optional-set-option';
+	const fixture = 'set-option/optional';
 
 	const initial = await run(fixture);
 	t.is(initial.stdout, 'Tags =');
@@ -505,7 +505,7 @@ test('optional set option', async t => {
 });
 
 test('set option with default value', async t => {
-	const fixture = 'set-option-with-default-value';
+	const fixture = 'set-option/default-value';
 
 	const initial = await run(fixture);
 	t.is(initial.stdout, 'Tags = A, B');
