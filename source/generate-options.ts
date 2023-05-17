@@ -1,7 +1,7 @@
 import {isDeepStrictEqual} from 'node:util';
 import {Option} from 'commander';
 import decamelize from 'decamelize';
-import {CommandOptions} from './types.js';
+import {CommandOptions} from './internal-types.js';
 import {
 	ZodArray,
 	ZodBoolean,

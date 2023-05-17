@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {Command} from './types.js';
+import {Command} from './internal-types.js';
 import decamelize from 'decamelize';
 
 const readCommands = async (
@@ -10,6 +10,10 @@ const readCommands = async (
 	const files = await fs.readdir(directory);
 
 	for (const file of files) {
+		if (file.startsWith('_app')) {
+			continue;
+		}
+
 		const filePath = path.join(directory, file);
 		const stat = await fs.stat(filePath);
 

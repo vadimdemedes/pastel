@@ -440,3 +440,129 @@ test('snake case command name', async t => {
 		].join('\n'),
 	);
 });
+
+test('single command with custom app', async t => {
+	const fixture = 'single-command-custom-app';
+
+	const deploy = await run(fixture, ['--name', 'test']);
+	t.is(deploy.stdout, '\n\n  Deploy test\n\n');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] [command]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  -v, --version     Show version number',
+			'  -h, --help        Show help',
+			'',
+			'Commands:',
+			'  deploy [options]  Deploy command',
+			'  help [command]    Show help for command',
+		].join('\n'),
+	);
+});
+
+test('nested commands with custom app', async t => {
+	const fixture = 'nested-commands-custom-app';
+
+	const index = await run(fixture);
+	t.is(index.stdout, '\n\n  Deploy\n\n');
+
+	const indexHelp = await run(fixture, ['--help']);
+
+	t.is(
+		indexHelp.stdout,
+		[
+			'Usage: test [options] [command]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  -v, --version   Show version number',
+			'  -h, --help      Show help',
+			'',
+			'Commands:',
+			'  auth            Auth command',
+			'  deploy          Deploy command',
+			'  servers         Manage servers',
+			'  help [command]  Show help for command',
+		].join('\n'),
+	);
+
+	const auth = await run(fixture, ['auth']);
+	t.is(auth.stdout, '\n\n  Auth\n\n');
+
+	const authHelp = await run(fixture, ['auth', '--help']);
+
+	t.is(
+		authHelp.stdout,
+		[
+			'Usage: test auth [options]',
+			'',
+			'Auth command',
+			'',
+			'Options:',
+			'  -h, --help  Show help',
+		].join('\n'),
+	);
+
+	const servers = await run(fixture, ['servers'], {
+		reject: false,
+	});
+
+	t.is(
+		servers.stderr,
+		[
+			'Usage: test servers [options] [command]',
+			'',
+			'Manage servers',
+			'',
+			'Options:',
+			'  -h, --help      Show help',
+			'',
+			'Commands:',
+			'  create          Create server',
+			'  list            List servers',
+			'  help [command]  Show help for command',
+		].join('\n'),
+	);
+
+	const createServer = await run(fixture, ['servers', 'create']);
+	t.is(createServer.stdout, '\n\n  Create server\n\n');
+
+	const createServerHelp = await run(fixture, ['servers', 'create', '--help']);
+
+	t.is(
+		createServerHelp.stdout,
+		[
+			'Usage: test servers create [options]',
+			'',
+			'Create server',
+			'',
+			'Options:',
+			'  -h, --help  Show help',
+		].join('\n'),
+	);
+
+	const listServers = await run(fixture, ['servers', 'list']);
+	t.is(listServers.stdout, '\n\n  List servers\n\n');
+
+	const listServersHelp = await run(fixture, ['servers', 'list', '--help']);
+
+	t.is(
+		listServersHelp.stdout,
+		[
+			'Usage: test servers list [options]',
+			'',
+			'List servers',
+			'',
+			'Options:',
+			'  -h, --help  Show help',
+		].join('\n'),
+	);
+});

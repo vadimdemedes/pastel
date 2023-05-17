@@ -584,3 +584,26 @@ test('snake case option name', async t => {
 		].join('\n'),
 	);
 });
+
+test('global options', async t => {
+	const fixture = 'global-options';
+
+	const valid = await run(fixture, ['--project', 'Hello', '--name', 'World']);
+	t.is(valid.stdout, 'Name = Jane');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  --first-name <value>  Name',
+			`  -v, --version         Show version number`,
+			`  -h, --help            Show help`,
+		].join('\n'),
+	);
+});

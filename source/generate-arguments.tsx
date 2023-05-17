@@ -1,6 +1,6 @@
 import {isDeepStrictEqual} from 'node:util';
 import {Argument} from 'commander';
-import {CommandArguments} from './types.js';
+import {CommandArguments} from './internal-types.js';
 import {
 	ZodArray,
 	ZodDefault,

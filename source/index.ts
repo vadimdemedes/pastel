@@ -5,6 +5,8 @@ import {readPackageUp} from 'read-pkg-up';
 import generateCommand from './generate-command.js';
 import readCommands from './read-commands.js';
 import generateCommands from './generate-commands.js';
+import App from './App.js';
+import readCustomApp from './read-custom-app.js';
 
 export interface Options {
 	/**
@@ -40,16 +42,18 @@ export default class Pastel {
 			new URL('commands', this.options.importMeta.url),
 		);
 
-		const commands = await readCommands(commandsDirectory);
+		const AppComponent = (await readCustomApp(commandsDirectory)) ?? App;
 		const program = new Command();
+
+		const commands = await readCommands(commandsDirectory);
 		const indexCommand = commands.get('index');
 
 		if (indexCommand) {
-			generateCommand(program, indexCommand);
+			generateCommand(program, indexCommand, {AppComponent});
 			commands.delete('index');
 		}
 
-		generateCommands(program, commands);
+		generateCommands(program, commands, {AppComponent});
 
 		if (this.options.name) {
 			program.name(this.options.name);
@@ -74,3 +78,5 @@ export default class Pastel {
 		program.parse(argv);
 	}
 }
+
+export * from './types.js';

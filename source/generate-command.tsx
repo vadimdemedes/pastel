@@ -1,16 +1,18 @@
 import {Command as CommanderCommand} from 'commander';
-import {Command} from './types.js';
+import {Command} from './internal-types.js';
 import {render} from 'ink';
-import React from 'react';
+import React, {ComponentType} from 'react';
 import {StatusMessage} from '@inkjs/ui';
 import {fromZodError} from 'zod-validation-error';
 import flatten from 'just-flatten-it';
 import generateOptions from './generate-options.js';
 import generateArguments from './generate-arguments.js';
+import {AppProps} from './types.js';
 
 const generateCommand = (
 	commanderCommand: CommanderCommand,
 	pastelCommand: Command,
+	{AppComponent}: {AppComponent: ComponentType<AppProps>},
 ) => {
 	commanderCommand.helpOption('-h, --help', 'Show help');
 
@@ -76,7 +78,7 @@ const generateCommand = (
 				}
 			}
 
-			let args: unknown = [];
+			let args: unknown[] = [];
 
 			if (pastelCommand.args) {
 				const result = pastelCommand.args.safeParse(
@@ -84,7 +86,7 @@ const generateCommand = (
 				);
 
 				if (result.success) {
-					args = result.data;
+					args = result.data ?? [];
 				} else {
 					render(
 						<StatusMessage variant="error">
@@ -103,9 +105,12 @@ const generateCommand = (
 			}
 
 			render(
-				React.createElement<any>(component, {
-					options: parsedOptions,
-					args,
+				React.createElement(AppComponent, {
+					Component: component,
+					commandProps: {
+						options: parsedOptions,
+						args,
+					},
 				}),
 			);
 		});
