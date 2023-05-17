@@ -1,7 +1,6 @@
 import {isDeepStrictEqual} from 'node:util';
 import {Option} from 'commander';
 import decamelize from 'decamelize';
-import {CommandOptions} from './internal-types.js';
 import {
 	ZodArray,
 	ZodBoolean,
@@ -11,14 +10,17 @@ import {
 	ZodOptional,
 	ZodSet,
 } from 'zod';
-import {CommandOptionConfig} from './types.js';
 import plur from 'plur';
+import {type CommandOptions} from './internal-types.js';
+import {type CommandOptionConfig} from './types.js';
 
 const getConfig = (
 	value: string | undefined,
 ): CommandOptionConfig | undefined => {
 	return value?.startsWith('__pastel_option_config__')
-		? JSON.parse(value.replace('__pastel_option_config__', ''))
+		? (JSON.parse(
+				value.replace('__pastel_option_config__', ''),
+		  ) as CommandOptionConfig)
 		: undefined;
 };
 
@@ -61,24 +63,24 @@ export default function generateOptions(
 			optionSchema.description,
 		);
 
-		let description = getDescription(optionSchema.description);
+		const description = getDescription(optionSchema.description);
 		let valueDescription = getValueDescription(optionSchema.description);
 		let isOptional = isOptionalByDefault;
 
-		// z.string().optional()
+		// Unwrap z.string().optional()
 		if (optionSchema instanceof ZodOptional) {
 			isOptional = true;
 			optionSchema = optionSchema._def.innerType;
 		}
 
-		// z.string().optional().default()
+		// Unwrap z.string().optional().default()
 		if (optionSchema instanceof ZodDefault) {
 			isOptional = true;
 			defaultValue = optionSchema._def.defaultValue();
 			optionSchema = optionSchema._def.innerType;
 		}
 
-		// z.string().default().optional()
+		// Unwrap z.string().default().optional()
 		if (optionSchema instanceof ZodOptional) {
 			isOptional = true;
 			optionSchema = optionSchema._def.innerType;

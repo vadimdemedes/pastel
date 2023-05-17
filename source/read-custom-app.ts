@@ -1,7 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {ComponentType} from 'react';
-import {AppProps} from './types.js';
+import {type ComponentType} from 'react';
+import {type AppProps} from './types.js';
+
+type AppExports = {
+	default: ComponentType<AppProps>;
+};
 
 export default async function readCustomApp(
 	directory: string,
@@ -15,7 +19,7 @@ export default async function readCustomApp(
 		}
 
 		const filePath = path.join(directory, file);
-		const m = await import(filePath);
+		const m = (await import(filePath)) as AppExports;
 
 		customApp = m.default;
 		break;

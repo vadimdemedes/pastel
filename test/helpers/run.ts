@@ -1,5 +1,5 @@
 import {fileURLToPath} from 'node:url';
-import {execaNode, ExecaChildProcess, Options} from 'execa';
+import {execaNode, type ExecaChildProcess, type Options} from 'execa';
 
 export default async function run(
 	fixture: string,

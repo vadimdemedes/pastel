@@ -12,7 +12,7 @@ import type {
 	ZodBoolean,
 	ZodTypeAny,
 } from 'zod';
-import {AppProps} from './types.js';
+import {type AppProps} from './types.js';
 
 export type Command = {
 	name: string;
@@ -24,6 +24,15 @@ export type Command = {
 	component?: ComponentType<AppProps['commandProps']>;
 	commands?: Map<string, Command>;
 	parentCommand?: Command;
+};
+
+export type CommandExports = {
+	description?: string;
+	isDefault?: boolean;
+	alias?: string;
+	options?: CommandOptions;
+	args?: CommandArguments;
+	default?: ComponentType<AppProps['commandProps']>;
 };
 
 export type CommandOptions = ZodMaybeOptional<
@@ -60,6 +69,7 @@ export type CommandArgumentsTuple = ZodTuple<
 		ZodMaybeOptionalOrDefault<CommandArgument>,
 		...Array<ZodMaybeOptionalOrDefault<CommandArgument>>,
 	],
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	CommandArgument | null
 >;
 

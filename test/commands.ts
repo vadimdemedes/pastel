@@ -1,5 +1,5 @@
 import test from 'ava';
-import run from './helpers/run';
+import run from './helpers/run.js';
 
 test('single command', async t => {
 	const fixture = 'single-command';

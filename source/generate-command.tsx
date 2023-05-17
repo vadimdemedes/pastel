@@ -1,18 +1,19 @@
-import {Command as CommanderCommand} from 'commander';
-import {Command} from './internal-types.js';
+import process from 'node:process';
+import {type Command as CommanderCommand} from 'commander';
 import {render} from 'ink';
-import React, {ComponentType} from 'react';
+import React, {type ComponentType} from 'react';
 import {StatusMessage} from '@inkjs/ui';
 import {fromZodError} from 'zod-validation-error';
 import flatten from 'just-flatten-it';
+import {type Command} from './internal-types.js';
 import generateOptions from './generate-options.js';
 import generateArguments from './generate-arguments.js';
-import {AppProps} from './types.js';
+import {type AppProps} from './types.js';
 
 const generateCommand = (
 	commanderCommand: CommanderCommand,
 	pastelCommand: Command,
-	{AppComponent}: {AppComponent: ComponentType<AppProps>},
+	{appComponent}: {appComponent: ComponentType<AppProps>},
 ) => {
 	commanderCommand.helpOption('-h, --help', 'Show help');
 
@@ -50,14 +51,14 @@ const generateCommand = (
 		}
 	}
 
-	const component = pastelCommand.component;
+	const {component} = pastelCommand;
 
 	if (component) {
 		commanderCommand.action((...input) => {
 			// Remove the last argument, which is an instance of Commander command
 			input.pop();
 
-			const options = input.pop();
+			const options = input.pop() as Record<string, unknown>;
 			let parsedOptions: Record<string, unknown> = {};
 
 			if (pastelCommand.options) {
@@ -78,6 +79,7 @@ const generateCommand = (
 						</StatusMessage>,
 					);
 
+					// eslint-disable-next-line unicorn/no-process-exit
 					process.exit(1);
 				}
 			}
@@ -104,12 +106,13 @@ const generateCommand = (
 						</StatusMessage>,
 					);
 
+					// eslint-disable-next-line unicorn/no-process-exit
 					process.exit(1);
 				}
 			}
 
 			render(
-				React.createElement(AppComponent, {
+				React.createElement(appComponent, {
 					Component: component,
 					commandProps: {
 						options: parsedOptions,

@@ -1,6 +1,5 @@
 import {isDeepStrictEqual} from 'node:util';
 import {Argument} from 'commander';
-import {CommandArguments} from './internal-types.js';
 import {
 	ZodArray,
 	ZodDefault,
@@ -10,13 +9,16 @@ import {
 	ZodTuple,
 } from 'zod';
 import decamelize from 'decamelize';
-import {CommandArgumentConfig} from './types.js';
+import {type CommandArguments} from './internal-types.js';
+import {type CommandArgumentConfig} from './types.js';
 
 const getConfig = (
 	value: string | undefined,
 ): CommandArgumentConfig | undefined => {
 	return value?.startsWith('__pastel_argument_config__')
-		? JSON.parse(value.replace('__pastel_argument_config__', ''))
+		? (JSON.parse(
+				value.replace('__pastel_argument_config__', ''),
+		  ) as CommandArgumentConfig)
 		: undefined;
 };
 
@@ -40,8 +42,8 @@ export default function generateArguments(
 	let isOptionalByDefault = false;
 	let arrayDefaultValue: unknown;
 	let arrayName = getName(argumentsSchema.description);
-	let arrayDescription = getDescription(argumentsSchema.description);
-	let arrayDefaultValueDescription = getDefaultValueDescription(
+	const arrayDescription = getDescription(argumentsSchema.description);
+	const arrayDefaultValueDescription = getDefaultValueDescription(
 		argumentsSchema.description,
 	);
 
@@ -70,11 +72,11 @@ export default function generateArguments(
 		for (let argumentSchema of argumentsSchema._def.items) {
 			let isOptional = isOptionalByDefault;
 			let defaultValue: unknown;
-			let defaultValueDescription = getDefaultValueDescription(
+			const defaultValueDescription = getDefaultValueDescription(
 				argumentSchema.description,
 			);
 			let name = getName(argumentSchema.description);
-			let description = getDescription(argumentSchema.description);
+			const description = getDescription(argumentSchema.description);
 
 			if (argumentSchema instanceof ZodOptional) {
 				isOptional = true;
@@ -95,9 +97,7 @@ export default function generateArguments(
 				name = getName(argumentSchema.description) ?? name;
 			}
 
-			if (name) {
-				name = decamelize(name, {separator: '-'});
-			}
+			name = decamelize(name ?? 'arg', {separator: '-'});
 
 			const argument = new Argument(
 				isOptional ? `[${name}]` : `<${name}>`,

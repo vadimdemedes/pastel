@@ -1,5 +1,5 @@
 import test from 'ava';
-import run from './helpers/run';
+import run from './helpers/run.js';
 
 test('string argument', async t => {
 	const fixture = 'string-argument/required';
@@ -7,11 +7,11 @@ test('string argument', async t => {
 	const valid = await run(fixture, ['Jane', 'Hopper']);
 	t.is(valid.stdout, 'Arguments = Jane, Hopper');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'name'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Jane']), {
+	await t.throwsAsync(async () => run(fixture, ['Jane']), {
 		message: /error: missing required argument 'surname'/,
 	});
 
@@ -134,11 +134,11 @@ test('variadic string argument', async t => {
 
 	t.is(withVariadic.stdout, 'Arguments = Jane, Hopper, Eleven, Hawkins');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'name'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Jane']), {
+	await t.throwsAsync(async () => run(fixture, ['Jane']), {
 		message: /error: missing required argument 'surname'/,
 	});
 
@@ -164,7 +164,7 @@ test('string array argument', async t => {
 	const valid = await run(fixture, ['Jane', 'Hopper']);
 	t.is(valid.stdout, 'Arguments = Jane, Hopper');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'traits'/,
 	});
 
@@ -190,7 +190,7 @@ test('string array argument with description', async t => {
 	const valid = await run(fixture, ['Jane', 'Hopper']);
 	t.is(valid.stdout, 'Arguments = Jane, Hopper');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'traits'/,
 	});
 
@@ -297,11 +297,11 @@ test('string argument with description', async t => {
 	const valid = await run(fixture, ['Jane', 'Hopper']);
 	t.is(valid.stdout, 'Arguments = Jane, Hopper');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'name'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Jane']), {
+	await t.throwsAsync(async () => run(fixture, ['Jane']), {
 		message: /error: missing required argument 'surname'/,
 	});
 
@@ -331,7 +331,7 @@ test('string array argument with name from `argument`', async t => {
 	const valid = await run(fixture, ['Jane', 'Hopper']);
 	t.is(valid.stdout, 'Arguments = Jane, Hopper');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'traits'/,
 	});
 
@@ -357,15 +357,15 @@ test('number argument', async t => {
 	const valid = await run(fixture, ['128', '256']);
 	t.is(valid.stdout, 'Arguments = 128, 256');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'first'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['128']), {
+	await t.throwsAsync(async () => run(fixture, ['128']), {
 		message: /error: missing required argument 'second'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Jane', 'Hopper']), {
+	await t.throwsAsync(async () => run(fixture, ['Jane', 'Hopper']), {
 		message: /Expected number, received nan at index 0/,
 	});
 
@@ -482,11 +482,11 @@ test('variadic number argument', async t => {
 	const withVariadic = await run(fixture, ['128', '256', '512', '1024']);
 	t.is(withVariadic.stdout, 'Arguments = 128, 256, 512, 1024');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'first'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['128']), {
+	await t.throwsAsync(async () => run(fixture, ['128']), {
 		message: /error: missing required argument 'second'/,
 	});
 
@@ -512,7 +512,7 @@ test('number array argument', async t => {
 	const valid = await run(fixture, ['128', '256']);
 	t.is(valid.stdout, 'Arguments = 128, 256');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'number'/,
 	});
 
@@ -538,7 +538,7 @@ test('number array argument with description', async t => {
 	const valid = await run(fixture, ['128', '256']);
 	t.is(valid.stdout, 'Arguments = 128, 256');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'number'/,
 	});
 
@@ -645,15 +645,15 @@ test('number argument with description', async t => {
 	const valid = await run(fixture, ['128', '256']);
 	t.is(valid.stdout, 'Arguments = 128, 256');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'first'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['128']), {
+	await t.throwsAsync(async () => run(fixture, ['128']), {
 		message: /error: missing required argument 'second'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Jane', 'Hopper']), {
+	await t.throwsAsync(async () => run(fixture, ['Jane', 'Hopper']), {
 		message: /Expected number, received nan at index 0/,
 	});
 
@@ -683,7 +683,7 @@ test('number array argument with name from `argument`', async t => {
 	const valid = await run(fixture, ['128', '256']);
 	t.is(valid.stdout, 'Arguments = 128, 256');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'number'/,
 	});
 
@@ -709,11 +709,11 @@ test('enum argument', async t => {
 	const valid = await run(fixture, ['Ubuntu', 'Debian']);
 	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'first'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Ubuntu']), {
+	await t.throwsAsync(async () => run(fixture, ['Ubuntu']), {
 		message: /error: missing required argument 'second'/,
 	});
 
@@ -836,11 +836,11 @@ test('variadic enum argument', async t => {
 
 	t.is(withVariadic.stdout, 'Arguments = Ubuntu, Debian, macOS, Windows');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'first'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Ubuntu']), {
+	await t.throwsAsync(async () => run(fixture, ['Ubuntu']), {
 		message: /error: missing required argument 'second'/,
 	});
 
@@ -866,7 +866,7 @@ test('enum array argument', async t => {
 	const valid = await run(fixture, ['Ubuntu', 'Debian']);
 	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'os'/,
 	});
 
@@ -892,7 +892,7 @@ test('enum array argument with description', async t => {
 	const valid = await run(fixture, ['Ubuntu', 'Debian']);
 	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'os'/,
 	});
 
@@ -999,11 +999,11 @@ test('enum argument with description', async t => {
 	const valid = await run(fixture, ['Ubuntu', 'Debian']);
 	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'first'/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['Ubuntu']), {
+	await t.throwsAsync(async () => run(fixture, ['Ubuntu']), {
 		message: /error: missing required argument 'second'/,
 	});
 
@@ -1033,7 +1033,7 @@ test('enum array argument with name from `argument`', async t => {
 	const valid = await run(fixture, ['Ubuntu', 'Debian']);
 	t.is(valid.stdout, 'Arguments = Ubuntu, Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /error: missing required argument 'os'/,
 	});
 

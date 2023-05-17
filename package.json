@@ -80,8 +80,17 @@
 		"extends": "xo-react",
 		"prettier": true,
 		"rules": {
-			"react/prop-types": "off"
-		}
+			"react/prop-types": "off",
+			"no-await-in-loop": "off"
+		},
+		"overrides": [
+			{
+				"files": "test/fixtures/camelcase-command/commands/superDeploy.tsx",
+				"rules": {
+					"unicorn/filename-case": "off"
+				}
+			}
+		]
 	},
 	"prettier": "@vdemedes/prettier-config"
 }

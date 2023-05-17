@@ -1,5 +1,5 @@
 import test from 'ava';
-import run from './helpers/run';
+import run from './helpers/run.js';
 
 test('string option', async t => {
 	const fixture = 'string-option/required';
@@ -7,11 +7,11 @@ test('string option', async t => {
 	const valid = await run(fixture, ['--name', 'Jane']);
 	t.is(valid.stdout, 'Name = Jane');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "name"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
@@ -41,7 +41,7 @@ test('optional string option', async t => {
 	const empty = await run(fixture);
 	t.is(empty.stdout, 'Name = empty');
 
-	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
@@ -71,7 +71,7 @@ test('string option with default value', async t => {
 	const empty = await run(fixture);
 	t.is(empty.stdout, 'Name = Mike');
 
-	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
@@ -101,7 +101,7 @@ test('string option with default value and custom description', async t => {
 	const empty = await run(fixture);
 	t.is(empty.stdout, 'Name = Mike');
 
-	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
@@ -128,11 +128,11 @@ test('string option with description from `option`', async t => {
 	const valid = await run(fixture, ['--name', 'Jane']);
 	t.is(valid.stdout, 'Name = Jane');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "name"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
@@ -159,11 +159,11 @@ test('string option with custom value description', async t => {
 	const valid = await run(fixture, ['--name', 'Jane']);
 	t.is(valid.stdout, 'Name = Jane');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "name"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
@@ -193,15 +193,15 @@ test('string option with alias', async t => {
 	const alias = await run(fixture, ['-n', 'Jane']);
 	t.is(alias.stdout, 'Name = Jane');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "name"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['-n', '123']), {
+	await t.throwsAsync(async () => run(fixture, ['-n', '123']), {
 		message: /Invalid value at "name"/,
 	});
 
@@ -228,11 +228,11 @@ test('number option', async t => {
 	const valid = await run(fixture, ['--size', '512']);
 	t.is(valid.stdout, 'Size = 512');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "size"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
@@ -262,7 +262,7 @@ test('optional number option', async t => {
 	const empty = await run(fixture);
 	t.is(empty.stdout, 'Size = -1');
 
-	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
@@ -292,7 +292,7 @@ test('number option with default value', async t => {
 	const empty = await run(fixture);
 	t.is(empty.stdout, 'Size = 128');
 
-	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
@@ -322,7 +322,7 @@ test('number option with default value and custom description', async t => {
 	const empty = await run(fixture);
 	t.is(empty.stdout, 'Size = 128');
 
-	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
@@ -349,11 +349,11 @@ test('number option with description from `option`', async t => {
 	const valid = await run(fixture, ['--size', '512']);
 	t.is(valid.stdout, 'Size = 512');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "size"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
@@ -380,11 +380,11 @@ test('number option with custom value description', async t => {
 	const valid = await run(fixture, ['--size', '512']);
 	t.is(valid.stdout, 'Size = 512');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "size"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
@@ -414,15 +414,15 @@ test('number option with alias', async t => {
 	const alias = await run(fixture, ['-s', '512']);
 	t.is(alias.stdout, 'Size = 512');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "size"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['-s', 'xyz']), {
+	await t.throwsAsync(async () => run(fixture, ['-s', 'xyz']), {
 		message: /Expected number, received nan at "size"/,
 	});
 
@@ -488,7 +488,7 @@ test('negated boolean option', async t => {
 			'Description',
 			'',
 			'Options:',
-			`  --no-force     Don\'t force`,
+			`  --no-force     Don't force`,
 			`  -v, --version  Show version number`,
 			`  -h, --help     Show help`,
 		].join('\n'),
@@ -559,11 +559,11 @@ test('enum option', async t => {
 	const debian = await run(fixture, ['--os', 'Debian']);
 	t.is(debian.stdout, 'OS = Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "os"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
 		message:
 			/error: option '--os <os>' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
@@ -597,9 +597,9 @@ test('optional enum option', async t => {
 	const debian = await run(fixture, ['--os', 'Debian']);
 	t.is(debian.stdout, 'OS = Debian');
 
-	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
 		message:
-			/error: option '--os \[os\]' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
+			/error: option '--os \[os]' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -631,9 +631,9 @@ test('enum option with default value', async t => {
 	const debian = await run(fixture, ['--os', 'Debian']);
 	t.is(debian.stdout, 'OS = Debian');
 
-	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
 		message:
-			/error: option '--os \[os\]' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
+			/error: option '--os \[os]' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -666,9 +666,9 @@ test('enum option with default value and custom description', async t => {
 	const debian = await run(fixture, ['--os', 'Debian']);
 	t.is(debian.stdout, 'OS = Debian');
 
-	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
 		message:
-			/error: option '--os \[os\]' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
+			/error: option '--os \[os]' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -698,11 +698,11 @@ test('enum option with description from `option`', async t => {
 	const debian = await run(fixture, ['--os', 'Debian']);
 	t.is(debian.stdout, 'OS = Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "os"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
 		message:
 			/error: option '--os <os>' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
@@ -733,11 +733,11 @@ test('enum option with custom value description', async t => {
 	const debian = await run(fixture, ['--os', 'Debian']);
 	t.is(debian.stdout, 'OS = Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "os"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
 		message:
 			/error: option '--os <OS>' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
@@ -771,16 +771,16 @@ test('enum option with alias', async t => {
 	const alias = await run(fixture, ['-s', 'Debian']);
 	t.is(alias.stdout, 'OS = Debian');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "os"/,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
 		message:
 			/error: option '-s, --os <os>' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
 
-	await t.throwsAsync(() => run(fixture, ['-s', 'Windows']), {
+	await t.throwsAsync(async () => run(fixture, ['-s', 'Windows']), {
 		message:
 			/error: option '-s, --os <os>' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
 	});
@@ -814,7 +814,7 @@ test('array option', async t => {
 	const twoWithSpaces = await run(fixture, ['--tag', 'X', 'Y']);
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "tag"/,
 	});
 
@@ -943,7 +943,7 @@ test('array option with description from `option`', async t => {
 	const twoWithSpaces = await run(fixture, ['--tag', 'X', 'Y']);
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "tag"/,
 	});
 
@@ -988,7 +988,7 @@ test('array option with alias', async t => {
 	const mixed = await run(fixture, ['-t', 'X', '--tag', 'Y']);
 	t.is(mixed.stdout, 'Tags = X, Y');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "tag"/,
 	});
 
@@ -1021,7 +1021,7 @@ test('set option', async t => {
 	const twoWithSpaces = await run(fixture, ['--tag', 'X', 'Y', 'Y']);
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "tag"/,
 	});
 
@@ -1150,7 +1150,7 @@ test('set option with description from `option`', async t => {
 	const twoWithSpaces = await run(fixture, ['--tag', 'X', 'Y', 'Y']);
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "tag"/,
 	});
 
@@ -1183,7 +1183,7 @@ test('set option with custom value description', async t => {
 	const twoWithSpaces = await run(fixture, ['--tag', 'X', 'Y', 'Y']);
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "tag"/,
 	});
 
@@ -1228,7 +1228,7 @@ test('set option with alias', async t => {
 	const mixed = await run(fixture, ['-t', 'X', '--tag', 'Y', '-t', 'Y']);
 	t.is(mixed.stdout, 'Tags = X, Y');
 
-	await t.throwsAsync(() => run(fixture), {
+	await t.throwsAsync(async () => run(fixture), {
 		message: /Required at "tag"/,
 	});
 
