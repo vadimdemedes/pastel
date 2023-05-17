@@ -11,11 +11,24 @@ import {
 	ZodOptional,
 	ZodSet,
 } from 'zod';
+import {CommandOptionConfig} from './types.js';
+
+const getConfig = (
+	value: string | undefined,
+): CommandOptionConfig | undefined => {
+	return value?.startsWith('__pastel__')
+		? JSON.parse(value.replace('__pastel__', ''))
+		: undefined;
+};
 
 const getDescription = (value: string | undefined): string | undefined => {
-	return value?.startsWith('__pastel__')
-		? JSON.parse(value.replace('__pastel__', '')).description
-		: value;
+	return getConfig(value)?.description ?? value;
+};
+
+const getDefaultValueDescription = (
+	value: string | undefined,
+): string | undefined => {
+	return getConfig(value)?.defaultValueDescription;
 };
 
 export default function generateOptions(
@@ -32,6 +45,10 @@ export default function generateOptions(
 
 	for (let [name, optionSchema] of Object.entries(optionsSchema._def.shape())) {
 		let defaultValue: unknown;
+		let defaultValueDescription = getDefaultValueDescription(
+			optionSchema.description,
+		);
+
 		let description = getDescription(optionSchema.description);
 		let isOptional = isOptionalByDefault;
 
@@ -98,6 +115,10 @@ export default function generateOptions(
 
 			if (defaultValue instanceof Set) {
 				option.defaultValueDescription = JSON.stringify([...defaultValue]);
+			}
+
+			if (defaultValueDescription) {
+				option.defaultValueDescription = defaultValueDescription;
 			}
 		}
 
