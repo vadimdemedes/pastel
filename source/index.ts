@@ -74,5 +74,3 @@ export default class Pastel {
 		program.parse(argv);
 	}
 }
-
-export * from './types.js';

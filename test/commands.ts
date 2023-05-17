@@ -379,3 +379,64 @@ test('deeply nested commands', async t => {
 		].join('\n'),
 	);
 });
+
+test('snake case command name', async t => {
+	const fixture = 'camelcase-command';
+
+	const index = await run(fixture);
+	t.is(index.stdout, 'Deploy');
+
+	const indexHelp = await run(fixture, ['--help']);
+
+	t.is(
+		indexHelp.stdout,
+		[
+			'Usage: test [options] [command]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  -v, --version   Show version number',
+			'  -h, --help      Show help',
+			'',
+			'Commands:',
+			'  auth            Auth command',
+			'  super-deploy    Deploy command',
+			'  help [command]  Show help for command',
+		].join('\n'),
+	);
+
+	const deploy = await run(fixture, ['super-deploy']);
+	t.is(deploy.stdout, 'Deploy');
+
+	const deployHelp = await run(fixture, ['super-deploy', '--help']);
+
+	t.is(
+		deployHelp.stdout,
+		[
+			'Usage: test super-deploy [options]',
+			'',
+			'Deploy command',
+			'',
+			'Options:',
+			'  -h, --help  Show help',
+		].join('\n'),
+	);
+
+	const auth = await run(fixture, ['auth']);
+	t.is(auth.stdout, 'Auth');
+
+	const authHelp = await run(fixture, ['auth', '--help']);
+
+	t.is(
+		authHelp.stdout,
+		[
+			'Usage: test auth [options]',
+			'',
+			'Auth command',
+			'',
+			'Options:',
+			'  -h, --help  Show help',
+		].join('\n'),
+	);
+});

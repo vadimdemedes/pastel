@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import {Command} from './types.js';
+import decamelize from 'decamelize';
 
 const readCommands = async (
 	directory: string,
@@ -39,7 +40,7 @@ const readCommands = async (
 		}
 
 		const m = await import(filePath);
-		const name = file.replace(/\.(js|ts)x?$/, '');
+		const name = decamelize(file.replace(/\.(js|ts)x?$/, ''), {separator: '-'});
 
 		commands.set(name, {
 			name,

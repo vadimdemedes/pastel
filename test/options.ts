@@ -561,3 +561,26 @@ test('all optional options', async t => {
 		].join('\n'),
 	);
 });
+
+test('snake case option name', async t => {
+	const fixture = 'camelcase-option';
+
+	const valid = await run(fixture, ['--first-name', 'Jane']);
+	t.is(valid.stdout, 'Name = Jane');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  --first-name <value>  Name',
+			`  -v, --version         Show version number`,
+			`  -h, --help            Show help`,
+		].join('\n'),
+	);
+});

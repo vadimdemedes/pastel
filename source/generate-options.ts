@@ -1,5 +1,6 @@
 import {isDeepStrictEqual} from 'node:util';
 import {Option} from 'commander';
+import decamelize from 'decamelize';
 import {CommandOptions} from './types.js';
 import {
 	ZodArray,
@@ -28,7 +29,7 @@ export default function generateOptions(
 		let description = optionSchema.description;
 		let isOptional = isOptionalByDefault;
 
-		let flag = `--${name}`;
+		let flag = `--${decamelize(name, {separator: '-'})}`;
 
 		// z.string().optional()
 		if (optionSchema instanceof ZodOptional) {

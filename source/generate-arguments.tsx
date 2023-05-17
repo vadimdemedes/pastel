@@ -9,6 +9,7 @@ import {
 	ZodOptional,
 	ZodTuple,
 } from 'zod';
+import decamelize from 'decamelize';
 
 export default function generateArguments(
 	argumentsSchema: CommandArguments,
@@ -61,6 +62,10 @@ export default function generateArguments(
 				isOptional = true;
 				argumentSchema = argumentSchema._def.innerType;
 				name = argumentSchema.description ?? name;
+			}
+
+			if (name) {
+				name = decamelize(name, {separator: '-'});
 			}
 
 			const argument = new Argument(isOptional ? `[${name}]` : `<${name}>`);
