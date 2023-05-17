@@ -17,3 +17,9 @@ export type CommandOptionConfig = {
 	valueDescription?: string;
 	alias?: string;
 };
+
+export type CommandArgumentConfig = {
+	name?: string;
+	description?: string;
+	defaultValueDescription?: string;
+};

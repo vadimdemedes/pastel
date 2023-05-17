@@ -4,12 +4,25 @@ import {z} from 'zod';
 import {argument} from '../../../../../source/index.js';
 
 export const args = z.tuple([
-	z.number().describe('first'),
-	z.number().describe(
-		argument({
-			name: 'second',
-		}),
-	),
+	z
+		.string()
+		.optional()
+		.describe(
+			argument({
+				name: 'name',
+				description: 'Name',
+			}),
+		),
+	z
+		.string()
+		.default('Hopper')
+		.describe(
+			argument({
+				name: 'surname',
+				description: 'Surname',
+				defaultValueDescription: 'Hopper',
+			}),
+		),
 ]);
 
 type Props = {

@@ -3,11 +3,20 @@ import {Text} from 'ink';
 import {z} from 'zod';
 import {argument} from '../../../../../source/index.js';
 
+const os = z.enum(['Ubuntu', 'Debian']);
+
 export const args = z.tuple([
-	z.number().describe('first'),
-	z.number().describe(
+	os.optional().describe(
+		argument({
+			name: 'first',
+			description: 'First',
+		}),
+	),
+	os.default('Debian').describe(
 		argument({
 			name: 'second',
+			description: 'Second',
+			defaultValueDescription: 'Debian',
 		}),
 	),
 ]);

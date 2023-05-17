@@ -57,7 +57,7 @@ export default function generateOptions(
 
 		let defaultValue: unknown;
 
-		const defaultValueDescription = getDefaultValueDescription(
+		let defaultValueDescription = getDefaultValueDescription(
 			optionSchema.description,
 		);
 
@@ -132,15 +132,11 @@ export default function generateOptions(
 		}
 
 		if (defaultValue !== undefined) {
-			option.default(defaultValue);
-
-			if (defaultValue instanceof Set) {
-				option.defaultValueDescription = JSON.stringify([...defaultValue]);
+			if (!defaultValueDescription && defaultValue instanceof Set) {
+				defaultValueDescription = JSON.stringify([...defaultValue]);
 			}
 
-			if (defaultValueDescription) {
-				option.defaultValueDescription = defaultValueDescription;
-			}
+			option.default(defaultValue, defaultValueDescription);
 		}
 
 		options.push(option);

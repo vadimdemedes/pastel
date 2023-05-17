@@ -3,14 +3,16 @@ import {Text} from 'ink';
 import {z} from 'zod';
 import {argument} from '../../../../../source/index.js';
 
-export const args = z.tuple([
-	z.number().describe('first'),
-	z.number().describe(
+export const args = z
+	.array(z.enum(['macOS', 'Ubuntu', 'Debian', 'Windows']))
+	.default(['macOS', 'Windows'])
+	.describe(
 		argument({
-			name: 'second',
+			name: 'os',
+			description: 'Operating systems',
+			defaultValueDescription: 'macOS, Windows',
 		}),
-	),
-]);
+	);
 
 type Props = {
 	args: z.infer<typeof args>;

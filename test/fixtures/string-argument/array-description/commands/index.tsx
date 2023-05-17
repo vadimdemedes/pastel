@@ -3,14 +3,9 @@ import {Text} from 'ink';
 import {z} from 'zod';
 import {argument} from '../../../../../source/index.js';
 
-export const args = z.tuple([
-	z.number().describe('first'),
-	z.number().describe(
-		argument({
-			name: 'second',
-		}),
-	),
-]);
+export const args = z
+	.array(z.string())
+	.describe(argument({name: 'traits', description: 'Traits'}));
 
 type Props = {
 	args: z.infer<typeof args>;

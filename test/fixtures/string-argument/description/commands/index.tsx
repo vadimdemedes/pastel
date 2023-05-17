@@ -4,10 +4,16 @@ import {z} from 'zod';
 import {argument} from '../../../../../source/index.js';
 
 export const args = z.tuple([
-	z.number().describe('first'),
-	z.number().describe(
+	z.string().describe(
 		argument({
-			name: 'second',
+			name: 'name',
+			description: 'Name',
+		}),
+	),
+	z.string().describe(
+		argument({
+			name: 'surname',
+			description: 'Surname',
 		}),
 	),
 ]);

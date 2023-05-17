@@ -10,13 +10,40 @@ import {
 	ZodTuple,
 } from 'zod';
 import decamelize from 'decamelize';
+import {CommandArgumentConfig} from './types.js';
+
+const getConfig = (
+	value: string | undefined,
+): CommandArgumentConfig | undefined => {
+	return value?.startsWith('__pastel_argument_config__')
+		? JSON.parse(value.replace('__pastel_argument_config__', ''))
+		: undefined;
+};
+
+const getName = (value: string | undefined): string | undefined => {
+	return getConfig(value)?.name ?? value;
+};
+
+const getDescription = (value: string | undefined): string | undefined => {
+	return getConfig(value)?.description;
+};
+
+const getDefaultValueDescription = (
+	value: string | undefined,
+): string | undefined => {
+	return getConfig(value)?.defaultValueDescription;
+};
 
 export default function generateArguments(
 	argumentsSchema: CommandArguments,
 ): Argument[] {
 	let isOptionalByDefault = false;
 	let arrayDefaultValue: unknown;
-	let arrayName = argumentsSchema.description;
+	let arrayName = getName(argumentsSchema.description);
+	let arrayDescription = getDescription(argumentsSchema.description);
+	let arrayDefaultValueDescription = getDefaultValueDescription(
+		argumentsSchema.description,
+	);
 
 	if (argumentsSchema instanceof ZodOptional) {
 		isOptionalByDefault = true;
@@ -43,32 +70,39 @@ export default function generateArguments(
 		for (let argumentSchema of argumentsSchema._def.items) {
 			let isOptional = isOptionalByDefault;
 			let defaultValue: unknown;
-			let name = argumentSchema.description;
+			let defaultValueDescription = getDefaultValueDescription(
+				argumentSchema.description,
+			);
+			let name = getName(argumentSchema.description);
+			let description = getDescription(argumentSchema.description);
 
 			if (argumentSchema instanceof ZodOptional) {
 				isOptional = true;
 				argumentSchema = argumentSchema._def.innerType;
-				name = argumentSchema.description ?? name;
+				name = getName(argumentSchema.description) ?? name;
 			}
 
 			if (argumentSchema instanceof ZodDefault) {
 				isOptional = true;
 				defaultValue = argumentSchema._def.defaultValue();
 				argumentSchema = argumentSchema._def.innerType;
-				name = argumentSchema.description ?? name;
+				name = getName(argumentSchema.description) ?? name;
 			}
 
 			if (argumentSchema instanceof ZodOptional) {
 				isOptional = true;
 				argumentSchema = argumentSchema._def.innerType;
-				name = argumentSchema.description ?? name;
+				name = getName(argumentSchema.description) ?? name;
 			}
 
 			if (name) {
 				name = decamelize(name, {separator: '-'});
 			}
 
-			const argument = new Argument(isOptional ? `[${name}]` : `<${name}>`);
+			const argument = new Argument(
+				isOptional ? `[${name}]` : `<${name}>`,
+				description,
+			);
 
 			if (argumentSchema instanceof ZodNumber) {
 				argument.argParser(value => Number.parseFloat(value));
@@ -79,7 +113,7 @@ export default function generateArguments(
 			}
 
 			if (defaultValue !== undefined) {
-				argument.default(defaultValue);
+				argument.default(defaultValue, defaultValueDescription);
 			}
 
 			args.push(argument);
@@ -88,7 +122,7 @@ export default function generateArguments(
 		const restSchema = argumentsSchema._def.rest;
 
 		if (restSchema) {
-			const name = restSchema.description ?? 'arg';
+			const name = getName(restSchema.description) ?? 'arg';
 			const argument = new Argument(`[${name}...]`);
 
 			if (restSchema instanceof ZodNumber) {
@@ -110,10 +144,11 @@ export default function generateArguments(
 
 		const argument = new Argument(
 			isOptionalByDefault ? `[${name}...]` : `<${name}...>`,
+			arrayDescription,
 		);
 
 		if (arrayDefaultValue !== undefined) {
-			argument.default(arrayDefaultValue);
+			argument.default(arrayDefaultValue, arrayDefaultValueDescription);
 		}
 
 		if (argumentsSchema.element instanceof ZodNumber) {

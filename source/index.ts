@@ -7,7 +7,7 @@ import readCommands from './read-commands.js';
 import generateCommands from './generate-commands.js';
 import App from './App.js';
 import readCustomApp from './read-custom-app.js';
-import type {CommandOptionConfig} from './types.js';
+import type {CommandArgumentConfig, CommandOptionConfig} from './types.js';
 
 export interface Options {
 	/**
@@ -82,6 +82,10 @@ export default class Pastel {
 
 export function option(config: CommandOptionConfig) {
 	return `__pastel_option_config__${JSON.stringify(config)}`;
+}
+
+export function argument(config: CommandArgumentConfig) {
+	return `__pastel_argument_config__${JSON.stringify(config)}`;
 }
 
 export * from './types.js';
