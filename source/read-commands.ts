@@ -50,6 +50,7 @@ const readCommands = async (
 			name,
 			description: m.description,
 			isDefault: m.isDefault ?? false,
+			alias: m.alias,
 			options: m.options,
 			args: m.args,
 			component: m.default,

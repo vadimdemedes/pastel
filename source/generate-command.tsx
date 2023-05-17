@@ -20,6 +20,10 @@ const generateCommand = (
 		commanderCommand.description(pastelCommand.description);
 	}
 
+	if (pastelCommand.alias) {
+		commanderCommand.alias(pastelCommand.alias);
+	}
+
 	const optionsSchema = pastelCommand.options;
 
 	if (optionsSchema) {

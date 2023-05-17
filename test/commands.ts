@@ -566,3 +566,32 @@ test('nested commands with custom app', async t => {
 		].join('\n'),
 	);
 });
+
+test('command with an alias', async t => {
+	const fixture = 'command-alias';
+
+	const deploy = await run(fixture);
+	t.is(deploy.stdout, 'Deploy');
+
+	const push = await run(fixture, ['push']);
+	t.is(push.stdout, 'Deploy');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options] [command]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  -v, --version   Show version number',
+			'  -h, --help      Show help',
+			'',
+			'Commands:',
+			'  deploy|push     Deploy command',
+			'  help [command]  Show help for command',
+		].join('\n'),
+	);
+});

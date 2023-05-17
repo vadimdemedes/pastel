@@ -18,6 +18,7 @@ export type Command = {
 	name: string;
 	description?: string;
 	isDefault: boolean;
+	alias?: string;
 	options?: CommandOptions;
 	args?: CommandArguments;
 	component?: ComponentType<AppProps['commandProps']>;
