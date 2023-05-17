@@ -14,4 +14,5 @@ export type AppProps = {
 export type CommandOptionConfig = {
 	description?: string;
 	defaultValueDescription?: string;
+	valueDescription?: string;
 };

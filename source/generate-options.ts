@@ -12,6 +12,7 @@ import {
 	ZodSet,
 } from 'zod';
 import {CommandOptionConfig} from './types.js';
+import plur from 'plur';
 
 const getConfig = (
 	value: string | undefined,
@@ -31,6 +32,10 @@ const getDefaultValueDescription = (
 	return getConfig(value)?.defaultValueDescription;
 };
 
+const getValueDescription = (value: string | undefined): string | undefined => {
+	return getConfig(value)?.valueDescription;
+};
+
 export default function generateOptions(
 	optionsSchema: CommandOptions,
 ): Option[] {
@@ -44,15 +49,21 @@ export default function generateOptions(
 	const options: Option[] = [];
 
 	for (let [name, optionSchema] of Object.entries(optionsSchema._def.shape())) {
+		name = decamelize(name, {separator: '-'});
+
 		let defaultValue: unknown;
-		let defaultValueDescription = getDefaultValueDescription(
+
+		const defaultValueDescription = getDefaultValueDescription(
 			optionSchema.description,
 		);
 
 		let description = getDescription(optionSchema.description);
+
+		let valueDescription = getValueDescription(optionSchema.description);
+
 		let isOptional = isOptionalByDefault;
 
-		let flag = `--${decamelize(name, {separator: '-'})}`;
+		let flag = `--${name}`;
 
 		// z.string().optional()
 		if (optionSchema instanceof ZodOptional) {
@@ -78,10 +89,17 @@ export default function generateOptions(
 		if (expectsValue) {
 			const isVariadic =
 				optionSchema instanceof ZodArray || optionSchema instanceof ZodSet;
+
+			if (!valueDescription) {
+				valueDescription = isVariadic ? plur(name) : name;
+			}
+
 			const rest = isVariadic ? '...' : '';
 
 			flag +=
-				isOptional || defaultValue ? ` [value${rest}]` : ` <value${rest}>`;
+				isOptional || defaultValue
+					? ` [${valueDescription}${rest}]`
+					: ` <${valueDescription}${rest}>`;
 		}
 
 		const option = new Option(flag, description);
