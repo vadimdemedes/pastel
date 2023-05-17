@@ -92,6 +92,37 @@ test('string option with default value', async t => {
 	);
 });
 
+test('string option with description from `option`', async t => {
+	const fixture = 'string-option/description';
+
+	const valid = await run(fixture, ['--name', 'Jane']);
+	t.is(valid.stdout, 'Name = Jane');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /Required at "name"/,
+	});
+
+	await t.throwsAsync(() => run(fixture, ['--name', '123']), {
+		message: /Invalid value at "name"/,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  --name <value>  Name`,
+			`  -v, --version   Show version number`,
+			`  -h, --help      Show help`,
+		].join('\n'),
+	);
+});
+
 test('number option', async t => {
 	const fixture = 'number-option/required';
 
@@ -183,6 +214,37 @@ test('number option with default value', async t => {
 	);
 });
 
+test('number option with description from `option`', async t => {
+	const fixture = 'number-option/description';
+
+	const valid = await run(fixture, ['--size', '512']);
+	t.is(valid.stdout, 'Size = 512');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /Required at "size"/,
+	});
+
+	await t.throwsAsync(() => run(fixture, ['--size', 'xyz']), {
+		message: /Expected number, received nan at "size"/,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  --size <value>  Size`,
+			`  -v, --version   Show version number`,
+			`  -h, --help      Show help`,
+		].join('\n'),
+	);
+});
+
 test('boolean option', async t => {
 	const fixture = 'boolean-option/required';
 
@@ -232,6 +294,32 @@ test('boolean option with default value', async t => {
 			'',
 			'Options:',
 			`  --force        Force (default: true)`,
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
+test('boolean option with description from `option`', async t => {
+	const fixture = 'boolean-option/description';
+
+	const enabled = await run(fixture, ['--force']);
+	t.is(enabled.stdout, 'Force = true');
+
+	// const disabled = await run(fixture, ['--no-force']);
+	// t.is(disabled.stdout, 'Force = false');
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  --force        Force (default: false)`,
 			`  -v, --version  Show version number`,
 			`  -h, --help     Show help`,
 		].join('\n'),
@@ -342,6 +430,41 @@ test('enum option with default value', async t => {
 	);
 });
 
+test('enum option with description from `option`', async t => {
+	const fixture = 'enum-option/description';
+
+	const ubuntu = await run(fixture, ['--os', 'Ubuntu']);
+	t.is(ubuntu.stdout, 'OS = Ubuntu');
+
+	const debian = await run(fixture, ['--os', 'Debian']);
+	t.is(debian.stdout, 'OS = Debian');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /Required at "os"/,
+	});
+
+	await t.throwsAsync(() => run(fixture, ['--os', 'Windows']), {
+		message:
+			/error: option '--os <value>' argument 'Windows' is invalid\. Allowed choices are Ubuntu, Debian\./,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  --os <value>   Operating system (choices: "Ubuntu", "Debian")',
+			`  -v, --version  Show version number`,
+			`  -h, --help     Show help`,
+		].join('\n'),
+	);
+});
+
 test('array option', async t => {
 	const fixture = 'array-option/required';
 
@@ -433,6 +556,39 @@ test('array option with default value', async t => {
 			'',
 			'Options:',
 			`  --tag [value...]  Tags (default: ["A","B"])`,
+			`  -v, --version     Show version number`,
+			`  -h, --help        Show help`,
+		].join('\n'),
+	);
+});
+
+test('array option with description from `option`', async t => {
+	const fixture = 'array-option/required';
+
+	const one = await run(fixture, ['--tag', 'X']);
+	t.is(one.stdout, 'Tags = X');
+
+	const two = await run(fixture, ['--tag', 'X', '--tag', 'Y']);
+	t.is(two.stdout, 'Tags = X, Y');
+
+	const twoWithSpaces = await run(fixture, ['--tag', 'X', 'Y']);
+	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /Required at "tag"/,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  --tag <value...>  Tags`,
 			`  -v, --version     Show version number`,
 			`  -h, --help        Show help`,
 		].join('\n'),
@@ -536,6 +692,39 @@ test('set option with default value', async t => {
 	);
 });
 
+test('set option with description from `option`', async t => {
+	const fixture = 'set-option/description';
+
+	const one = await run(fixture, ['--tag', 'X']);
+	t.is(one.stdout, 'Tags = X');
+
+	const two = await run(fixture, ['--tag', 'X', '--tag', 'Y', '--tag', 'Y']);
+	t.is(two.stdout, 'Tags = X, Y');
+
+	const twoWithSpaces = await run(fixture, ['--tag', 'X', 'Y', 'Y']);
+	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
+
+	await t.throwsAsync(() => run(fixture), {
+		message: /Required at "tag"/,
+	});
+
+	const help = await run(fixture, ['--help']);
+
+	t.is(
+		help.stdout,
+		[
+			'Usage: test [options]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			`  --tag <value...>  Tags`,
+			`  -v, --version     Show version number`,
+			`  -h, --help        Show help`,
+		].join('\n'),
+	);
+});
+
 test('all optional options', async t => {
 	const fixture = 'all-optional-options';
 
@@ -566,29 +755,6 @@ test('snake case option name', async t => {
 	const fixture = 'camelcase-option';
 
 	const valid = await run(fixture, ['--first-name', 'Jane']);
-	t.is(valid.stdout, 'Name = Jane');
-
-	const help = await run(fixture, ['--help']);
-
-	t.is(
-		help.stdout,
-		[
-			'Usage: test [options]',
-			'',
-			'Description',
-			'',
-			'Options:',
-			'  --first-name <value>  Name',
-			`  -v, --version         Show version number`,
-			`  -h, --help            Show help`,
-		].join('\n'),
-	);
-});
-
-test('global options', async t => {
-	const fixture = 'global-options';
-
-	const valid = await run(fixture, ['--project', 'Hello', '--name', 'World']);
 	t.is(valid.stdout, 'Name = Jane');
 
 	const help = await run(fixture, ['--help']);

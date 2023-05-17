@@ -7,6 +7,7 @@ import readCommands from './read-commands.js';
 import generateCommands from './generate-commands.js';
 import App from './App.js';
 import readCustomApp from './read-custom-app.js';
+import type {CommandOptionConfig} from './types.js';
 
 export interface Options {
 	/**
@@ -77,6 +78,10 @@ export default class Pastel {
 		program.helpOption('-h, --help', 'Show help');
 		program.parse(argv);
 	}
+}
+
+export function option(config: CommandOptionConfig) {
+	return `__pastel__${JSON.stringify(config)}`;
 }
 
 export * from './types.js';

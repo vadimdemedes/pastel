@@ -12,6 +12,12 @@ import {
 	ZodSet,
 } from 'zod';
 
+const getDescription = (value: string | undefined): string | undefined => {
+	return value?.startsWith('__pastel__')
+		? JSON.parse(value.replace('__pastel__', '')).description
+		: value;
+};
+
 export default function generateOptions(
 	optionsSchema: CommandOptions,
 ): Option[] {
@@ -26,7 +32,7 @@ export default function generateOptions(
 
 	for (let [name, optionSchema] of Object.entries(optionsSchema._def.shape())) {
 		let defaultValue: unknown;
-		let description = optionSchema.description;
+		let description = getDescription(optionSchema.description);
 		let isOptional = isOptionalByDefault;
 
 		let flag = `--${decamelize(name, {separator: '-'})}`;

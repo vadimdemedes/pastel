@@ -10,3 +10,7 @@ export type AppProps = {
 		args: unknown[];
 	};
 };
+
+export type CommandOptionConfig = {
+	description?: string;
+};
