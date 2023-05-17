@@ -81,7 +81,7 @@ export default class Pastel {
 }
 
 export function option(config: CommandOptionConfig) {
-	return `__pastel__${JSON.stringify(config)}`;
+	return `__pastel_option_config__${JSON.stringify(config)}`;
 }
 
 export * from './types.js';

@@ -17,8 +17,8 @@ import plur from 'plur';
 const getConfig = (
 	value: string | undefined,
 ): CommandOptionConfig | undefined => {
-	return value?.startsWith('__pastel__')
-		? JSON.parse(value.replace('__pastel__', ''))
+	return value?.startsWith('__pastel_option_config__')
+		? JSON.parse(value.replace('__pastel_option_config__', ''))
 		: undefined;
 };
 
@@ -34,6 +34,10 @@ const getDefaultValueDescription = (
 
 const getValueDescription = (value: string | undefined): string | undefined => {
 	return getConfig(value)?.valueDescription;
+};
+
+const getAlias = (value: string | undefined): string | undefined => {
+	return getConfig(value)?.alias;
 };
 
 export default function generateOptions(
@@ -58,12 +62,11 @@ export default function generateOptions(
 		);
 
 		let description = getDescription(optionSchema.description);
-
 		let valueDescription = getValueDescription(optionSchema.description);
-
+		const alias = getAlias(optionSchema.description);
 		let isOptional = isOptionalByDefault;
 
-		let flag = `--${name}`;
+		let flag = alias ? `-${alias}, --${name}` : `--${name}`;
 
 		// z.string().optional()
 		if (optionSchema instanceof ZodOptional) {

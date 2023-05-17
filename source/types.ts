@@ -15,4 +15,5 @@ export type CommandOptionConfig = {
 	description?: string;
 	defaultValueDescription?: string;
 	valueDescription?: string;
+	alias?: string;
 };
