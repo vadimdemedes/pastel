@@ -63,10 +63,7 @@ export default function generateOptions(
 
 		let description = getDescription(optionSchema.description);
 		let valueDescription = getValueDescription(optionSchema.description);
-		const alias = getAlias(optionSchema.description);
 		let isOptional = isOptionalByDefault;
-
-		let flag = alias ? `-${alias}, --${name}` : `--${name}`;
 
 		// z.string().optional()
 		if (optionSchema instanceof ZodOptional) {
@@ -85,6 +82,15 @@ export default function generateOptions(
 		if (optionSchema instanceof ZodOptional) {
 			isOptional = true;
 			optionSchema = optionSchema._def.innerType;
+		}
+
+		const alias = getAlias(optionSchema.description);
+		let flag = `--${name}`;
+
+		if (optionSchema instanceof ZodBoolean && defaultValue === true) {
+			flag = `--no-${name}`;
+		} else if (alias) {
+			flag = `-${alias}, --${name}`;
 		}
 
 		const expectsValue = !(optionSchema instanceof ZodBoolean);

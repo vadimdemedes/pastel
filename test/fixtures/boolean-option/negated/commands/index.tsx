@@ -1,18 +1,9 @@
 import React from 'react';
 import {Text} from 'ink';
 import {z} from 'zod';
-import {option} from '../../../../../source/index.js';
 
 export const options = z.object({
-	force: z
-		.boolean()
-		.default(true)
-		.describe(
-			option({
-				description: 'Force',
-				defaultValueDescription: 'yes',
-			}),
-		),
+	force: z.boolean().default(true).describe("Don't force"),
 });
 
 type Props = {

@@ -444,13 +444,13 @@ test('number option with alias', async t => {
 });
 
 test('boolean option', async t => {
-	const fixture = 'boolean-option/required';
+	const fixture = 'boolean-option/default';
+
+	const disabled = await run(fixture);
+	t.is(disabled.stdout, 'Force = false');
 
 	const enabled = await run(fixture, ['--force']);
 	t.is(enabled.stdout, 'Force = true');
-
-	// const disabled = await run(fixture, ['--no-force']);
-	// t.is(disabled.stdout, 'Force = false');
 
 	const help = await run(fixture, ['--help']);
 
@@ -469,17 +469,14 @@ test('boolean option', async t => {
 	);
 });
 
-test('boolean option with default value', async t => {
-	const fixture = 'boolean-option/default-value';
+test('negated boolean option', async t => {
+	const fixture = 'boolean-option/negated';
 
-	const initial = await run(fixture);
-	t.is(initial.stdout, 'Force = true');
-
-	const enabled = await run(fixture, ['--force']);
+	const enabled = await run(fixture);
 	t.is(enabled.stdout, 'Force = true');
 
-	// const disabled = await run(fixture, ['--no-force']);
-	// t.is(disabled.stdout, 'Force = false');
+	const disabled = await run(fixture, ['--no-force']);
+	t.is(disabled.stdout, 'Force = false');
 
 	const help = await run(fixture, ['--help']);
 
@@ -491,36 +488,7 @@ test('boolean option with default value', async t => {
 			'Description',
 			'',
 			'Options:',
-			`  --force        Force (default: true)`,
-			`  -v, --version  Show version number`,
-			`  -h, --help     Show help`,
-		].join('\n'),
-	);
-});
-
-test('boolean option with default value and custom description', async t => {
-	const fixture = 'boolean-option/default-value-description';
-
-	const initial = await run(fixture);
-	t.is(initial.stdout, 'Force = true');
-
-	const enabled = await run(fixture, ['--force']);
-	t.is(enabled.stdout, 'Force = true');
-
-	// const disabled = await run(fixture, ['--no-force']);
-	// t.is(disabled.stdout, 'Force = false');
-
-	const help = await run(fixture, ['--help']);
-
-	t.is(
-		help.stdout,
-		[
-			'Usage: test [options]',
-			'',
-			'Description',
-			'',
-			'Options:',
-			`  --force        Force (default: yes)`,
+			`  --no-force     Don\'t force`,
 			`  -v, --version  Show version number`,
 			`  -h, --help     Show help`,
 		].join('\n'),
@@ -533,8 +501,8 @@ test('boolean option with description from `option`', async t => {
 	const enabled = await run(fixture, ['--force']);
 	t.is(enabled.stdout, 'Force = true');
 
-	// const disabled = await run(fixture, ['--no-force']);
-	// t.is(disabled.stdout, 'Force = false');
+	const disabled = await run(fixture);
+	t.is(disabled.stdout, 'Force = false');
 
 	const help = await run(fixture, ['--help']);
 
@@ -562,8 +530,8 @@ test('boolean option with alias', async t => {
 	const alias = await run(fixture, ['-f']);
 	t.is(alias.stdout, 'Force = true');
 
-	// const disabled = await run(fixture, ['--no-force']);
-	// t.is(disabled.stdout, 'Force = false');
+	const disabled = await run(fixture);
+	t.is(disabled.stdout, 'Force = false');
 
 	const help = await run(fixture, ['--help']);
 
