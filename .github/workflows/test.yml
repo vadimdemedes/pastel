@@ -11,4 +11,4 @@ jobs:
         with:
           node-version: 18
       - run: npm install
-      - run: npm test -- --serial
+      - run: npm test -- --serial --fail-fast --timeout=1m
