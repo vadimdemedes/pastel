@@ -16,7 +16,7 @@
 ## Install
 
 ```console
-npm install pastel
+npm install pastel ink react zod
 ```
 
 ## Geting started
