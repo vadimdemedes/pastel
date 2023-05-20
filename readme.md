@@ -49,7 +49,7 @@ npm install --save-dev typescript @sindresorhus/tsconfig
 		"module": "node16",
 		"outDir": "build",
 		"sourceMap": true,
-		"jsx": "react"
+		"tsx": "react"
 	},
 	"include": ["source"]
 }
@@ -170,6 +170,9 @@ Options:
     - [Number](#number-1)
     - [Enum](#enum-1)
 - [Custom app](#custom-app)
+- [Custom program name](#custom-program-name)
+- [Custom description](#custom-description)
+- [Custom version](#custom-version)
 
 ## Commands
 
@@ -862,3 +865,49 @@ export default function App({Component, commandProps}: AppProps) {
 ```
 
 You can copy paste that code into `commands/_app.tsx` and add some logic that will be shared across all commands.
+
+## Custom program name
+
+Pastel extracts a program name from the `name` field in the nearest `package.json` file. If it doesn't exist, a first argument in `process.argv` is used.
+
+When the name of an executable doesn't match the `name` in `package.json`, it can be customized via a `name` option during app initialization.
+
+```tsx
+import Pastel from 'pastel';
+
+const app = new Pastel({
+	name: 'custom-cli-name',
+});
+
+await app.run();
+```
+
+## Custom description
+
+Similar to program name, Pastel looks for a description in `description` field in the nearest `package.json` file. To customize it, use a `description` option when initializating Pastel.
+
+```tsx
+import Pastel from 'pastel';
+
+const app = new Pastel({
+	description: 'Custom description',
+});
+
+await app.run();
+```
+
+## Custom version
+
+Similar to program name and description, Pastel looks for a version in `version` field in the nearest `package.json` file. If Pastel can't find it, version will be hidden in the help message and `-v, --version` options won't be available.
+
+To customize it, use a `version` option during app initialization.
+
+```tsx
+import Pastel from 'pastel';
+
+const app = new Pastel({
+	version: '1.0.0
+});
+
+await app.run()
+```
