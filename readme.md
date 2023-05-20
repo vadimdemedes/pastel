@@ -21,6 +21,13 @@ npm install pastel
 
 ## Geting started
 
+Use [create-pastel-app](https://github.com/vadimdemedes/create-pastel-app) to quickly scaffold a Pastel app with TypeScript, linter and tests set up.
+
+```console
+npm create pastel-app hello-world
+hello-world
+```
+
 <details><summary>Manual setup</summary>
 <p>
 

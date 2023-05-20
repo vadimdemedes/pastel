@@ -39,7 +39,7 @@ const readCommands = async (
 			continue;
 		}
 
-		if (!/\.(js|ts)x?$/.test(file)) {
+		if (!/\.(js|ts)x?$/.test(file) || file.endsWith('.d.ts')) {
 			continue;
 		}
 
