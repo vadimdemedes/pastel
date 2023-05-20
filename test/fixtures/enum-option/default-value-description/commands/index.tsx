@@ -4,7 +4,7 @@ import zod from 'zod';
 import {option} from '../../../../../source/index.js';
 
 export const options = zod.object({
-	os: z
+	os: zod
 		.enum(['Ubuntu', 'Debian'])
 		.default('Ubuntu')
 		.describe(

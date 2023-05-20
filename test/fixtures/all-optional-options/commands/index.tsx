@@ -2,7 +2,7 @@ import React from 'react';
 import {Text} from 'ink';
 import zod from 'zod';
 
-export const options = z
+export const options = zod
 	.object({
 		name: zod.string().describe('Name'),
 	})

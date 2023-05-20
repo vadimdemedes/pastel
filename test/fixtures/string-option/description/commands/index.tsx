@@ -4,7 +4,7 @@ import zod from 'zod';
 import {option} from '../../../../../source/index.js';
 
 export const options = zod.object({
-	name: z
+	name: zod
 		.string()
 		.regex(/[a-z]+/i, {
 			message: 'Invalid value',

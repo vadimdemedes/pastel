@@ -3,7 +3,7 @@ import {Text} from 'ink';
 import zod from 'zod';
 
 export const options = zod.object({
-	tag: z
+	tag: zod
 		.set(zod.string())
 		.default(new Set(['A', 'B']))
 		.describe('Tags'),

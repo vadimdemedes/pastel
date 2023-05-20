@@ -4,7 +4,7 @@ import zod from 'zod';
 import {option} from '../../../../../source/index.js';
 
 export const options = zod.object({
-	tag: z
+	tag: zod
 		.set(zod.string())
 		.default(new Set(['A', 'B']))
 		.describe(

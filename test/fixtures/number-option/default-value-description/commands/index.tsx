@@ -4,7 +4,7 @@ import zod from 'zod';
 import {option} from '../../../../../source/index.js';
 
 export const options = zod.object({
-	size: z
+	size: zod
 		.number()
 		.default(128)
 		.describe(

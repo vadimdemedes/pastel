@@ -3,7 +3,7 @@ import {Text} from 'ink';
 import zod from 'zod';
 import {argument} from '../../../../../source/index.js';
 
-export const args = z
+export const args = zod
 	.array(zod.enum(['macOS', 'Ubuntu', 'Debian', 'Windows']))
 	.default(['macOS', 'Windows'])
 	.describe(

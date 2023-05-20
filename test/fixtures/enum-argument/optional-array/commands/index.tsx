@@ -2,7 +2,7 @@ import React from 'react';
 import {Text} from 'ink';
 import zod from 'zod';
 
-export const args = z
+export const args = zod
 	.array(zod.enum(['Ubuntu', 'Debian']))
 	.optional()
 	.describe('os');

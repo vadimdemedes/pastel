@@ -4,7 +4,7 @@ import zod from 'zod';
 import {argument} from '../../../../../source/index.js';
 
 export const args = zod.tuple([
-	z
+	zod
 		.number()
 		.optional()
 		.describe(
@@ -13,7 +13,7 @@ export const args = zod.tuple([
 				description: 'First',
 			}),
 		),
-	z
+	zod
 		.number()
 		.default(256)
 		.describe(

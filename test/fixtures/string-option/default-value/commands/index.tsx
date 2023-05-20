@@ -3,7 +3,7 @@ import {Text} from 'ink';
 import zod from 'zod';
 
 export const options = zod.object({
-	name: z
+	name: zod
 		.string()
 		.regex(/[a-z]+/i, {
 			message: 'Invalid value',

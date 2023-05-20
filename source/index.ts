@@ -34,6 +34,9 @@ export type Options = {
 export default class Pastel {
 	constructor(private readonly options: Options) {}
 
+	/**
+	 * Run the app.
+	 */
 	async run(argv: string[] = process.argv) {
 		const commandsDirectory = fileURLToPath(
 			new URL('commands', this.options.importMeta.url),
@@ -76,10 +79,16 @@ export default class Pastel {
 	}
 }
 
+/**
+ * Set additional metadata for an option. Must be used as an argument to `describe` function from Zod.
+ */
 export function option(config: CommandOptionConfig) {
 	return `__pastel_option_config__${JSON.stringify(config)}`;
 }
 
+/**
+ * Set additional metadata for an argument. Must be used as an argument to `describe` function from Zod.
+ */
 export function argument(config: CommandArgumentConfig) {
 	return `__pastel_argument_config__${JSON.stringify(config)}`;
 }

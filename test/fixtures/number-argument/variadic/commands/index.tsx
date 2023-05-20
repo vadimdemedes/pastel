@@ -2,7 +2,7 @@ import React from 'react';
 import {Text} from 'ink';
 import zod from 'zod';
 
-export const args = z
+export const args = zod
 	.tuple([zod.number().describe('first'), zod.number().describe('second')])
 	.rest(zod.number().describe('rest'));
 

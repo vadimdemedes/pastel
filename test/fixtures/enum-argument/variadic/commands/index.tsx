@@ -4,7 +4,7 @@ import zod from 'zod';
 
 const os = zod.enum(['macOS', 'Ubuntu', 'Debian', 'Windows']);
 
-export const args = z
+export const args = zod
 	.tuple([os.describe('first'), os.describe('second')])
 	.rest(os.describe('rest'));
 

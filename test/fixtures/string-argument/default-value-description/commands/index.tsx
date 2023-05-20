@@ -4,7 +4,7 @@ import zod from 'zod';
 import {argument} from '../../../../../source/index.js';
 
 export const args = zod.tuple([
-	z
+	zod
 		.string()
 		.optional()
 		.describe(
@@ -13,7 +13,7 @@ export const args = zod.tuple([
 				description: 'Name',
 			}),
 		),
-	z
+	zod
 		.string()
 		.default('Hopper')
 		.describe(

@@ -3,7 +3,7 @@ import {Text} from 'ink';
 import zod from 'zod';
 
 export const options = zod.object({
-	os: z
+	os: zod
 		.enum(['Ubuntu', 'Debian'])
 		.default('Ubuntu')
 		.describe('Operating system'),
