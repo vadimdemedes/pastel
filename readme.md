@@ -146,6 +146,31 @@ Options:
 
 </p></details>
 
+## Table of contents
+
+- [Commands](#commands)
+  - [Index commands](#index-commands)
+  - [Default commands](#default-commands)
+  - [Subcommands](#subcommands)
+  - [Aliases](#aliases)
+- [Options](#options)
+  - [Types](#types)
+    - [String](#string)
+    - [Number](#number)
+    - [Boolean](#boolean)
+    - [Enum](#enum)
+    - [Array](#array)
+    - [Set](#set)
+  - [Optional or required options](#optional-or-required-options)
+  - [Default value](#default-value)
+  - [Alias](#alias)
+- [Arguments](#arguments)
+  - [Types](#types-1)
+    - [String](#string-1)
+    - [Number](#number-1)
+    - [Enum](#enum-1)
+- [Custom app](#custom-app)
+
 ## Commands
 
 Pastel treats every file in the `commands` folder as a command, where filename is a command's name (excluding the extension). Files are expected to export a React component, which will be rendered when command is executed.
