@@ -1,522 +1,347 @@
-<h1 align="center">
-	<br>
-	<br>
-	<img width="300" alt="Pastel" src="media/logo.png">
-	<br>
-	<br>
-	<br>
-</h1>
+[![](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://github.com/vshymanskyy/StandWithUkraine/blob/main/docs/README.md)
 
-[![Build Status](https://travis-ci.org/vadimdemedes/pastel.svg?branch=master)](https://travis-ci.org/vadimdemedes/pastel)
+# Pastel [![test](https://github.com/vadimdemedes/pastel/actions/workflows/test.yml/badge.svg)](https://github.com/vadimdemedes/pastel/actions/workflows/test.yml)
 
-> Framework for effortlessly building [Ink](https://github.com/vadimdemedes/ink) apps inspired by [Ronin](https://github.com/vadimdemedes/ronin) and ZEIT's [Next](https://github.com/zeit/next.js)
+> Next.js-like framework for CLIs made with [Ink](https://github.com/vadimdemedes/ink).
 
+## Features
+
+- Create files in `commands` folder to add commands.
+- Create folders in `commands` to add subcommands.
+- Define options and arguments via [Zod](https://zod.dev).
+- Full type-safety of options and arguments thanks to Zod.
+- Auto-generated help message for commands, options and arguments.
+- Uses battle-tested [Commander](https://github.com/tj/commander.js) package under the hood.
 
 ## Install
 
-```bash
-$ npm install pastel ink react prop-types
+```console
+npm install pastel
 ```
 
+## Geting started
 
-## Get Started
+<details><summary>Manual setup</summary>
+<p>
 
-Pastel's API is a filesystem and React's `propTypes`.
-Each file in `commands` folder is a separate command.
-If you need to set up nested commands, you can create sub-folders and put these commands inside.
+1. Set up a new project.
 
-**Tip**: Want to skip the boring stuff and get straight to building a cool CLI? Use [create-pastel-app](https://github.com/vadimdemedes/create-pastel-app) to quickly scaffold out a Pastel app.
+```console
+mkdir hello-world
+cd hello-world
+npm init --yes
+```
 
-First, create a `package.json` with the following contents:
+2. Install Pastel and TypeScript.
+
+```console
+npm install pastel
+npm install --save-dev typescript @sindresorhus/tsconfig
+```
+
+3. Create a `tsconfig.json` file to set up TypeScript.
 
 ```json
 {
-	"name": "hello-person",
-	"bin": "./build/cli.js",
-	"scripts": {
-		"build": "pastel build",
-		"dev": "pastel dev",
-		"prepare": "pastel build"
-	}
-}
-```
-
-After that, install Pastel and its dependencies:
-
-```bash
-$ npm install pastel ink react prop-types
-```
-
-Then create a `commands` folder:
-
-```bash
-$ mkdir commands
-```
-
-Then you can start creating commands in that folder. Let's create a main command, which has to be named `index.js` at `commands/index.js`:
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-/// This is my command description
-const HelloPerson = ({name}) => <Text>Hello, {name}</Text>;
-
-HelloPerson.propTypes = {
-	/// This is "name" option description
-	name: PropTypes.string.isRequired
-};
-
-export default HelloPerson;
-```
-
-Note that React's `propTypes` are translated into options that are accepted by your CLI.
-
-Finally, last step is to build your CLI:
-
-```bash
-$ npm run dev
-```
-
-This command will link your CLI, which will make `hello-person` (which is the name we picked in `package.json`) executable available globally.
-It will also watch for any changes and rebuild your application.
-
-Now is the time to test your CLI!
-
-```bash
-$ hello-person --name=Millie
-Hello, Millie
-```
-
-Pastel also generates a help message automatically:
-
-```bash
-$ hello-person --help
-hello-person
-
-This is my command description
-
-Options:
-
-	--name  This is "name" option description       [boolean]
-```
-
-Did you notice that command and option descriptions are parsed from JavaScript comments as well? Neat!
-If you found Pastel interesting, keep reading to see what else it can do!
-
-
-## Documentation
-
-- [Commands](#commands)
-- [Options](#options)
-	- [Naming](#naming)
-	- [Descriptions](#descriptions)
-	- [Default values](#default-values)
-	- [Short flags](#short-flags)
-	- [Aliases](#aliases)
-- [Arguments](#arguments)
-	- [Positional arguments](#positional-arguments)
-- [Distribution](#distribution)
-
-### Commands
-
-Each file in `commands` folder is a command. For example, if you need a main (or index), `create` and `delete` commands, simply create `index.js`, `create.js` and `delete.js` files like that:
-
-```
-commands/
-	- index.js
-	- create.js
-	- delete.js
-```
-
-If you need nested commands, simply create sub-folders and put the files inside:
-
-```
-commands/
-	- index.js
-	- posts/
-		- index.js
-		- create.js
-		- update.js
-```
-
-This will generate 4 commands:
-
-- `my-cli` (`index.js`)
-- `my-cli posts` (`posts/index.js`)
-- `my-cli posts create` (`posts/create.js`)
-- `my-cli posts update` (`posts/update.js`)
-
-Each command must export a React command for rendering that command. For example:
-
-```jsx
-import React from 'react';
-import {Text} from 'ink';
-
-const HelloWorld = () => <Text>Hello World</Text>;
-
-export default HelloWorld;
-```
-
-### Options
-
-To accept options in your command, simply define the `propTypes` of your command's React component.
-Pastel scans each command and determines which `propTypes` are set.
-Then it adds them to the list of accepted options of your command and to help message of your CLI (`--help`).
-
-For example, here's how to accept a `name` option:
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-const Hello = ({name}) => <Text>Hello, {name}</Text>;
-
-Hello.propTypes = {
-	name: PropTypes.string.isRequired
-};
-
-export default Hello;
-```
-
-Assuming this is an `index.js` command and your CLI is named `hello`, you can execute this command like this:
-
-```bash
-$ hello --name=Millie
-Hello, Millie
-```
-
-Beautiful, isn't it?
-
-Pastel supports the following `propTypes`:
-
-- `string`
-- `bool`
-- `number`
-- `array`
-
-#### Naming
-
-Options that are named with a single word (e.g. `name`, `force`, `verbose`) aren't modified in any way.
-However, there are cases where you need longer names like `--project-id` and variables that have dashes in their name aren't supported in JavaScript.
-Pastel has an elegant solution for this!
-Just name your option `projectId` (camelCase) and Pastel will define it as `--project-id` option in your CLI.
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-const ListMembers = ({projectId}) => /* JSX */;
-
-ListMembers.propTypes = {
-	projectId: PropTypes.string.isRequired
-};
-
-export default ListMembers;
-```
-
-```bash
-$ list-members --project-id=abc
-```
-
-#### Descriptions
-
-Pastel also offers a zero-API way of adding description to your commands and options.
-Simply add a comment that starts with 3 slashes (`///`) above the command or option you want to describe and Pastel will automatically parse it.
-For example, here's how to add a description to your command:
-
-```jsx
-/// List all members in the project
-const ListMembers = ({projectId}) => <JSX/>;
-```
-
-And here's how to document your options:
-
-```jsx
-ListMembers.propTypes = {
-	/// ID of the project
-	projectId: PropTypes.string
-};
-```
-
-When you run that command with a `--help` flag, here's the help message that will be generated:
-
-```bash
-$ list-members --help
-
-List all members in the project
-
-Options:
-
-	--project-id  ID of the project          [string]
-```
-
-#### Default values
-
-There's no API for defining default values either.
-Just set the desired default values in `defaultProps` property for each option and Pastel will take care of the rest.
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-const Hello = ({name}) => <Text>Hello, {name}</Text>;
-
-Hello.propTypes = {
-	name: PropTypes.string
-};
-
-Hello.defaultProps = {
-	name: 'Katy'
-};
-
-export default Hello;
-```
-
-```
-$ hello
-Hello, Katy
-```
-
-#### Short flags
-
-Options can often be set with a shorter version of their name, using short flags.
-Most popular example is `--force` option. Most CLIs also accept `-f` as a shorter version of the same option.
-To achieve the same functionality in Pastel, you can set `shortFlags` property and define short equivalents of option names:
-
-```jsx
-ImportantCommand.propTypes = {
-	force: PropTypes.bool
-};
-
-ImportantCommand.shortFlags = {
-	force: 'f'
-};
-```
-
-Then you will be able to pass `-f` instead of `--force`:
-
-```
-$ important-command -f
-```
-
-#### Aliases
-
-Aliases work the same way as short flags, but they have a different purpose.
-Most likely you will need aliases to rename some option you want to deprecate.
-For example, if your CLI previously accepted `--group`, but you've decided to rename it to `--team`, aliases will come handy:
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-const ListMembers = ({team}) => /* JSX */;
-
-ListMembers.propTypes = {
-	team: PropTypes.string.isRequired
-};
-
-ListMembers.aliases = {
-	team: 'group'
-};
-
-export default ListMembers;
-```
-
-Both of these commands will produce the same output:
-
-```bash
-$ list-members --team=rockstars
-$ list-members --group=rockstars
-```
-
-You can also set multiple aliases per option by passing an array:
-
-```jsx
-ListMembers.aliases = {
-	team: ['group', 'squad']
-};
-```
-
-### Arguments
-
-First of all, let's clarify that arguments are different than options.
-They're not prefixed with `--` or `-` and passed to your CLI like this:
-
-```bash
-$ my-beautiful-cli first second third
-```
-
-There can be any amount of such arguments, so we can't and shouldn't define a prop type for each of them.
-Instead, Pastel reserves `inputArgs` prop to pass these arguments to your command:
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-const MyCli = ({inputArgs}) => (
-	<Text>
-		First argument is "{inputArgs[0]}" and second is "{inputArgs[1]}"
-	</Text>
-);
-
-MyCli.propTypes = {
-	inputArgs: PropTypes.array
-};
-
-export default MyCli;
-```
-
-If you run this command like this:
-
-```bash
-$ my-cli Jane Hopper
-```
-
-You will see the following output:
-
-```
-First argument is "Jane" and second is "Hopper"
-```
-
-#### Positional arguments
-
-If you check out the example from the section above, you'll see that accessing arguments via index in `inputArgs` may not be convenient.
-`inputArgs` works great for cases where you can't predict the amount of arguments.
-But if you do know that user can pass 2 arguments, for example, then you can take advantage of positional arguments.
-Positional arguments are specified the same way as regular arguments, only each of them can be assigned to a different prop.
-So if you take a look at the example above, we know that first argument is the first name and second argument is last name.
-Here's how to define that in Pastel:
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-const MyCli = ({firstName, lastName}) => (
-	<Text>
-		First argument is "{firstName}" and second is "{lastName}"
-	</Text>
-);
-
-MyCli.propTypes = {
-	firstName: PropTypes.string,
-	lastName: PropTypes.string
-};
-
-MyCli.positionalArgs = ['firstName', 'lastName'];
-
-export default MyCli;
-```
-
-Nothing changes the way you execute this command:
-
-```bash
-$ my-cli Jane Hopper
-First argument is "Jane" and second is "Hopper"
-```
-
-The order of the fields in `positionalArgs` will be respected. Optional arguments need to appear after required ones.
-If you want to collect an arbitrary amount of arguments you can define a variadic argument by giving it the array type.
-Variadic arguments need to always be last and will capture all the remaining arguments.
-
-```jsx
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Text} from 'ink';
-
-const DownloadCommand = ({urls}) => (
-	<Text>
-		Downloading {urls.length} urls
-	</Text>
-);
-
-DownloadCommand.propTypes = {
-	urls: PropTypes.array
-};
-
-DownloadCommand.positionalArgs = ['urls'];
-
-export default DownloadCommand;
-```
-
-```bash
-$ my-cli download https://some/url https://some/other/url
-Downloading 2 urls
-```
-
-Positional arguments also support aliases, but only one per argument. The rest will be ignored.
-
-### TypeScript
-
-Pastel supports TypeScript by simply renaming a command file and giving it the `.tsx` extension. A `tsconfig.json` will be generated for you.
-
-If you want to define your own, make sure it contains the following:
-
-```json
-{
+	"extends": "@sindresorhus/tsconfig",
 	"compilerOptions": {
+		"moduleResolution": "node16",
+		"module": "node16",
+		"outDir": "build",
+		"sourceMap": true,
 		"jsx": "react"
-	}
-}
-```
-
-### Distribution
-
-Since Pastel compiles your application, the final source code of your CLI is generated in the `build` folder.
-I recommend adding this folder to `.gitignore` to prevent committing it to your repository.
-Also, to make sure you're shipping the latest and working version of the CLI when publishing your package on npm, add `prepare` script to `package.json`, which runs `pastel build`.
-
-```json
-{
-	"scripts": {
-		"prepare": "pastel build"
-	}
-}
-```
-
-This will always build your application before publishing.
-Another important part is including `build` folder in the npm package by adding it to `files` field (if you're using it):
-
-```json
-{
-	"files": [
-		"build"
-	]
-}
-```
-
-And last but not least, `bin` field.
-This is the field which tells npm that your package contains a CLI and to ensure Pastel is working correctly, you must set it to `./build/cli.js`:
-
-```json
-{
-	"bin": "./build/cli.js"
-}
-```
-
-To sum up, here's the required fields together:
-
-```json
-{
-	"name": "my-cli",
-	"bin": "./build/cli.js",
-	"scripts": {
-		"prepare": "pastel build"
 	},
-	"files": [
-		"build"
-	]
+	"include": ["source"]
 }
 ```
 
+4. Create a `source` folder for the source code.
 
-## License
+```console
+mkdir source
+```
 
-MIT © [Vadim Demedes](https://github.com/vadimdemedes/pastel)
+5. Create a `source/cli.ts` file with the following code, which will be CLI's entrypoint:
+
+```js
+#!/usr/bin/env node
+import Pastel from 'pastel';
+
+const app = new Pastel({
+	importMeta: import.meta,
+});
+
+await app.run();
+```
+
+6. Create `source/commands` folder for defining CLI's commands.
+
+```console
+mkdir source/commands
+```
+
+7. Create an `source/commands/index.tsx` file for a default command, with the following code:
+
+```tsx
+import React from 'react';
+import {Text} from 'ink';
+import {z as zod} from 'zod';
+
+export const options = zod.object({
+	name: zod.string().desc('Your name'),
+});
+
+type Props = {
+	options: zod.infer<typeof options>;
+};
+
+export default function Index({options}) {
+	return <Text>Hello, {options.name}!</Text>;
+}
+```
+
+8. Build your CLI.
+
+```console
+npx tsc
+```
+
+9. Set up an executable file.
+
+9.1. Add `bin` field to `package.json`, which points to the compiled version of `source/cli.ts` file.
+
+```diff
+	"bin": "build/cli.js"
+```
+
+9.2. Make your CLI available globally.
+
+```console
+npm link --global
+```
+
+10. Run your CLI.
+
+```console
+hello-world --name=Jane
+```
+
+```
+Hello, Jane!
+```
+
+```console
+hello-world --help
+```
+
+```
+Usage: hello-world [options]
+
+Options:
+  --name         Your name
+  -v, --version  Show version number
+  -h, --help     Show help
+
+```
+
+</p></details>
+
+## Commands
+
+Pastel treats every file in the `commands` folder as a command, where filename is a command's name (excluding the extension). Files are expected to export a React component, which will be rendered when command is executed.
+
+You can also nest files in folders to create subcommands.
+
+Here's an example, which defines `login` and `logout` commands:
+
+```
+commands/
+	login.tsx
+	logout.tsx
+```
+
+**login.tsx**
+
+```tsx
+import React from 'react';
+import {Text} from 'ink';
+
+export default function Login() {
+	return <Text>Logging in</Text>;
+}
+```
+
+**logout.tsx**
+
+```tsx
+import React from 'react';
+import {Text} from 'ink';
+
+export default function Logout() {
+	return <Text>Logging out</Text>;
+}
+```
+
+Given that your executable is named `my-cli`, you can execute these commands like so:
+
+```
+$ my-cli login
+$ my-cli logout
+```
+
+### Index commands
+
+Files named `index.tsx` are index commands. They will be executed by default, when no other command isn't specified.
+
+```
+commands/
+	index.tsx
+	login.tsx
+	logout.tsx
+```
+
+Running `my-cli` without a command name will execute `index.tsx` command.
+
+```
+$ my-cli
+```
+
+Index command is useful when you're building a single-purpose CLI, which has only one command. For example, [`np`](https://github.com/sindresorhus/np) or [fast-cli](https://github.com/sindresorhus/fast-cli).
+
+### Default commands
+
+Default commands are similar to index commands, because they too will be executed when an explicit command isn't specified. The difference is default commands still have a name, just like any other command, and they'll show up in the help message.
+
+Default commands are useful for creating shortcuts to commands that are used most often.
+
+Let's say there are 3 commands available: `deploy`, `login` and `logout`.
+
+```
+commands/
+	deploy.tsx
+	login.tsx
+	logout.tsx
+```
+
+Each of them can be executed by typing their name.
+
+```
+$ my-cli deploy
+$ my-cli login
+$ my-cli logout
+```
+
+Chances are, `deploy` command is going to be used a lot more frequently than `login` and `logout`, so it makes sense to make `deploy` a default command in this CLI.
+
+Export a variable named `isDefault` from the command file and set it to `true` to mark that command as a default one.
+
+```diff
+import React from 'react';
+import {Text} from 'ink';
+
++ export const isDefault = true;
+
+export default function Deploy() {
+	return <Text>Deploying...</Text>;
+}
+```
+
+Now, running `my-cli` or `my-cli deploy` will execute a `deploy` command.
+
+```
+$ my-cli
+```
+
+[Vercel's CLI](https://github.com/vercel/vercel/tree/main/packages/cli) is a real-world example of this approach, where both `vercel` and `vercel deploy` trigger a new deploy of your project.
+
+### Subcommands
+
+As your CLI grows and more commands are added, it makes sense to group the related commands together.
+
+To do that, create nested folders in `commands` folder and put the relevant commands inside to create subcommands. Here's an example for a CLI that triggers deploys and manages domains for your project:
+
+```
+commands/
+	deploy.tsx
+	login.tsx
+	logout.tsx
+	domains/
+		list.tsx
+		add.tsx
+		remove.tsx
+```
+
+Commands for managing domains would be executed like so:
+
+```
+$ my-cli domains list
+$ my-cli domains add
+$ my-cli domains remove
+```
+
+Subcommands can even be deeply nested within many folders.
+
+### Aliases
+
+Commands can have an alias, which is usually a shorter alternative name for the same command. Power users prefer aliases instead of full names for commands they use often. For example, most users type `npm i` instead of `npm install`.
+
+Any command in Pastel can assign an alias by exporting a variable named `alias`:
+
+```diff
+import React from 'react';
+import {Text} from 'ink';
+
++ export const alias = 'i';
+
+export default function Install() {
+	return <Text>Installing something...</Text>;
+}
+```
+
+Now the same `install` command can be executed by only typing `i`:
+
+```
+$ my-cli i
+```
+
+## Options
+
+### Types
+
+#### String
+
+#### Number
+
+#### Boolean
+
+#### Enum
+
+#### Array
+
+#### Enum
+
+### Optional or required options
+
+### Default value
+
+### Alias
+
+###
+
+## Arguments
+
+### Types
+
+#### String
+
+#### Number
+
+#### Enum
+
+### Optional or required arguments
+
+### Default value
+
+### Variadic arguments
+
+## Custom app
