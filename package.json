@@ -65,6 +65,7 @@
 		"zod": "^3.21.4"
 	},
 	"ava": {
+		"concurrency": 1,
 		"extensions": {
 			"ts": "module",
 			"tsx": "module"

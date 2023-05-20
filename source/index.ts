@@ -5,7 +5,7 @@ import {readPackageUp} from 'read-pkg-up';
 import generateCommand from './generate-command.js';
 import readCommands from './read-commands.js';
 import generateCommands from './generate-commands.js';
-import App from './app.js';
+import App from './_app.js';
 import readCustomApp from './read-custom-app.js';
 import type {CommandArgumentConfig, CommandOptionConfig} from './types.js';
 
