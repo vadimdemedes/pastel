@@ -1,15 +1,15 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 
 export const options = z
 	.object({
-		name: z.string().describe('Name'),
+		name: zod.string().describe('Name'),
 	})
 	.partial();
 
 type Props = {
-	options: z.infer<typeof options>;
+	options: zod.infer<typeof options>;
 };
 
 export default function Index({options}: Props) {

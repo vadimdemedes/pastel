@@ -67,20 +67,20 @@ export default function generateOptions(
 		let valueDescription = getValueDescription(optionSchema.description);
 		let isOptional = isOptionalByDefault;
 
-		// Unwrap z.string().optional()
+		// Unwrap zod.string().optional()
 		if (optionSchema instanceof ZodOptional) {
 			isOptional = true;
 			optionSchema = optionSchema._def.innerType;
 		}
 
-		// Unwrap z.string().optional().default()
+		// Unwrap zod.string().optional().default()
 		if (optionSchema instanceof ZodDefault) {
 			isOptional = true;
 			defaultValue = optionSchema._def.defaultValue();
 			optionSchema = optionSchema._def.innerType;
 		}
 
-		// Unwrap z.string().default().optional()
+		// Unwrap zod.string().default().optional()
 		if (optionSchema instanceof ZodOptional) {
 			isOptional = true;
 			optionSchema = optionSchema._def.innerType;

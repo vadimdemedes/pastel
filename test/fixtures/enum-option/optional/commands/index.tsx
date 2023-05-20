@@ -1,13 +1,13 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 
-export const options = z.object({
-	os: z.enum(['Ubuntu', 'Debian']).optional().describe('Operating system'),
+export const options = zod.object({
+	os: zod.enum(['Ubuntu', 'Debian']).optional().describe('Operating system'),
 });
 
 type Props = {
-	options: z.infer<typeof options>;
+	options: zod.infer<typeof options>;
 };
 
 export default function Index({options}: Props) {

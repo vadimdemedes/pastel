@@ -1,16 +1,16 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 
-const os = z.enum(['Ubuntu', 'Debian']);
+const os = zod.enum(['Ubuntu', 'Debian']);
 
-export const args = z.tuple([
+export const args = zod.tuple([
 	os.optional().describe('first'),
 	os.default('Debian').describe('second'),
 ]);
 
 type Props = {
-	args: z.infer<typeof args>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {

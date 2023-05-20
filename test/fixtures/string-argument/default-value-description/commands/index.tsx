@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 import {argument} from '../../../../../source/index.js';
 
-export const args = z.tuple([
+export const args = zod.tuple([
 	z
 		.string()
 		.optional()
@@ -26,7 +26,7 @@ export const args = z.tuple([
 ]);
 
 type Props = {
-	args: z.infer<typeof args>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {

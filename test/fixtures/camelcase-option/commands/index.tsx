@@ -1,13 +1,13 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 
-export const options = z.object({
-	firstName: z.string().describe('Name'),
+export const options = zod.object({
+	firstName: zod.string().describe('Name'),
 });
 
 type Props = {
-	options: z.infer<typeof options>;
+	options: zod.infer<typeof options>;
 };
 
 export default function Index({options}: Props) {

@@ -1,13 +1,13 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 
 export const args = z
-	.tuple([z.string().describe('name'), z.string().describe('surname')])
-	.rest(z.string().describe('traits'));
+	.tuple([zod.string().describe('name'), zod.string().describe('surname')])
+	.rest(zod.string().describe('traits'));
 
 type Props = {
-	args: z.infer<typeof args>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {

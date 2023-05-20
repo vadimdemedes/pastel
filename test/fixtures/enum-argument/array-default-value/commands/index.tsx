@@ -1,14 +1,14 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 
 export const args = z
-	.array(z.enum(['macOS', 'Ubuntu', 'Debian', 'Windows']))
+	.array(zod.enum(['macOS', 'Ubuntu', 'Debian', 'Windows']))
 	.default(['macOS', 'Windows'])
 	.describe('os');
 
 type Props = {
-	args: z.infer<typeof args>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {

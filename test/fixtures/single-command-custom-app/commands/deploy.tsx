@@ -1,16 +1,16 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 
 export const isDefault = true;
 export const description = 'Deploy command';
 
-export const options = z.object({
-	name: z.string().describe('Name'),
+export const options = zod.object({
+	name: zod.string().describe('Name'),
 });
 
 type Props = {
-	options: z.infer<typeof options>;
+	options: zod.infer<typeof options>;
 };
 
 export default function Deploy({options}: Props) {

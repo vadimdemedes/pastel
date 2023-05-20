@@ -85,7 +85,7 @@ mkdir source/commands
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	name: zod.string().describe('Your name'),
@@ -339,7 +339,7 @@ Pastel uses [Zod](https://zod.dev) to define, parse and validate command options
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	name: zod.string().describe('Server name'),
@@ -395,7 +395,7 @@ Example that defines a `--name` string option:
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	name: zod.string().describe('Your name'),
@@ -422,7 +422,7 @@ Example that defines a `--size` number option:
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	age: zod.number().describe('Your age'),
@@ -449,7 +449,7 @@ Example that defines a `--compress` number option:
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	compress: zod.boolean().describe('Compress output'),
@@ -476,7 +476,7 @@ When boolean option defaults to `true`, it's treated as a negated option, which 
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	compress: zod.boolean().default(true).describe("Don't compress output"),
@@ -503,7 +503,7 @@ Example that defines an `--os` enum option with a set of allowed values.
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	os: zod.enum(['Ubuntu', 'Debian']).describe('Operating system'),
@@ -536,7 +536,7 @@ Example that defines a `--tag` array option, which can be specified multiple tim
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	tag: zod.array(zod.string()).describe('Tags'),
@@ -565,7 +565,7 @@ Example that defines a `--tag` set option, which can be specified multiple times
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	tag: zod.set(zod.string()).describe('Tags'),
@@ -596,7 +596,7 @@ If an option isn't be required for a command to function properly, mark it as op
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	os: zod.enum(['Ubuntu', 'Debian']).optional().describe('Operating system'),
@@ -626,7 +626,7 @@ Default value for an option can be set via a `default` function in Zod schema.
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 
 export const options = zod.object({
 	os: zod
@@ -656,7 +656,7 @@ Options can specify an alias, which is usually the first letter of an original o
 ```tsx
 import React from 'react';
 import {Text} from 'ink';
-import {z as zod} from 'zod';
+import zod from 'zod';
 import {option} from 'pastel';
 
 export const options = zod.object({

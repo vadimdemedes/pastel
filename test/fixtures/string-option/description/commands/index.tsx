@@ -1,9 +1,9 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 import {option} from '../../../../../source/index.js';
 
-export const options = z.object({
+export const options = zod.object({
 	name: z
 		.string()
 		.regex(/[a-z]+/i, {
@@ -17,7 +17,7 @@ export const options = z.object({
 });
 
 type Props = {
-	options: z.infer<typeof options>;
+	options: zod.infer<typeof options>;
 };
 
 export default function Index({options}: Props) {

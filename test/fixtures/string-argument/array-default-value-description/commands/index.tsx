@@ -1,10 +1,10 @@
 import React from 'react';
 import {Text} from 'ink';
-import {z} from 'zod';
+import zod from 'zod';
 import {argument} from '../../../../../source/index.js';
 
 export const args = z
-	.array(z.string())
+	.array(zod.string())
 	.default(['Jane', 'Hopper'])
 	.describe(
 		argument({
@@ -15,7 +15,7 @@ export const args = z
 	);
 
 type Props = {
-	args: z.infer<typeof args>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {
