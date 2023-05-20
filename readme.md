@@ -180,6 +180,7 @@ Options:
 - [Custom program name](#custom-program-name)
 - [Custom description](#custom-description)
 - [Custom version](#custom-version)
+- [API](#api)
 
 ## Commands
 
@@ -639,10 +640,7 @@ import {Text} from 'ink';
 import zod from 'zod';
 
 export const options = zod.object({
-	os: zod
-		.enum(['Ubuntu', 'Debian'])
-		.default('Ubuntu')
-		.describe('Operating system'),
+	size: zod.number().default(1024).describe('Memory size'),
 });
 
 type Props = {
@@ -650,13 +648,60 @@ type Props = {
 };
 
 export default function Example({options}) {
-	return <Text>Operating system = {options.os}</Text>;
+	return <Text>Memory = {options.size} MB</Text>;
 }
 ```
 
 ```
 $ my-cli
-Operating system = Ubuntu
+Memory size = 1024 MB
+```
+
+JSON representation of default value will be displayed in the help message.
+
+```
+$ my-cli --help
+Usage: my-cli [options]
+
+Options:
+  --size  Memory size (default: 1024)
+```
+
+You can also customize it via `defaultValueDescription` option in `option` helper function.
+
+```tsx
+import React from 'react';
+import {Text} from 'ink';
+import zod from 'zod';
+import {option} from 'pastel';
+
+export const options = zod.object({
+	size: zod
+		.number()
+		.default(1024)
+		.describe(
+			pastel({
+				description: 'Memory size',
+				defaultValueDescription: '1 GB',
+			}),
+		),
+});
+
+type Props = {
+	options: zod.infer<typeof options>;
+};
+
+export default function Example({options}) {
+	return <Text>Memory = {options.size} MB</Text>;
+}
+```
+
+```
+$ my-cli --help
+Usage: my-cli [options]
+
+Options:
+  --size  Memory size (default: 1 GB)
 ```
 
 ### Alias
@@ -858,6 +903,90 @@ $ my-cli Ubuntu
 Operating system = Ubuntu
 ```
 
+### Default value
+
+Default value for an argument can be via a `default` function in Zod schema.
+
+```tsx
+import React from 'react';
+import {Text} from 'ink';
+import zod from 'zod';
+import {argument} from 'pastel';
+
+export const args = zod.tuple([
+	zod
+		.number()
+		.default(1024)
+		.describe(
+			argument({
+				name: 'number',
+				description: 'Some number',
+			}),
+		),
+]);
+
+type Props = {
+	args: zod.infer<typeof arguments>;
+};
+
+export default function Example({args}: Props) {
+	return <Text>Some number = {args[0]}</Text>;
+}
+```
+
+```
+$ my-cli
+Some number = 1024
+```
+
+JSON representation of default value will be displayed in the help message.
+
+```
+$ my-cli --help
+Usage: my-cli [options] [number]
+
+Arguments:
+  number  Some number (default: 1024)
+```
+
+You can also customize it via `defaultValueDescription` option in `option` helper function.
+
+```tsx
+import React from 'react';
+import {Text} from 'ink';
+import zod from 'zod';
+import {argument} from 'pastel';
+
+export const args = zod.tuple([
+	zod
+		.number()
+		.default(1024)
+		.describe(
+			argument({
+				name: 'number',
+				description: 'Some number',
+				defaultValueDescription: '1,204',
+			}),
+		),
+]);
+
+type Props = {
+	args: zod.infer<typeof arguments>;
+};
+
+export default function Example({args}: Props) {
+	return <Text>Some number = {args[0]}</Text>;
+}
+```
+
+```
+$ my-cli --help
+Usage: my-cli [options] [number]
+
+Arguments:
+  number  Some number (default: 1,024)
+```
+
 ## Custom app
 
 Similar to Next.js, Pastel wraps every command component with a component exported from `commands/_app.tsx`. If this file doesn't exist, Pastel uses a default app component, which does nothing but render your component with `options` and `args` props.
@@ -918,3 +1047,107 @@ const app = new Pastel({
 
 await app.run()
 ```
+
+## API
+
+### Pastel(options)
+
+Initializes a Pastel app.
+
+#### options
+
+Type: `object`
+
+##### name
+
+Type: `string`
+
+Program name. Defaults to `name` in the nearest package.json or the name of the executable.
+
+##### version
+
+Type: `string`
+
+Version. Defaults to `version` in the nearest package.json.
+
+##### description
+
+Type: `string`
+
+Description. Defaults to `description` in the nearest package.json.
+
+##### importMeta
+
+Type: [`ImportMeta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta)
+
+Pass in [`import.meta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta). This is used to find the `commands` directory.
+
+#### run(argv)
+
+Parses the arguments and runs the app.
+
+##### argv
+
+Type: `Array`\
+Default: `process.argv`
+
+Program arguments.
+
+### option(config)
+
+Set additional metadata for an option. Must be used as an argument to `describe` function from Zod.
+
+#### config
+
+Type: `object`
+
+##### description
+
+Type: `string`
+
+Description. If description is missing, option won't appear in the "Options" section of the help message.
+
+##### defaultValueDescription
+
+Type: `string`
+
+Description of a default value.
+
+##### valueDescription
+
+Type: `string`
+
+Description of a value. Replaces "value" in `--flag <value>` in the help message.
+
+##### alias
+
+Type: `string`
+
+Alias. Usually a first letter of the full option name.
+
+### argument(config)
+
+Set additional metadata for an argument. Must be used as an argument to `describe` function from Zod.
+
+#### config
+
+Type: `object`
+
+##### name
+
+Type: `string`\
+Default: `'arg'`
+
+Argument's name. Displayed in "Usage" part of the help message. Doesn't affect how argument is parsed.
+
+##### description
+
+Type: `string`
+
+Description of an argument. If description is missing, argument won't appear in the "Arguments" section of the help message.
+
+##### defaultValueDescription
+
+Type: `string`
+
+Description of a default value.

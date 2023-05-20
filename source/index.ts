@@ -11,17 +11,17 @@ import type {CommandArgumentConfig, CommandOptionConfig} from './types.js';
 
 export type Options = {
 	/**
-	 * Program name. Defaults to the name of the executable.
+	 * Program name. Defaults to `name` in the nearest package.json or the name of the executable.
 	 */
 	name?: string;
 
 	/**
-	 * Version. Defaults to version found in the nearest package.json.
+	 * Version. Defaults to `version` in the nearest package.json.
 	 */
 	version?: string;
 
 	/**
-	 * Description. Defaults to description found in the nearest package.json.
+	 * Description. Defaults to `description` in the nearest package.json.
 	 */
 	description?: string;
 

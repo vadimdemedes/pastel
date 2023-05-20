@@ -42,7 +42,7 @@ export type CommandOptionConfig = {
 	defaultValueDescription?: string;
 
 	/**
-	 * Description of a value. Replaces "value" in `--flag <value>` in help message.
+	 * Description of a value. Replaces "value" in `--flag <value>` in the help message.
 	 *
 	 * @default "value"
 	 */
@@ -54,6 +54,9 @@ export type CommandOptionConfig = {
 	alias?: string;
 };
 
+/**
+ * Additional metadata for an argument.
+ */
 export type CommandArgumentConfig = {
 	/**
 	 * Argument's name. Displayed in "Usage" part of the help message. Doesn't affect how argument is parsed.
