@@ -102,7 +102,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Index({options}) {
+export default function Index({options}: Props) {
 	return <Text>Hello, {options.name}!</Text>;
 }
 ```
@@ -363,7 +363,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Deploy({options}) {
+export default function Deploy({options}: Props) {
 	return (
 		<Text>
 			Deploying a server named "{options.name}" running {options.os} with memory
@@ -416,7 +416,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Name = {options.name}</Text>;
 }
 ```
@@ -443,7 +443,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Age = {options.age}</Text>;
 }
 ```
@@ -470,7 +470,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Compress = {String(options.compress)}</Text>;
 }
 ```
@@ -497,7 +497,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Compress = {String(options.compress)}</Text>;
 }
 ```
@@ -524,7 +524,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Operating system = {options.os}</Text>;
 }
 ```
@@ -557,7 +557,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Tags = {options.tags.join(', ')}</Text>;
 }
 ```
@@ -586,7 +586,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Tags = {[...options.tags].join(', ')}</Text>;
 }
 ```
@@ -617,7 +617,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Operating system = {options.os ?? 'unspecified'}</Text>;
 }
 ```
@@ -647,7 +647,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Memory = {options.size} MB</Text>;
 }
 ```
@@ -691,7 +691,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Memory = {options.size} MB</Text>;
 }
 ```
@@ -727,7 +727,7 @@ type Props = {
 	options: zod.infer<typeof options>;
 };
 
-export default function Example({options}) {
+export default function Example({options}: Props) {
 	return <Text>Force = {String(options.force)}</Text>;
 }
 ```
