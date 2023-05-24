@@ -758,7 +758,7 @@ import zod from 'zod';
 export const args = zod.tuple([zod.string(), zod.string()]);
 
 type Props = {
-	args: zod.infer<typeof arguments>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Move({args}: Props) {
@@ -787,7 +787,7 @@ import zod from 'zod';
 export const args = zod.array(zod.string());
 
 type Props = {
-	args: zod.infer<typeof arguments>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Remove({args}: Props) {
@@ -824,7 +824,7 @@ export const args = zod.tuple([
 ]);
 
 type Props = {
-	args: zod.infer<typeof arguments>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Hello({args}: Props) {
@@ -857,7 +857,7 @@ export const args = zod.tuple([
 ]);
 
 type Props = {
-	args: zod.infer<typeof arguments>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Hello({args}: Props) {
@@ -890,7 +890,7 @@ export const args = zod.tuple([
 ]);
 
 type Props = {
-	args: zod.infer<typeof arguments>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Example({args}: Props) {
@@ -926,7 +926,7 @@ export const args = zod.tuple([
 ]);
 
 type Props = {
-	args: zod.infer<typeof arguments>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Example({args}: Props) {
@@ -971,7 +971,7 @@ export const args = zod.tuple([
 ]);
 
 type Props = {
-	args: zod.infer<typeof arguments>;
+	args: zod.infer<typeof args>;
 };
 
 export default function Example({args}: Props) {
