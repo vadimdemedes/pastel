@@ -1088,7 +1088,7 @@ Parses the arguments and runs the app.
 
 ##### argv
 
-Type: `Array`
+Type: `Array`\
 Default: `process.argv`
 
 Program arguments.
@@ -1135,7 +1135,7 @@ Type: `object`
 
 ##### name
 
-Type: `string`
+Type: `string`\
 Default: `'arg'`
 
 Argument's name. Displayed in "Usage" part of the help message. Doesn't affect how argument is parsed.
