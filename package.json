@@ -42,6 +42,7 @@
 	},
 	"devDependencies": {
 		"@sindresorhus/tsconfig": "^3.0.1",
+		"@types/node": "^20.3.0",
 		"@types/react": "^18.2.6",
 		"@types/yargs": "^17.0.24",
 		"@vdemedes/prettier-config": "^2.0.1",
