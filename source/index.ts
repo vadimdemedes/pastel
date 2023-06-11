@@ -32,6 +32,8 @@ export type Options = {
 };
 
 export default class Pastel {
+	private program: Command | undefined = undefined;
+
 	constructor(private readonly options: Options) {}
 
 	/**
@@ -76,6 +78,12 @@ export default class Pastel {
 		program.description(description);
 		program.helpOption('-h, --help', 'Show help');
 		program.parse(argv);
+
+		this.program = program;
+	}
+
+	getProgram() {
+		return this.program;
 	}
 }
 
