@@ -20,7 +20,8 @@
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc --watch",
-		"test": "tsc --noEmit && xo && ava"
+		"test": "tsc --noEmit && xo && ava",
+		"prepare": "tsc"
 	},
 	"files": [
 		"build"
