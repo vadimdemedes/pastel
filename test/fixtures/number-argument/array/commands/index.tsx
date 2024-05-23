@@ -5,7 +5,7 @@ import zod from 'zod';
 export const args = zod.array(zod.number()).describe('number');
 
 type Props = {
-	args: zod.infer<typeof args>;
+	readonly args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {
