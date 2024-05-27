@@ -11,7 +11,11 @@ export default async function run(
 	);
 
 	return execaNode(cliPath, args, {
-		nodeOptions: ['--loader', 'ts-node/esm'],
+		env: {
+			// eslint-disable-next-line @typescript-eslint/naming-convention
+			NODE_OPTIONS:
+				'--loader=ts-node/esm --experimental-specifier-resolution=node --no-warnings',
+		},
 		...options,
 	});
 }

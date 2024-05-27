@@ -20,7 +20,7 @@
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc --watch",
-		"test": "tsc --noEmit && xo && ava",
+		"test": "tsc --noEmit && xo && NODE_OPTIONS='--loader=ts-node/esm --experimental-specifier-resolution=node --no-warnings' ava",
 		"prepare": "tsc"
 	},
 	"files": [
@@ -70,9 +70,6 @@
 			"ts": "module",
 			"tsx": "module"
 		},
-		"nodeArguments": [
-			"--loader=ts-node/esm"
-		],
 		"environmentVariables": {
 			"NODE_NO_WARNINGS": "1"
 		}
