@@ -18,7 +18,7 @@ const getConfig = (
 	return value?.startsWith('__pastel_argument_config__')
 		? (JSON.parse(
 				value.replace('__pastel_argument_config__', ''),
-		  ) as CommandArgumentConfig)
+			) as CommandArgumentConfig)
 		: undefined;
 };
 
@@ -66,7 +66,7 @@ export default function generateArguments(
 		arrayName = argumentsSchema.description ?? arrayName;
 	}
 
-	const args: Argument[] = [];
+	const arguments_: Argument[] = [];
 
 	if (argumentsSchema instanceof ZodTuple) {
 		for (let argumentSchema of argumentsSchema._def.items) {
@@ -116,7 +116,7 @@ export default function generateArguments(
 				argument.default(defaultValue, defaultValueDescription);
 			}
 
-			args.push(argument);
+			arguments_.push(argument);
 		}
 
 		const restSchema = argumentsSchema._def.rest;
@@ -135,7 +135,7 @@ export default function generateArguments(
 				argument.choices(restSchema._def.values);
 			}
 
-			args.push(argument);
+			arguments_.push(argument);
 		}
 	}
 
@@ -164,8 +164,8 @@ export default function generateArguments(
 			});
 		}
 
-		args.push(argument);
+		arguments_.push(argument);
 	}
 
-	return args;
+	return arguments_;
 }

@@ -6,10 +6,10 @@ export const args = zod
 	.tuple([zod.string().describe('name'), zod.string().describe('surname')])
 	.rest(zod.string().describe('traits'));
 
-type Props = {
+type Properties = {
 	readonly args: zod.infer<typeof args>;
 };
 
-export default function Index({args}: Props) {
+export default function Index({args}: Properties) {
 	return <Text>Arguments = {args.join(', ')}</Text>;
 }

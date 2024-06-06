@@ -6,10 +6,10 @@ export const options = zod.object({
 	size: zod.number().optional().describe('Size'),
 });
 
-type Props = {
+type Properties = {
 	readonly options: zod.infer<typeof options>;
 };
 
-export default function Index({options}: Props) {
+export default function Index({options}: Properties) {
 	return <Text>Size = {options.size ?? -1}</Text>;
 }

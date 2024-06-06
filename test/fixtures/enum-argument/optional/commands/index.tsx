@@ -6,10 +6,10 @@ const os = zod.enum(['Ubuntu', 'Debian']).optional();
 
 export const args = zod.tuple([os.describe('first'), os.describe('second')]);
 
-type Props = {
+type Properties = {
 	readonly args: zod.infer<typeof args>;
 };
 
-export default function Index({args}: Props) {
+export default function Index({args}: Properties) {
 	return <Text>Arguments = {args.join(', ')}</Text>;
 }

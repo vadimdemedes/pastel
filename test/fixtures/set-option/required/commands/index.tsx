@@ -6,10 +6,10 @@ export const options = zod.object({
 	tag: zod.set(zod.string()).describe('Tags'),
 });
 
-type Props = {
+type Properties = {
 	readonly options: zod.infer<typeof options>;
 };
 
-export default function Index({options}: Props) {
+export default function Index({options}: Properties) {
 	return <Text>Tags = {[...options.tag].join(', ')}</Text>;
 }

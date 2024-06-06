@@ -4,7 +4,6 @@ import {render} from 'ink';
 import React, {type ComponentType} from 'react';
 import {StatusMessage} from '@inkjs/ui';
 import {fromZodError} from 'zod-validation-error';
-import flatten from 'just-flatten-it';
 import {type Command} from './internal-types.js';
 import generateOptions from './generate-options.js';
 import generateArguments from './generate-arguments.js';
@@ -40,9 +39,9 @@ const generateCommand = (
 	const argumentsSchema = pastelCommand.args;
 
 	if (argumentsSchema) {
-		const args = generateArguments(argumentsSchema);
+		const arguments_ = generateArguments(argumentsSchema);
 
-		for (const argument of args) {
+		for (const argument of arguments_) {
 			if (argument.variadic) {
 				hasVariadicArgument = true;
 			}
@@ -84,15 +83,15 @@ const generateCommand = (
 				}
 			}
 
-			let args: unknown[] = [];
+			let arguments_: unknown[] = [];
 
 			if (pastelCommand.args) {
 				const result = pastelCommand.args.safeParse(
-					hasVariadicArgument ? flatten(input) : input,
+					hasVariadicArgument ? input.flat() : input,
 				);
 
 				if (result.success) {
-					args = result.data ?? [];
+					arguments_ = result.data ?? [];
 				} else {
 					render(
 						<StatusMessage variant="error">
@@ -116,7 +115,7 @@ const generateCommand = (
 					Component: component,
 					commandProps: {
 						options: parsedOptions,
-						args,
+						args: arguments_,
 					},
 				}),
 			);

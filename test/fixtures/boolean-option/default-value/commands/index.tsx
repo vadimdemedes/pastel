@@ -6,10 +6,10 @@ export const options = zod.object({
 	force: zod.boolean().default(true).describe('Force'),
 });
 
-type Props = {
+type Properties = {
 	readonly options: zod.infer<typeof options>;
 };
 
-export default function Index({options}: Props) {
+export default function Index({options}: Properties) {
 	return <Text>Force = {String(options.force)}</Text>;
 }

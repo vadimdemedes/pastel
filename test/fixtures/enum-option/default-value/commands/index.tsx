@@ -9,10 +9,10 @@ export const options = zod.object({
 		.describe('Operating system'),
 });
 
-type Props = {
+type Properties = {
 	readonly options: zod.infer<typeof options>;
 };
 
-export default function Index({options}: Props) {
+export default function Index({options}: Properties) {
 	return <Text>OS = {options.os}</Text>;
 }

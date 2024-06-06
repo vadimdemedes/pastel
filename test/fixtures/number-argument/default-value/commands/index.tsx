@@ -7,10 +7,10 @@ export const args = zod.tuple([
 	zod.number().default(256).describe('second'),
 ]);
 
-type Props = {
+type Properties = {
 	readonly args: zod.infer<typeof args>;
 };
 
-export default function Index({args}: Props) {
+export default function Index({args}: Properties) {
 	return <Text>Arguments = {args.join(', ')}</Text>;
 }

@@ -13,10 +13,10 @@ export const options = zod.object({
 		.default('Mike'),
 });
 
-type Props = {
+type Properties = {
 	readonly options: zod.infer<typeof options>;
 };
 
-export default function Index({options}: Props) {
+export default function Index({options}: Properties) {
 	return <Text>Name = {options.name}</Text>;
 }

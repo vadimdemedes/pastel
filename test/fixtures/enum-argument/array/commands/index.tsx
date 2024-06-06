@@ -4,10 +4,10 @@ import zod from 'zod';
 
 export const args = zod.array(zod.enum(['Ubuntu', 'Debian'])).describe('os');
 
-type Props = {
+type Properties = {
 	readonly args: zod.infer<typeof args>;
 };
 
-export default function Index({args}: Props) {
+export default function Index({args}: Properties) {
 	return <Text>Arguments = {args.join(', ')}</Text>;
 }

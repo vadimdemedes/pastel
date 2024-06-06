@@ -20,7 +20,7 @@ const getConfig = (
 	return value?.startsWith('__pastel_option_config__')
 		? (JSON.parse(
 				value.replace('__pastel_option_config__', ''),
-		  ) as CommandOptionConfig)
+			) as CommandOptionConfig)
 		: undefined;
 };
 
@@ -101,9 +101,7 @@ export default function generateOptions(
 			const isVariadic =
 				optionSchema instanceof ZodArray || optionSchema instanceof ZodSet;
 
-			if (!valueDescription) {
-				valueDescription = isVariadic ? plur(name) : name;
-			}
+			valueDescription ||= isVariadic ? plur(name) : name;
 
 			const rest = isVariadic ? '...' : '';
 

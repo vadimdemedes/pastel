@@ -9,10 +9,10 @@ export const args = zod.tuple([
 	os.default('Debian').describe('second'),
 ]);
 
-type Props = {
+type Properties = {
 	readonly args: zod.infer<typeof args>;
 };
 
-export default function Index({args}: Props) {
+export default function Index({args}: Properties) {
 	return <Text>Arguments = {args.join(', ')}</Text>;
 }

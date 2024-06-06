@@ -1,7 +1,7 @@
 import {fileURLToPath} from 'node:url';
 import process from 'node:process';
 import {Command} from 'commander';
-import {readPackageUp} from 'read-pkg-up';
+import {readPackageUp} from 'read-package-up';
 import generateCommand from './generate-command.js';
 import readCommands from './read-commands.js';
 import generateCommands from './generate-commands.js';
@@ -59,9 +59,9 @@ export default class Pastel {
 			program.name(this.options.name);
 		}
 
-		const pkg = await readPackageUp();
+		const package_ = await readPackageUp();
 
-		const version = this.options.version ?? pkg?.packageJson.version;
+		const version = this.options.version ?? package_?.packageJson.version;
 
 		if (version) {
 			program.version(version, '-v, --version', 'Show version number');
@@ -70,7 +70,7 @@ export default class Pastel {
 		const description =
 			indexCommand?.description ??
 			this.options.description ??
-			pkg?.packageJson.description ??
+			package_?.packageJson.description ??
 			'';
 
 		program.description(description);
