@@ -7,7 +7,7 @@ export const args = zod
 	.rest(zod.string().describe('traits'));
 
 type Props = {
-	args: zod.infer<typeof args>;
+	readonly args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {

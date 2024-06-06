@@ -15,7 +15,7 @@ export const args = zod.tuple([
 ]);
 
 type Props = {
-	args: zod.infer<typeof args>;
+	readonly args: zod.infer<typeof args>;
 };
 
 export default function Index({args}: Props) {

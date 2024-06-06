@@ -14,7 +14,7 @@ export const options = zod.object({
 });
 
 type Props = {
-	options: zod.infer<typeof options>;
+	readonly options: zod.infer<typeof options>;
 };
 
 export default function Index({options}: Props) {

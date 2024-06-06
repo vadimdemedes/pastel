@@ -15,12 +15,12 @@
 		"default": "./build/index.js"
 	},
 	"engines": {
-		"node": ">=16"
+		"node": ">=18"
 	},
 	"scripts": {
 		"build": "tsc",
 		"dev": "tsc --watch",
-		"test": "tsc --noEmit && xo && ava",
+		"test": "tsc --noEmit && xo && NODE_OPTIONS='--loader=ts-node/esm --experimental-specifier-resolution=node --no-warnings' ava",
 		"prepare": "tsc"
 	},
 	"files": [
@@ -60,7 +60,7 @@
 		"zod": "^3.21.4"
 	},
 	"peerDependencies": {
-		"ink": "^4.2.0",
+		"ink": ">=5.0.0",
 		"react": "^18.2.0",
 		"zod": "^3.21.4"
 	},
@@ -70,9 +70,6 @@
 			"ts": "module",
 			"tsx": "module"
 		},
-		"nodeArguments": [
-			"--loader=ts-node/esm"
-		],
 		"environmentVariables": {
 			"NODE_NO_WARNINGS": "1"
 		}
