@@ -19,7 +19,7 @@
 npm install pastel ink react zod
 ```
 
-## Geting started
+## Getting started
 
 Use [create-pastel-app](https://github.com/vadimdemedes/create-pastel-app) to quickly scaffold a Pastel app with TypeScript, linter and tests set up.
 
