@@ -428,7 +428,7 @@ Name = Jane
 
 #### Number
 
-Example that defines a `--size` number option:
+Example that defines a `--age` number option:
 
 ```tsx
 import React from 'react';
