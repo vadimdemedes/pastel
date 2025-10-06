@@ -61,7 +61,7 @@
 	"peerDependencies": {
 		"ink": ">=5.0.0",
 		"react": ">=18.2.0",
-		"zod": ">=3.21.4"
+		"zod": "^3.21.4"
 	},
 	"ava": {
 		"concurrency": 1,
