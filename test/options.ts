@@ -8,7 +8,7 @@ test('string option', async t => {
 	t.is(valid.stdout, 'Name = Jane');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "name"/,
+		message: /received undefined at "name"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
@@ -129,7 +129,7 @@ test('string option with description from `option`', async t => {
 	t.is(valid.stdout, 'Name = Jane');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "name"/,
+		message: /received undefined at "name"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
@@ -160,7 +160,7 @@ test('string option with custom value description', async t => {
 	t.is(valid.stdout, 'Name = Jane');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "name"/,
+		message: /received undefined at "name"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
@@ -194,7 +194,7 @@ test('string option with alias', async t => {
 	t.is(alias.stdout, 'Name = Jane');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "name"/,
+		message: /received undefined at "name"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--name', '123']), {
@@ -229,11 +229,11 @@ test('number option', async t => {
 	t.is(valid.stdout, 'Size = 512');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "size"/,
+		message: /received undefined at "size"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -263,7 +263,7 @@ test('optional number option', async t => {
 	t.is(empty.stdout, 'Size = -1');
 
 	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -293,7 +293,7 @@ test('number option with default value', async t => {
 	t.is(empty.stdout, 'Size = 128');
 
 	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -323,7 +323,7 @@ test('number option with default value and custom description', async t => {
 	t.is(empty.stdout, 'Size = 128');
 
 	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -350,11 +350,11 @@ test('number option with description from `option`', async t => {
 	t.is(valid.stdout, 'Size = 512');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "size"/,
+		message: /received undefined at "size"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -381,11 +381,11 @@ test('number option with custom value description', async t => {
 	t.is(valid.stdout, 'Size = 512');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "size"/,
+		message: /received undefined at "size"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -415,15 +415,15 @@ test('number option with alias', async t => {
 	t.is(alias.stdout, 'Size = 512');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "size"/,
+		message: /received undefined at "size"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--size', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['-s', 'xyz']), {
-		message: /Expected number, received nan at "size"/,
+		message: /expected number, received NaN at "size"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -560,7 +560,7 @@ test('enum option', async t => {
 	t.is(debian.stdout, 'OS = Debian');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "os"/,
+		message: /expected one of .* at "os"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
@@ -699,7 +699,7 @@ test('enum option with description from `option`', async t => {
 	t.is(debian.stdout, 'OS = Debian');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "os"/,
+		message: /expected one of .* at "os"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
@@ -734,7 +734,7 @@ test('enum option with custom value description', async t => {
 	t.is(debian.stdout, 'OS = Debian');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "os"/,
+		message: /expected one of .* at "os"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
@@ -772,7 +772,7 @@ test('enum option with alias', async t => {
 	t.is(alias.stdout, 'OS = Debian');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "os"/,
+		message: /expected one of .* at "os"/,
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['--os', 'Windows']), {
@@ -815,7 +815,7 @@ test('array option', async t => {
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "tag"/,
+		message: /received undefined at "tag"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -944,7 +944,7 @@ test('array option with description from `option`', async t => {
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "tag"/,
+		message: /received undefined at "tag"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -989,7 +989,7 @@ test('array option with alias', async t => {
 	t.is(mixed.stdout, 'Tags = X, Y');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "tag"/,
+		message: /received undefined at "tag"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -1022,7 +1022,7 @@ test('set option', async t => {
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "tag"/,
+		message: /received undefined at "tag"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -1151,7 +1151,7 @@ test('set option with description from `option`', async t => {
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "tag"/,
+		message: /received undefined at "tag"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -1184,7 +1184,7 @@ test('set option with custom value description', async t => {
 	t.is(twoWithSpaces.stdout, 'Tags = X, Y');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "tag"/,
+		message: /received undefined at "tag"/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -1229,7 +1229,7 @@ test('set option with alias', async t => {
 	t.is(mixed.stdout, 'Tags = X, Y');
 
 	await t.throwsAsync(async () => run(fixture), {
-		message: /Required at "tag"/,
+		message: /received undefined at "tag"/,
 	});
 
 	const help = await run(fixture, ['--help']);

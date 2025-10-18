@@ -52,13 +52,12 @@ npm install --save-dev typescript @sindresorhus/tsconfig
 {
 	"extends": "@sindresorhus/tsconfig",
 	"compilerOptions": {
-		"moduleResolution": "node16",
-		"module": "node16",
 		"outDir": "build",
-		"sourceMap": true,
-		"tsx": "react"
+		"sourceMap": true
 	},
-	"include": ["source"]
+	"include": [
+		"source"
+	]
 }
 ```
 

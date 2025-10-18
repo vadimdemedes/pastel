@@ -51,14 +51,16 @@ export type ZodMaybeOptionalOrDefault<T extends ZodTypeAny> =
 export type CommandOption =
 	| ZodMaybeOptionalOrDefault<ZodString>
 	| ZodMaybeOptionalOrDefault<ZodNumber>
-	| ZodMaybeOptionalOrDefault<ZodEnum<[string, ...string[]]>>
+	| ZodMaybeOptionalOrDefault<ZodEnum<Record<string, string | number>>>
 	| ZodMaybeOptionalOrDefault<ZodBoolean>
 	| ZodMaybeOptionalOrDefault<ZodArray<ZodString>>
 	| ZodMaybeOptionalOrDefault<ZodArray<ZodNumber>>
-	| ZodMaybeOptionalOrDefault<ZodArray<ZodEnum<[string, ...string[]]>>>
+	| ZodMaybeOptionalOrDefault<
+			ZodArray<ZodEnum<Record<string, string | number>>>
+	  >
 	| ZodMaybeOptionalOrDefault<ZodSet<ZodString>>
 	| ZodMaybeOptionalOrDefault<ZodSet<ZodNumber>>
-	| ZodMaybeOptionalOrDefault<ZodSet<ZodEnum<[string, ...string[]]>>>;
+	| ZodMaybeOptionalOrDefault<ZodSet<ZodEnum<Record<string, string | number>>>>;
 
 export type CommandArguments = ZodMaybeOptionalOrDefault<
 	CommandArgumentsTuple | CommandArgumentsArray
@@ -76,9 +78,9 @@ export type CommandArgumentsTuple = ZodTuple<
 export type CommandArgumentsArray =
 	| ZodArray<ZodString>
 	| ZodArray<ZodNumber>
-	| ZodArray<ZodEnum<[string, ...string[]]>>;
+	| ZodArray<ZodEnum<Record<string, string | number>>>;
 
 export type CommandArgument =
 	| ZodString
 	| ZodNumber
-	| ZodEnum<[string, ...string[]]>;
+	| ZodEnum<Record<string, string | number>>;

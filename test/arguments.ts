@@ -366,7 +366,7 @@ test('number argument', async t => {
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['Jane', 'Hopper']), {
-		message: /Expected number, received nan at index 0/,
+		message: /expected number, received NaN at index 0/,
 	});
 
 	const help = await run(fixture, ['--help']);
@@ -654,7 +654,7 @@ test('number argument with description', async t => {
 	});
 
 	await t.throwsAsync(async () => run(fixture, ['Jane', 'Hopper']), {
-		message: /Expected number, received nan at index 0/,
+		message: /expected number, received NaN at index 0/,
 	});
 
 	const help = await run(fixture, ['--help']);

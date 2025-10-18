@@ -49,44 +49,50 @@ export default function generateOptions(
 
 	if (optionsSchema instanceof ZodOptional) {
 		isOptionalByDefault = true;
-		optionsSchema = optionsSchema._def.innerType;
+		optionsSchema = optionsSchema._zod.def.innerType;
 	}
 
 	const options: Option[] = [];
 
-	for (let [name, optionSchema] of Object.entries(optionsSchema._def.shape())) {
+	for (let [name, optionSchema] of Object.entries(
+		optionsSchema._zod.def.shape,
+	)) {
 		name = decamelize(name, {separator: '-'});
 
 		let defaultValue: unknown;
-
-		let defaultValueDescription = getDefaultValueDescription(
-			optionSchema.description,
-		);
-
-		const description = getDescription(optionSchema.description);
-		let valueDescription = getValueDescription(optionSchema.description);
 		let isOptional = isOptionalByDefault;
+
+		// Collect description before unwrapping (for .default().describe() pattern)
+		let schemaDescription = optionSchema.description;
 
 		// Unwrap zod.string().optional()
 		if (optionSchema instanceof ZodOptional) {
 			isOptional = true;
-			optionSchema = optionSchema._def.innerType;
+			optionSchema = optionSchema._zod.def.innerType;
 		}
 
 		// Unwrap zod.string().optional().default()
 		if (optionSchema instanceof ZodDefault) {
 			isOptional = true;
-			defaultValue = optionSchema._def.defaultValue();
-			optionSchema = optionSchema._def.innerType;
+			defaultValue = optionSchema._zod.def.defaultValue;
+			optionSchema = optionSchema._zod.def.innerType;
 		}
 
 		// Unwrap zod.string().default().optional()
 		if (optionSchema instanceof ZodOptional) {
 			isOptional = true;
-			optionSchema = optionSchema._def.innerType;
+			optionSchema = optionSchema._zod.def.innerType;
 		}
 
-		const alias = getAlias(optionSchema.description);
+		// Use description from inner schema if not found on outer (for .describe().default() pattern)
+		schemaDescription ||= optionSchema.description;
+
+		let defaultValueDescription = getDefaultValueDescription(schemaDescription);
+
+		const description = getDescription(schemaDescription);
+		let valueDescription = getValueDescription(schemaDescription);
+
+		const alias = getAlias(schemaDescription);
 		let flag = `--${name}`;
 
 		if (optionSchema instanceof ZodBoolean && defaultValue === true) {
@@ -118,7 +124,7 @@ export default function generateOptions(
 		}
 
 		if (optionSchema instanceof ZodEnum) {
-			option.choices(optionSchema._def.values);
+			option.choices(Object.values(optionSchema._zod.def.entries).map(String));
 		}
 
 		if (optionSchema instanceof ZodBoolean && defaultValue === undefined) {

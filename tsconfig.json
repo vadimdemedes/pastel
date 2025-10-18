@@ -2,14 +2,15 @@
 	"extends": "@sindresorhus/tsconfig",
 	"compilerOptions": {
 		"outDir": "build",
-		"sourceMap": true,
-		"jsx": "react"
+		"sourceMap": true
 	},
 	"include": ["source"],
 	"ts-node": {
+		"esm": true,
 		"transpileOnly": true,
-		"files": true,
-		"experimentalResolver": true,
-		"experimentalSpecifierResolution": "node"
+		"compilerOptions": {
+			"module": "esnext",
+			"moduleResolution": "bundler"
+		}
 	}
 }

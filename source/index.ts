@@ -32,7 +32,11 @@ export type Options = {
 };
 
 export default class Pastel {
-	constructor(private readonly options: Options) {}
+	private readonly options: Options;
+
+	constructor(options: Options) {
+		this.options = options;
+	}
 
 	/**
 	 * Run the app.

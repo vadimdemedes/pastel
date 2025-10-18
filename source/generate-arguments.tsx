@@ -49,27 +49,27 @@ export default function generateArguments(
 
 	if (argumentsSchema instanceof ZodOptional) {
 		isOptionalByDefault = true;
-		argumentsSchema = argumentsSchema._def.innerType;
+		argumentsSchema = argumentsSchema._zod.def.innerType;
 		arrayName = argumentsSchema.description ?? arrayName;
 	}
 
 	if (argumentsSchema instanceof ZodDefault) {
 		isOptionalByDefault = true;
-		arrayDefaultValue = argumentsSchema._def.defaultValue();
-		argumentsSchema = argumentsSchema._def.innerType;
+		arrayDefaultValue = argumentsSchema._zod.def.defaultValue;
+		argumentsSchema = argumentsSchema._zod.def.innerType;
 		arrayName = argumentsSchema.description ?? arrayName;
 	}
 
 	if (argumentsSchema instanceof ZodOptional) {
 		isOptionalByDefault = true;
-		argumentsSchema = argumentsSchema._def.innerType;
+		argumentsSchema = argumentsSchema._zod.def.innerType;
 		arrayName = argumentsSchema.description ?? arrayName;
 	}
 
 	const arguments_: Argument[] = [];
 
 	if (argumentsSchema instanceof ZodTuple) {
-		for (let argumentSchema of argumentsSchema._def.items) {
+		for (let argumentSchema of argumentsSchema._zod.def.items) {
 			let isOptional = isOptionalByDefault;
 			let defaultValue: unknown;
 			const defaultValueDescription = getDefaultValueDescription(
@@ -80,20 +80,20 @@ export default function generateArguments(
 
 			if (argumentSchema instanceof ZodOptional) {
 				isOptional = true;
-				argumentSchema = argumentSchema._def.innerType;
+				argumentSchema = argumentSchema._zod.def.innerType;
 				name = getName(argumentSchema.description) ?? name;
 			}
 
 			if (argumentSchema instanceof ZodDefault) {
 				isOptional = true;
-				defaultValue = argumentSchema._def.defaultValue();
-				argumentSchema = argumentSchema._def.innerType;
+				defaultValue = argumentSchema._zod.def.defaultValue;
+				argumentSchema = argumentSchema._zod.def.innerType;
 				name = getName(argumentSchema.description) ?? name;
 			}
 
 			if (argumentSchema instanceof ZodOptional) {
 				isOptional = true;
-				argumentSchema = argumentSchema._def.innerType;
+				argumentSchema = argumentSchema._zod.def.innerType;
 				name = getName(argumentSchema.description) ?? name;
 			}
 
@@ -109,7 +109,9 @@ export default function generateArguments(
 			}
 
 			if (argumentSchema instanceof ZodEnum) {
-				argument.choices(argumentSchema._def.values);
+				argument.choices(
+					Object.values(argumentSchema._zod.def.entries).map(String),
+				);
 			}
 
 			if (defaultValue !== undefined) {
@@ -119,7 +121,7 @@ export default function generateArguments(
 			arguments_.push(argument);
 		}
 
-		const restSchema = argumentsSchema._def.rest;
+		const restSchema = argumentsSchema._zod.def.rest;
 
 		if (restSchema) {
 			const name = getName(restSchema.description) ?? 'arg';
@@ -132,7 +134,9 @@ export default function generateArguments(
 			}
 
 			if (restSchema instanceof ZodEnum) {
-				argument.choices(restSchema._def.values);
+				argument.choices(
+					Object.values(restSchema._zod.def.entries).map(String),
+				);
 			}
 
 			arguments_.push(argument);
