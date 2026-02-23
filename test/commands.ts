@@ -595,3 +595,55 @@ test('command with an alias', async t => {
 		].join('\n'),
 	);
 });
+
+test('ignore patterns in command discovery', async t => {
+	const fixture = 'ignored-commands';
+
+	const indexHelp = await run(fixture, ['--help']);
+
+	t.is(
+		indexHelp.stdout,
+		[
+			'Usage: test [options] [command]',
+			'',
+			'Description',
+			'',
+			'Options:',
+			'  -v, --version   Show version number',
+			'  -h, --help      Show help',
+			'',
+			'Commands:',
+			'  auth            Auth command',
+			'  servers         Manage servers',
+			'  help [command]  Show help for command',
+		].join('\n'),
+	);
+
+	const servers = await run(fixture, ['servers'], {
+		reject: false,
+	});
+
+	t.is(
+		servers.stderr,
+		[
+			'Usage: test servers [options] [command]',
+			'',
+			'Manage servers',
+			'',
+			'Options:',
+			'  -h, --help      Show help',
+			'',
+			'Commands:',
+			'  list            List servers',
+			'  help [command]  Show help for command',
+		].join('\n'),
+	);
+
+	const ignoredNestedCommand = await run(fixture, ['servers', '__tests__'], {
+		reject: false,
+	});
+
+	t.true(
+		String(ignoredNestedCommand.stderr).includes("unknown command '__tests__'"),
+	);
+});

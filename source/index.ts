@@ -29,6 +29,13 @@ export type Options = {
 	 * Pass in [`import.meta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta). This is used to find the `commands` directory.
 	 */
 	importMeta: ImportMeta;
+
+	/**
+	 * Glob patterns for files and folders to ignore during command discovery.
+	 *
+	 * Patterns are matched against paths relative to the `commands` directory.
+	 */
+	ignore?: string[];
 };
 
 export default class Pastel {
@@ -49,7 +56,9 @@ export default class Pastel {
 		const appComponent = (await readCustomApp(commandsDirectory)) ?? App;
 		const program = new Command();
 
-		const commands = await readCommands(commandsDirectory);
+		const commands = await readCommands(commandsDirectory, {
+			ignore: this.options.ignore,
+		});
 		const indexCommand = commands.get('index');
 
 		if (indexCommand) {

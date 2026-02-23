@@ -1081,6 +1081,41 @@ Type: [`ImportMeta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import
 
 Pass in [`import.meta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta). This is used to find the `commands` directory.
 
+##### ignore
+
+Type: `string[]`
+
+Glob patterns for files and folders to ignore during command discovery. Patterns are matched against paths relative to the `commands` directory.
+
+###### Examples
+
+Ignore top-level files and folders named `__tests__` only:
+
+```ts
+const app = new Pastel({
+	...,
+	ignore: ['__tests__'],
+});
+```
+
+Ignore nested `__tests__/` folders at any depth:
+
+```ts
+const app = new Pastel({
+	...,
+	ignore: ['**/__tests__/'],
+});
+```
+
+Ignore certain files, even in nested folders:
+
+```ts
+const app = new Pastel({
+	...,
+	ignore: ['**/*.test.tsx'],
+});
+```
+
 #### run(argv)
 
 Parses the arguments and runs the app.
