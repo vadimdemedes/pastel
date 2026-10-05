@@ -2,6 +2,7 @@ import {fileURLToPath} from 'node:url';
 import process from 'node:process';
 import {Command} from 'commander';
 import {readPackageUp} from 'read-package-up';
+import type {RenderOptions} from 'ink';
 import generateCommand from './generate-command.js';
 import readCommands from './read-commands.js';
 import generateCommands from './generate-commands.js';
@@ -29,6 +30,11 @@ export type Options = {
 	 * Pass in [`import.meta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta). This is used to find the `commands` directory.
 	 */
 	importMeta: ImportMeta;
+
+	/**
+	 * Options passed to Ink when rendering a command component.
+	 */
+	renderOptions?: RenderOptions;
 };
 
 export default class Pastel {
@@ -53,11 +59,17 @@ export default class Pastel {
 		const indexCommand = commands.get('index');
 
 		if (indexCommand) {
-			generateCommand(program, indexCommand, {appComponent});
+			generateCommand(program, indexCommand, {
+				appComponent,
+				renderOptions: this.options.renderOptions,
+			});
 			commands.delete('index');
 		}
 
-		generateCommands(program, commands, {appComponent});
+		generateCommands(program, commands, {
+			appComponent,
+			renderOptions: this.options.renderOptions,
+		});
 
 		if (this.options.name) {
 			program.name(this.options.name);

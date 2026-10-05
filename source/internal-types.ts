@@ -81,6 +81,4 @@ export type CommandArgumentsArray =
 	| ZodArray<ZodEnum<Record<string, string | number>>>;
 
 export type CommandArgument =
-	| ZodString
-	| ZodNumber
-	| ZodEnum<Record<string, string | number>>;
+	ZodString | ZodNumber | ZodEnum<Record<string, string | number>>;

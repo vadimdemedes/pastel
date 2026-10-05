@@ -595,3 +595,15 @@ test('command with an alias', async t => {
 		].join('\n'),
 	);
 });
+
+test('render options', async t => {
+	const result = await run('render-options');
+
+	t.is(result.stdout, '');
+	t.is(result.stderr, 'Index');
+
+	const nested = await run('render-options', ['nested', 'child']);
+
+	t.is(nested.stdout, '');
+	t.is(nested.stderr, 'Child');
+});

@@ -1041,7 +1041,7 @@ To customize it, use a `version` option during app initialization.
 import Pastel from 'pastel';
 
 const app = new Pastel({
-	version: '1.0.0
+	version: '1.0.0'
 });
 
 await app.run()
@@ -1080,6 +1080,25 @@ Description. Defaults to `description` in the nearest package.json.
 Type: [`ImportMeta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta)
 
 Pass in [`import.meta`](https://nodejs.org/dist/latest/docs/api/esm.html#esm_import_meta). This is used to find the `commands` directory.
+
+##### renderOptions
+
+Type: `RenderOptions` from `ink`
+
+Options passed to Ink's `render()` function when rendering a command component.
+
+Ink 7 and later supports rendering in the terminal's alternate screen buffer:
+
+```tsx
+import Pastel from 'pastel';
+
+const app = new Pastel({
+	importMeta: import.meta,
+	renderOptions: {
+		alternateScreen: true,
+	},
+});
+```
 
 #### run(argv)
 

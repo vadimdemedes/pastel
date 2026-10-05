@@ -1,6 +1,6 @@
 import process from 'node:process';
 import {type Command as CommanderCommand} from 'commander';
-import {render} from 'ink';
+import {render, type RenderOptions} from 'ink';
 import React, {type ComponentType} from 'react';
 import {StatusMessage} from '@inkjs/ui';
 import {fromZodError} from 'zod-validation-error';
@@ -12,7 +12,13 @@ import {type AppProps} from './types.js';
 const generateCommand = (
 	commanderCommand: CommanderCommand,
 	pastelCommand: Command,
-	{appComponent}: {appComponent: ComponentType<AppProps>},
+	{
+		appComponent,
+		renderOptions,
+	}: {
+		appComponent: ComponentType<AppProps>;
+		renderOptions?: RenderOptions;
+	},
 ) => {
 	commanderCommand.helpOption('-h, --help', 'Show help');
 
@@ -118,6 +124,7 @@ const generateCommand = (
 						args: arguments_,
 					},
 				}),
+				renderOptions,
 			);
 		});
 	}
